@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
 )
@@ -14,4 +15,9 @@ func main() {
 			"data": "[]",
 		})
 	})
+	err := router.Run(":82")
+	if err != nil {
+		fmt.Println("ERROR:server", err)
+		return
+	}
 }
