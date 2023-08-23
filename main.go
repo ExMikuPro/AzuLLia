@@ -8,10 +8,11 @@ import (
 
 func main() {
 	router := gin.Default()
+	// router.Use(service.AuthMiddleware(service.RequiredHeaders))
 	service.Router(router)
 	err := router.Run(":82")
 	if err != nil {
-		fmt.Println("ERROR:server", err)
+		fmt.Println("Server Start ERROR:", err)
 		return
 	}
 }
