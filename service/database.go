@@ -45,11 +45,20 @@ func ReadAllDB(server *mongo.Database, Collection string) []gin.H {
 		var result bson.M
 		err := cur.Decode(&result)
 		if err != nil {
-			fmt.Println("Read DB Data Decode ERROR", err)
+			fmt.Println("Read All DB Data Decode ERROR", err)
 		}
 		data = append(data, gin.H(result))
 	}
 	return data
 }
 
-// todo 编写题哦啊件查询读取数据库数据
+func ReadOneDB(server *mongo.Database, Collection string, filter bson.D) gin.H { // todo 性能优化
+	collection := server.Collection(Collection)
+	result := collection.FindOne(context.Background(), filter)
+	var data = gin.H{}
+	err := result.Decode(&data)
+	if err != nil {
+		fmt.Println("Read One DB Data Decode ERROR", err)
+	}
+	return data
+}

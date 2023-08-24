@@ -12,7 +12,10 @@ func routerMain(router *gin.Engine) {
 
 	api.GET("/paperList", paperListPage) // 全部文章列表
 
-	data.GET("/paperContext/:id", paperContextPage) // 文章内容
+	data.GET("/paperContext/:cid", paperContextPage) // 文章内容
+
+	api.GET("/tagList", tagListPage) // 文章标签列表
+	data.GET("/tag/:tid", tagPage)   // 文章标签列表
 
 	// 通用型路由组
 	router.GET("/", func(context *gin.Context) { // 主页
