@@ -2,6 +2,7 @@ package service
 
 import (
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson"
 	"net/http"
 )
 
@@ -54,8 +55,10 @@ func paperListPage(context *gin.Context) { // 获取文章列表
 	})
 }
 
-func paperContextPage(context *gin.Context) {
-	from := context.Query("from")
+func paperContextPage(context *gin.Context) { // 获取文章内容
+	from := context.Query("from") // 文章对应的内容 todo 使用数据库原生id
+	// cid := context.Query("cid") // 文章cid
+
 	context.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
 		Msg:  "success",
@@ -65,5 +68,31 @@ func paperContextPage(context *gin.Context) {
 			"from":    from,          // 查找对应的文章
 			"context": "<p>文章主题</p>", // todo 文章主体内容
 		},
+	})
+}
+
+func tagListPage(context *gin.Context) { // 标签列表
+	data := ReadAllDB(DataBase, "tagList")
+	context.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: SuccessCode,
+		Msg:  "success",
+		Path: context.Request.URL.Path,
+		Data: gin.H{
+			"length": len(data), // 列表长度
+			"list":   data,      // 列表数据
+		},
+	})
+}
+
+func tagPage(context *gin.Context) { // 查询单个标签内容
+	filter := bson.D{
+		{"tid", context.Param("tid")}, // tid为String
+	}
+	data := ReadOneDB(DataBase, "tagList", filter)
+	context.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: SuccessCode,
+		Msg:  "success",
+		Path: context.Request.URL.Path,
+		Data: data,
 	})
 }
