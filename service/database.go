@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
@@ -61,4 +62,15 @@ func ReadOneDB(server *mongo.Database, Collection string, filter bson.D) gin.H {
 		fmt.Println("Read One DB Data Decode ERROR", err)
 	}
 	return data
+}
+
+func WriteOneDB(server *mongo.Database, Collection string, Data string) (bool, string) {
+	collection := server.Collection(Collection)
+	one, err := collection.InsertOne(context.TODO(), bson.D{{"value", Data}})
+	insertedID := one.InsertedID.(primitive.ObjectID)
+	fmt.Println()
+	if err != nil {
+		return false, insertedID.Hex()
+	}
+	return true, insertedID.Hex()
 }
