@@ -7,15 +7,14 @@ import (
 
 func routerMain(router *gin.Engine) {
 	// 功能型接口路由组
-	data := router.Group("/data/")
-	api := router.Group("/api/")
+	data := router.Group(pageAddr["data"])
+	api := router.Group(pageAddr["api"])
 
-	api.GET("/paperList", paperListPage) // 全部文章列表
+	api.GET(pageAddr["paperList"], paperListPage) // 全部文章列表
+	api.GET(pageAddr["tagList"], tagListPage)     // 文章标签列表
 
-	data.GET("/paperContext/:cid", paperContextPage) // 文章内容
-
-	api.GET("/tagList", tagListPage) // 文章标签列表
-	data.GET("/tag/:tid", tagPage)   // 文章标签列表
+	data.GET(pageAddr["paperContext"], paperContextPage) // 文章内容
+	data.GET(pageAddr["tag"], tagPage)                   // 文章标签内容
 
 	// 通用型路由组
 	router.GET("/", func(context *gin.Context) { // 主页
@@ -27,9 +26,11 @@ func routerMain(router *gin.Engine) {
 		})
 	})
 
-	router.GET("/about", aboutPage) // 关于界面
+	router.GET(pageAddr["about"], aboutPage) // 关于界面
 
-	router.GET("/test", paperListPage) // 测试界面
+	router.GET(pageAddr["verify"]) // api认证申请接口
+
+	router.GET("/test", testPage) // 测试界面
 }
 
 func Router(router *gin.Engine) {

@@ -32,8 +32,8 @@ func ReadAllDB(server *mongo.Database, Collection string) []gin.H {
 	if err != nil {
 		fmt.Println("Read DB Data ERROR", err)
 	}
-	defer func(cur *mongo.Cursor, ctx context.Context) {
-		err := cur.Close(ctx)
+	defer func(cur *mongo.Cursor, context context.Context) {
+		err := cur.Close(context)
 		if err != nil {
 			fmt.Println("Close BD ERROR:", err)
 		}
