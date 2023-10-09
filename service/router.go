@@ -25,7 +25,6 @@ func routerMain(router *gin.Engine) {
 			Data: nil,
 		})
 	})
-
 	router.GET(pageAddr["about"], aboutPage) // 关于界面
 
 	router.GET(pageAddr["verify"]) // api认证申请接口
