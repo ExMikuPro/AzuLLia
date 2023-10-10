@@ -1,11 +1,15 @@
 package service
 
-import "github.com/gin-gonic/gin"
+import (
+	"github.com/gin-gonic/gin"
+)
 
 const Version = "1.0.0"      // 系统版本号
-const SuccessCode = 0        //正常
+const SuccessCode = 0        // 正常
 const ErrorVerify = 1        // 错误的验证密钥
 const ErrorSession = 2       // 错误的连接
+const UnKnownFileType = 14   // 未知文件类型
+const FileSaveError = 15     // 文件保存错误
 const ErrorPermissions = 500 // 权限错误
 const WorkProgress = 520     // 正在构建的界面
 
@@ -13,6 +17,8 @@ const seed = 15 //  生成随机认证码
 
 const DBAddress = "mongodb://localhost:27017" // 数据库地址
 const DBDataBase = "test"                     // 数据库名称
+
+var FileType = []string{".jpg", ".jpeg", ".png"} // 允许上传文件类型
 
 var pageAddr = map[string]string{ // 路由地址
 	// 组地址
@@ -28,6 +34,10 @@ var pageAddr = map[string]string{ // 路由地址
 	// 系统页面地址
 	"about":  "/about",  // 关于框架界面
 	"verify": "/verify", // 获取认证界面
+	// 文件系统
+	"upload":     "/upload",       // 文件上传地址
+	"uploadFile": "./uploadFile/", // 文件上传后保存位置
+
 }
 
 type GeneralJSONHeader struct { // 全局通用标头
