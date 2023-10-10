@@ -29,6 +29,8 @@ func routerMain(router *gin.Engine) {
 
 	router.GET(pageAddr["verify"]) // api认证申请接口
 
+	router.POST("/upload", UploadFile) // 配置上传界面位置
+
 	router.GET("/test", testPage) // 测试界面
 }
 
