@@ -73,13 +73,23 @@ func tagPage(context *gin.Context) { // 查询单个标签内容
 	filter := bson.D{
 		{"tid", context.Param("tid")}, // tid为String
 	}
-	data := ReadOneDB(DataBase, "tagList", filter)
-	context.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  "success",
-		Path: context.Request.URL.Path,
-		Data: data,
-	})
+	data, isExist := ReadOneDB(DataBase, "tage", filter)
+	if isExist { // 判断标签是否存在
+		context.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: SuccessCode,
+			Msg:  "success",
+			Path: context.Request.URL.Path,
+			Data: data,
+		})
+	} else {
+		context.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: NoDocuments,
+			Msg:  "DB No Documents",
+			Path: context.Request.URL.Path,
+			Data: data,
+		})
+	}
+
 }
 
 func testPage(context *gin.Context) { // 设置临时测试界面
