@@ -53,15 +53,18 @@ func ReadAllDB(server *mongo.Database, Collection string) []gin.H {
 	return data
 }
 
-func ReadOneDB(server *mongo.Database, Collection string, filter bson.D) gin.H { // todo 性能优化
+func ReadOneDB(server *mongo.Database, Collection string, filter bson.D) (gin.H, bool) { // todo 性能优化
 	collection := server.Collection(Collection)
 	result := collection.FindOne(context.Background(), filter)
 	var data = gin.H{}
 	err := result.Decode(&data)
 	if err != nil {
+		if err == mongo.ErrNoDocuments { // 判断如果没有文档
+			return gin.H{}, false
+		}
 		fmt.Println("Read One DB Data Decode ERROR", err)
 	}
-	return data
+	return data, true
 }
 
 func WriteOneDB(server *mongo.Database, Collection string, Data string) (bool, string) {

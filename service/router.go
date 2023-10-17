@@ -16,6 +16,9 @@ func routerMain(router *gin.Engine) {
 	data.GET(pageAddr["paperContext"], paperContextPage) // 文章内容
 	data.GET(pageAddr["tag"], tagPage)                   // 文章标签内容
 
+	add := data.Group("/add/") // 添加相关函数
+	add.POST("/tage")          // 添加标签接口 todo 添加身份认证
+
 	// 通用型路由组
 	router.GET("/", func(context *gin.Context) { // 主页
 		context.JSON(http.StatusOK, GeneralJSONHeader{

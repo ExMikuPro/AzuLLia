@@ -4,12 +4,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-const Version = "1.0.0"      // 系统版本号
-const SuccessCode = 0        // 正常
-const ErrorVerify = 1        // 错误的验证密钥
-const ErrorSession = 2       // 错误的连接
-const UnKnownFileType = 14   // 未知文件类型
-const FileSaveError = 15     // 文件保存错误
+const Version = "1.0.0"    // 系统版本号
+const SuccessCode = 0      // 正常
+const ErrorVerify = 1      // 错误的验证密钥
+const ErrorSession = 2     // 错误的连接
+const UnKnownFileType = 14 // 未知文件类型
+const FileSaveError = 15   // 文件保存错误
+const NoDocuments = 20
 const ErrorPermissions = 500 // 权限错误
 const WorkProgress = 520     // 正在构建的界面
 
