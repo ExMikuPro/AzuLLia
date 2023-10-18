@@ -10,11 +10,11 @@ func routerMain(router *gin.Engine) {
 	data := router.Group(pageAddr["data"])
 	api := router.Group(pageAddr["api"])
 
-	api.GET(pageAddr["paperList"], paperListPage) // 全部文章列表
-	api.GET(pageAddr["tagList"], tagListPage)     // 文章标签列表
+	api.GET(pageAddr["paperList"], basicPages.PostListPage) // 全部文章列表
+	api.GET(pageAddr["tagList"], basicPages.tageListPage)   // 文章标签列表
 
-	data.GET(pageAddr["paperContext"], paperContextPage) // 文章内容
-	data.GET(pageAddr["tag"], tagPage)                   // 文章标签内容
+	data.GET(pageAddr["paperContext"], basicPages.PostContextPage) // 文章内容
+	data.GET(pageAddr["tag"], basicPages.tagePage)                 // 文章标签内容
 
 	add := data.Group("/add/") // 添加相关函数
 	add.POST("/tage")          // 添加标签接口 todo 添加身份认证
@@ -28,16 +28,16 @@ func routerMain(router *gin.Engine) {
 			Data: nil,
 		})
 	})
-	router.GET(pageAddr["about"], aboutPage) // 关于界面
+	router.GET(pageAddr["about"], basicPages.aboutPage) // 关于界面
 
 	router.GET(pageAddr["verify"]) // api认证申请接口
 
 	router.POST("/upload", UploadFile) // 配置上传界面位置
 
-	router.GET("/test", testPage) // 测试界面
+	router.GET("/test", basicPages.aboutPage) // 测试界面
 }
 
 func Router(router *gin.Engine) {
-	router.NoRoute(NoFoundPage)
+	router.NoRoute(basicPages.NoFoundPage)
 	routerMain(router) // 主页路由处理
 }

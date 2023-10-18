@@ -48,9 +48,17 @@ type GeneralJSONHeader struct { // 全局通用标头
 	Data gin.H  `json:"data"`
 }
 
+type utility struct { // 一个工具接口
+}
+
+type BasicPage struct {
+	// context gin.Context
+}
+
 var RequiredHeaders = map[string]string{ // 验证服务
 	// 生成随机数
 	"Verify": verifyCode(seed),
 }
 
-var DataBase = InitDB() // 初始化数据库
+var basicPages = &BasicPage{} // 基础页面主结构体
+var DataBase = InitDB()       // 初始化数据库
