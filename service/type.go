@@ -2,6 +2,7 @@ package service
 
 import (
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 const Version = "1.0.0"    // 系统版本号
@@ -48,11 +49,38 @@ type GeneralJSONHeader struct { // 全局通用标头
 	Data gin.H  `json:"data"`
 }
 
-type utility struct { // 一个工具接口
+type Utility struct { // 一个工具接口
 }
 
 type BasicPage struct {
 	// context gin.Context
+}
+
+type contextTable struct { // 文章内容表
+	ID           primitive.ObjectID `bson:"_id"`          // 主键，自增
+	Title        string             `bson:"title"`        // 内容标题
+	Slug         string             `bson:"slug"`         // 内容缩略名
+	Created      int16              `bson:"created"`      // 内容生成时的时间戳
+	Modified     int16              `bson:"modified"`     // 内容修改时的时间戳
+	Text         string             `bson:"text"`         // 内容文字
+	Order        int8               `bson:"order"`        // 排序
+	AuthorId     int8               `bson:"authorId"`     // 内容所属用户
+	Template     string             `bson:"template"`     // 内容所使用的模版
+	Type         string             `bson:"type"`         // 内容类别
+	Status       string             `bson:"status"`       // 内容状态
+	Password     string             `bson:"password"`     // 受保护内容的密码
+	AllowComment bool               `bson:"allowComment"` // 是否允许评论
+}
+
+type tageTable struct { // 标签关系表
+	ID          primitive.ObjectID `bson:"ID"`          // 主键，自增
+	Name        string             `bson:"name"`        // 名称
+	Slug        string             `bson:"slug"`        // 项目缩略名
+	Type        string             `bson:"type"`        // 项目类型
+	Description string             `bson:"description"` // 选项描述
+	count       int16              `bson:"count"`       // 项目个数
+	Order       int8               `bson:"order"`       //项目排序
+
 }
 
 var RequiredHeaders = map[string]string{ // 验证服务
