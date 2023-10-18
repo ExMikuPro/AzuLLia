@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func (_ *BasicPage) aboutPage(ctx *gin.Context) { // 框架版本界面
+func (_ *BasicPage) AboutPage(ctx *gin.Context) { // 框架版本界面
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
 		Msg:  "success",
@@ -56,7 +56,7 @@ func (_ *BasicPage) PostContextPage(ctx *gin.Context) { // 文章内容页面
 	})
 }
 
-func (_ *BasicPage) tageListPage(ctx *gin.Context) { // 标签列表界面
+func (_ *BasicPage) TageListPage(ctx *gin.Context) { // 标签列表界面
 	data := ReadAllDB(DataBase, "tagList")
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
@@ -69,7 +69,7 @@ func (_ *BasicPage) tageListPage(ctx *gin.Context) { // 标签列表界面
 	})
 }
 
-func (_ *BasicPage) tagePage(ctx *gin.Context) {
+func (_ *BasicPage) TagePage(ctx *gin.Context) {
 	filter := bson.D{
 		{"tid", ctx.Param("tid")}, // tid为String
 	}
@@ -89,4 +89,13 @@ func (_ *BasicPage) tagePage(ctx *gin.Context) {
 			Data: data,
 		})
 	}
+}
+
+func (_ *BasicPage) MainPage(ctx *gin.Context) { // 主页页面
+	ctx.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: WorkProgress,
+		Msg:  "页面正在施工喵～",
+		Path: ctx.Request.URL.Path,
+		Data: nil,
+	})
 }
