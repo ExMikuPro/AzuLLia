@@ -25,6 +25,6 @@
 go.work
 
 # Project test file
-*.text.go
+*.test.go
 
 # End of https://www.toptal.com/developers/gitignore/api/go
