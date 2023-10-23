@@ -1,9 +1,10 @@
 package service
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"go.mongodb.org/mongo-driver/bson"
 	"math/rand"
-
 	"net/http"
 )
 
@@ -36,4 +37,32 @@ func verifyCode(long int64) string { // 随机生成验证码
 		b[i] = letterRunes[rand.Intn(len(letterRunes))]
 	}
 	return string(b)
+}
+
+func (_ *Utility) UserPasswdVerify(data userLoginData) bool { // 用户密码认证函数
+	// userHAS, err := bcrypt.GenerateFromPassword([]byte(data.Username), bcrypt.DefaultCost) // 生成用户名的HAS值
+	//if err != nil {
+	//	return false
+	//}
+
+	DbData, have := dBService.ReadOneDB(DataBase, "user", bson.D{{"name", data.Username}})
+	if have {
+		fmt.Println("is:", DbData)
+		if DbData["name"] != data.Username {
+			return false
+		}
+	} else {
+		return false
+	}
+	fmt.Println(len(data.Username))
+	return true
+}
+
+func (_ *Utility) NoFoundPage(ctx *gin.Context) { // 404
+	ctx.JSON(http.StatusNotFound, GeneralJSONHeader{
+		Code: http.StatusNotFound,
+		Msg:  "页面走丢了~",
+		Path: ctx.Request.URL.Path,
+		Data: nil,
+	})
 }
