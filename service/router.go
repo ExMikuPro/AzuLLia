@@ -8,11 +8,8 @@ func routerMain(router *gin.Engine) {
 	// 功能型接口路由组
 	dataGroup := router.Group(pageAddr["data"])
 	apiGroup := router.Group(pageAddr["api"])
-	adminGroup := router.Group("/admin/")      // 后台相关地址
 	addGroup := dataGroup.Group("/add/")       // 添加相关地址
 	updateGroup := dataGroup.Group("/update/") // 更新文档相关地址
-
-	adminGroup.GET("/", adminPage.mainPage) // 后台主界面
 
 	apiGroup.GET(pageAddr["paperList"], get.GetPostList) // 全部文章列表
 	apiGroup.GET(pageAddr["tagList"], get.GetTagList)    // 文章标签列表
