@@ -12,7 +12,7 @@ import (
 
 // 数据库处理
 
-func InitDB() *mongo.Database {
+func (_ *DBService) InitDB() *mongo.Database {
 	clientOptions := options.Client().ApplyURI(DBAddress)
 	client, err := mongo.Connect(context.Background(), clientOptions)
 	if err != nil {
@@ -21,7 +21,7 @@ func InitDB() *mongo.Database {
 	return client.Database(DBDataBase) // 选择数据库
 }
 
-func ReadAllDB(server *mongo.Database, Collection string) []gin.H {
+func (_ *DBService) ReadAllDB(server *mongo.Database, Collection string) []gin.H {
 	// todo 做性能优化
 	// 读取数据库数据表内全部数据
 	collection := server.Collection(Collection)
@@ -53,7 +53,7 @@ func ReadAllDB(server *mongo.Database, Collection string) []gin.H {
 	return data
 }
 
-func ReadOneDB(server *mongo.Database, Collection string, filter bson.D) (gin.H, bool) { // todo 性能优化
+func (_ *DBService) ReadOneDB(server *mongo.Database, Collection string, filter bson.D) (gin.H, bool) { // todo 性能优化
 	collection := server.Collection(Collection)
 	result := collection.FindOne(context.Background(), filter)
 	var data = gin.H{}
@@ -63,17 +63,27 @@ func ReadOneDB(server *mongo.Database, Collection string, filter bson.D) (gin.H,
 			return gin.H{}, false
 		}
 		fmt.Println("Read One DB Data Decode ERROR", err)
+		return gin.H{}, false
 	}
 	return data, true
 }
 
-func WriteOneDB(server *mongo.Database, Collection string, Data string) (bool, string) {
+func (_ *DBService) WriteOneDB(server *mongo.Database, Collection string, Data any) (string, bool) {
 	collection := server.Collection(Collection)
-	one, err := collection.InsertOne(context.TODO(), bson.D{{"value", Data}})
+	one, err := collection.InsertOne(context.TODO(), Data)
 	insertedID := one.InsertedID.(primitive.ObjectID)
-	fmt.Println()
 	if err != nil {
-		return false, insertedID.Hex()
+		return insertedID.Hex(), false
 	}
-	return true, insertedID.Hex()
+	return insertedID.Hex(), true
+}
+
+func (_ *DBService) UpdateOneDB(server *mongo.Database, Collection string, filter bson.D, update bson.D) (gin.H, bool) {
+	collection := server.Collection(Collection)
+	updateResult, err := collection.UpdateOne(context.Background(), filter, update)
+	if err != nil {
+		fmt.Println(err)
+		return gin.H{}, false
+	}
+	return gin.H{"editCount": updateResult.ModifiedCount}, true
 }
