@@ -144,6 +144,33 @@ func (_ *Add) AddTag(ctx *gin.Context) { // 添加新标签
 	}
 }
 
+func (_ *Add) AddPost(ctx *gin.Context) { // todo 完善文章内容写入管理
+	var postData contextTable
+	err := ctx.ShouldBindJSON(&postData)
+	postData.ID = primitive.NewObjectID()
+	postData.Created = time.Now().Unix()
+	postData.Modified = time.Now().Unix()
+	if err != nil {
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: ServerDeCodeError,
+			Msg:  "Server Error",
+			Path: ctx.Request.URL.Path,
+			Data: nil,
+		})
+		return
+	}
+
+	ctx.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: SuccessCode,
+		Msg:  "success",
+		Path: ctx.Request.URL.Path,
+		Data: gin.H{
+			"postID": postData.ID,
+		},
+	})
+
+}
+
 func (_ *Add) AddType(ctx *gin.Context) {
 	order, _ := strconv.Atoi(ctx.PostForm("order"))
 	typeData := typeTable{
@@ -398,4 +425,10 @@ func (_ *Update) UpdateGroup(ctx *gin.Context) {
 			Data: nil,
 		})
 	}
+}
+
+func test(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, gin.H{
+		"context": "<p>hello</p>",
+	})
 }

@@ -5,18 +5,19 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-const Version = "1.0.0" // 系统版本号
-const SuccessCode = 0   // 正常
-const ErrorVerify = 1   // 错误的验证密钥
-const ErrorSession = 2  // 错误的连接
-const UserInformationVerifyError = 4
-const UnKnownFileType = 14   // 未知文件类型
-const FileSaveError = 15     // 文件保存错误
-const NoDocuments = 20       // 无文档记录
-const DBWriteError = 21      // 数据库写入错误
-const DBUpdateError = 22     // 数据库更新错误
-const ErrorPermissions = 500 // 权限错误
-const WorkProgress = 520     // 正在构建的界面
+const Version = "1.0.0"              // 系统版本号
+const SuccessCode = 0                // 正常
+const ErrorVerify = 1                // 错误的验证密钥
+const ErrorSession = 2               // 错误的连接
+const UserInformationVerifyError = 4 // 用户信息认证错误
+const UnKnownFileType = 14           // 未知文件类型
+const FileSaveError = 15             // 文件保存错误
+const ServerDeCodeError = 400        // 数据解析错误
+const NoDocuments = 20               // 无文档记录
+const DBWriteError = 21              // 数据库写入错误
+const DBUpdateError = 22             // 数据库更新错误
+const ErrorPermissions = 500         // 权限错误
+const WorkProgress = 520             // 正在构建的界面
 
 const seed = 15 //  生成随机认证码
 
@@ -27,8 +28,9 @@ var FileType = []string{".jpg", ".jpeg", ".png"} // 允许上传文件类型
 
 var pageAddr = map[string]string{ // 路由地址
 	// 组地址
-	"data": "/data/", // 内容获取函数组
-	"api":  "/api/",  // 列表获取函数组
+	"data":  "/data/",  // 内容获取函数组
+	"api":   "/api/",   // 列表获取函数组
+	"admin": "/admin/", // 列表获取函数组
 	// 页面地址
 	// data组
 	"paperContext": "/paperContext/:cid", // 文章内容
@@ -80,8 +82,8 @@ type contextTable struct { // 文章内容表
 	ID           primitive.ObjectID `bson:"_id" json:"id"`                    // 主键，自增
 	Title        string             `bson:"title" json:"title"`               // 内容标题
 	Slug         string             `bson:"slug" json:"slug"`                 // 内容缩略名
-	Created      int16              `bson:"created" json:"created"`           // 内容生成时的时间戳
-	Modified     int16              `bson:"modified" json:"modified"`         // 内容修改时的时间戳
+	Created      int64              `bson:"created" json:"created"`           // 内容生成时的时间戳
+	Modified     int64              `bson:"modified" json:"modified"`         // 内容修改时的时间戳
 	Text         string             `bson:"text" json:"text"`                 // 内容文字
 	Order        int8               `bson:"order" json:"order"`               // 排序
 	AuthorId     int8               `bson:"authorId" json:"authorId"`         // 内容所属用户
@@ -137,10 +139,6 @@ type relationshipsTable struct { // 关系表
 type userLoginData struct { // 网页传回参数
 	Username string `json:"username"`
 	Passwd   string `json:"passwd"`
-}
-
-type adminPageHeader struct { // 管理界面头部参数
-
 }
 
 var RequiredHeaders = map[string]string{ // 验证服务
