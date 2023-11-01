@@ -8,8 +8,9 @@ func routerMain(router *gin.Engine) {
 	// 功能型接口路由组
 	dataGroup := router.Group(pageAddr["data"])
 	apiGroup := router.Group(pageAddr["api"])
-	addGroup := dataGroup.Group("/add/")       // 添加相关地址
-	updateGroup := dataGroup.Group("/update/") // 更新文档相关地址
+	adminGroup := router.Group(pageAddr["admin"])
+	addGroup := adminGroup.Group("/add/")       // 添加相关地址
+	updateGroup := adminGroup.Group("/update/") // 更新文档相关地址
 
 	apiGroup.GET(pageAddr["paperList"], get.GetPostList) // 全部文章列表
 	apiGroup.GET(pageAddr["tagList"], get.GetTagList)    // 文章标签列表
@@ -23,6 +24,7 @@ func routerMain(router *gin.Engine) {
 	addGroup.POST("/type", add.AddType)   // 添加分类接口
 	addGroup.POST("/group", add.AddGroup) // 添加用户组接口
 	addGroup.POST("/user", add.AddUser)   // 添加用户接口
+	addGroup.POST("/post", add.AddPost)   // 添加文章接口
 
 	updateGroup.POST("/tag", update.UpdateTag)     // 更新标签接口
 	updateGroup.POST("/type", update.UpdateType)   // 更新类别接口
@@ -37,7 +39,7 @@ func routerMain(router *gin.Engine) {
 
 	router.POST("/upload", UploadFile) // 配置上传界面位置
 
-	router.GET("/test", get.GetAbout) // 测试界面
+	router.GET("/test", test) // 测试界面
 }
 
 func Router(router *gin.Engine) {
