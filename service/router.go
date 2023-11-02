@@ -15,7 +15,6 @@ func routerMain(router *gin.Engine) {
 	apiGroup.GET(pageAddr["paperList"], get.GetPostList) // 全部文章列表
 	apiGroup.GET(pageAddr["tagList"], get.GetTagList)    // 文章标签列表
 	apiGroup.GET("/typeList", get.GetTypeList)           // 文章标签列表
-	apiGroup.POST("/userLogin", user.UserLogin)          // 用户登陆接口
 
 	dataGroup.GET(pageAddr["paperContext"], get.GetPostContext) // 文章内容
 	dataGroup.GET(pageAddr["tag"], get.GetTag)                  // 文章标签内容
@@ -39,7 +38,12 @@ func routerMain(router *gin.Engine) {
 
 	router.POST("/upload", UploadFile) // 配置上传界面位置
 
+	router.POST("/userLogin", user.UserLogin) // 用户登陆接口
+
 	router.GET("/test", test) // 测试界面
+
+	// 添加中间键
+	adminGroup.Use(utility.CheckLoginMiddleware()) // 添加登陆认证
 }
 
 func Router(router *gin.Engine) {
