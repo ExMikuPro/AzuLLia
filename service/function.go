@@ -47,15 +47,27 @@ func (_ *Utility) UserPasswdVerify(data userLoginData) bool { // 用户密码认
 
 	DbData, have := dBService.ReadOneDB(DataBase, "user", bson.D{{"name", data.Username}})
 	if have {
-		fmt.Println("is:", DbData)
+		utility.Log("is:", DbData)
 		if DbData["name"] != data.Username {
 			return false
 		}
 	} else {
 		return false
 	}
-	fmt.Println(len(data.Username))
+	utility.Log(len(data.Username))
 	return true
+}
+
+func (_ *Utility) CheckLoginMiddleware() gin.HandlerFunc { // 通过cookie认证
+	return func(ctx *gin.Context) {
+
+	}
+}
+
+func (_ *Utility) verifyHeaderLoginCode() gin.HandlerFunc { // 通过请求头认证
+	return func(ctx *gin.Context) {
+
+	}
 }
 
 func (_ *Utility) NoFoundPage(ctx *gin.Context) { // 404
@@ -65,4 +77,10 @@ func (_ *Utility) NoFoundPage(ctx *gin.Context) { // 404
 		Path: ctx.Request.URL.Path,
 		Data: nil,
 	})
+}
+
+func (_ *Utility) Log(data ...any) { // Debug输出
+	if gin.Mode() == gin.DebugMode {
+		fmt.Println(data...)
+	}
 }
