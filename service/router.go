@@ -12,6 +12,10 @@ func routerMain(router *gin.Engine) {
 	addGroup := adminGroup.Group("/add/")       // 添加相关地址
 	updateGroup := adminGroup.Group("/update/") // 更新文档相关地址
 
+	// 添加中间键
+	adminGroup.Use(utility.CheckLoginMiddleware())  // 添加登陆认证
+	adminGroup.Use(utility.verifyHeaderLoginCode()) // 添加请求头验证
+
 	apiGroup.GET(pageAddr["paperList"], get.GetPostList) // 全部文章列表
 	apiGroup.GET(pageAddr["tagList"], get.GetTagList)    // 文章标签列表
 	apiGroup.GET("/typeList", get.GetTypeList)           // 文章标签列表
@@ -42,8 +46,6 @@ func routerMain(router *gin.Engine) {
 
 	router.GET("/test", test) // 测试界面
 
-	// 添加中间键
-	adminGroup.Use(utility.CheckLoginMiddleware()) // 添加登陆认证
 }
 
 func Router(router *gin.Engine) {
