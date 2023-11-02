@@ -1,0 +1,11 @@
+.git
+
+test
+
+.golangci.yml
+
+.gitignore
+
+*/*.md
+
+.DS_Store
