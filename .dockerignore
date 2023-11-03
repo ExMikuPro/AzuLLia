@@ -1,5 +1,7 @@
 .git
 
+.idea
+
 test
 
 .golangci.yml
@@ -9,3 +11,5 @@ test
 */*.md
 
 .DS_Store
+
+Dockerfile
