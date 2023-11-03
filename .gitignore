@@ -25,6 +25,7 @@ test
 # Go workspace file
 go.work
 .idea
+.DS_Store
 
 # Project test file
 *.test.go
