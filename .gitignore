@@ -30,4 +30,7 @@ go.work
 # Project test file
 *.test.go
 
+# Config File
+config.yml
+
 # End of https://www.toptal.com/developers/gitignore/api/go
