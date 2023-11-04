@@ -49,6 +49,7 @@ func routerMain(router *gin.Engine) {
 }
 
 func Router(router *gin.Engine) {
-	router.NoRoute(utility.NoFoundPage)
-	routerMain(router) // 主页路由处理
+	router.NoRoute(utility.NoFoundPage) // 定义错误页面
+	router.LoadHTMLGlob("templates/*")  // 解析模版
+	routerMain(router)                  // 主页路由处理
 }

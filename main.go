@@ -9,7 +9,7 @@ import (
 )
 
 func main() {
-	if os.Getenv("RunMode") != "debug" {
+	if os.Getenv("RunMode") != "" {
 		gin.SetMode(gin.ReleaseMode)       // 设置模式为发行模式
 		gin.DefaultWriter = ioutil.Discard // 关闭控制台输出
 	}
