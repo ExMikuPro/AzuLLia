@@ -24,7 +24,7 @@ func main() {
 			fmt.Println("Server Start ERROR:", err)
 		}
 	} else {
-		err := router.Run(":80") // 启动服务器
+		err := router.Run(":8080") // 启动测试服务器
 		if err != nil {
 			fmt.Println("Server Start ERROR:", err)
 		}
