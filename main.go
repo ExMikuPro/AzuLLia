@@ -1,7 +1,7 @@
 package main
 
 import (
-	"GoK-on/service"
+	"AzuLLia/service"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"io/ioutil"

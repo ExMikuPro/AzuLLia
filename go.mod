@@ -1,4 +1,4 @@
-module GoK-on
+module AzuLLia
 
 go 1.20
 
