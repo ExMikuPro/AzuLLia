@@ -33,11 +33,11 @@ var pageAddr = map[string]string{ // 路由地址
 	"admin": "/admin/", // 列表获取函数组
 	// 页面地址
 	// data组
-	"paperContext": "/paperContext/:cid", // 文章内容
-	"tag":          "/tag/:tid",
+	"articleContext": "/articleContext/:cid", // 文章内容
+	"tag":            "/tag/:tid",
 	// api组
-	"tagList":   "/tagList",   // 标签列表
-	"paperList": "/paperList", // 文章列表
+	"tagList":     "/tagList",     // 标签列表
+	"articleList": "/articleList", // 文章列表
 	// 系统页面地址
 	"about":  "/about",  // 关于框架界面
 	"verify": "/verify", // 获取认证界面
