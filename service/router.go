@@ -16,23 +16,23 @@ func routerMain(router *gin.Engine) {
 	adminGroup.Use(utility.CheckLoginMiddleware())  // 添加登陆认证
 	adminGroup.Use(utility.verifyHeaderLoginCode()) // 添加请求头验证
 
-	apiGroup.GET(pageAddr["paperList"], get.GetPostList) // 全部文章列表
-	apiGroup.GET(pageAddr["tagList"], get.GetTagList)    // 文章标签列表
-	apiGroup.GET("/typeList", get.GetTypeList)           // 文章标签列表
+	apiGroup.GET(pageAddr["articleList"], get.GetPostList) // 全部文章列表
+	apiGroup.GET(pageAddr["tagList"], get.GetTagList)      // 文章标签列表
+	apiGroup.GET("/categoryList", get.GetTypeList)         // 文章标签列表
 
-	dataGroup.GET(pageAddr["paperContext"], get.GetPostContext) // 文章内容
-	dataGroup.GET(pageAddr["tag"], get.GetTag)                  // 文章标签内容
+	dataGroup.GET(pageAddr["articleContext"], get.GetPostContext) // 文章内容
+	dataGroup.GET(pageAddr["tag"], get.GetTag)                    // 文章标签内容
 
-	addGroup.POST("/tag", add.AddTag)     // 添加标签接口 todo 添加身份认证
-	addGroup.POST("/type", add.AddType)   // 添加分类接口
-	addGroup.POST("/group", add.AddGroup) // 添加用户组接口
-	addGroup.POST("/user", add.AddUser)   // 添加用户接口
-	addGroup.POST("/post", add.AddPost)   // 添加文章接口
+	addGroup.POST("/tag", add.AddTag)       // 添加标签接口
+	addGroup.POST("/category", add.AddType) // 添加分类接口
+	addGroup.POST("/group", add.AddGroup)   // 添加用户组接口
+	addGroup.POST("/user", add.AddUser)     // 添加用户接口
+	addGroup.POST("/article", add.AddPost)  // 添加文章接口
 
-	updateGroup.POST("/tag", update.UpdateTag)     // 更新标签接口
-	updateGroup.POST("/type", update.UpdateType)   // 更新类别接口
-	updateGroup.POST("/group", update.UpdateGroup) // 更新用户组接口
-	updateGroup.POST("/user", update.UpdateUser)   // 更新用户接口
+	updateGroup.POST("/tag", update.UpdateTag)       // 更新标签接口
+	updateGroup.POST("/category", update.UpdateType) // 更新类别接口
+	updateGroup.POST("/group", update.UpdateGroup)   // 更新用户组接口
+	updateGroup.POST("/user", update.UpdateUser)     // 更新用户接口
 
 	// 通用型路由组
 	router.GET("/", get.MainPage)               // 主页页面
