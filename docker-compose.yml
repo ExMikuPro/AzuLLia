@@ -1,0 +1,25 @@
+version: "1.0"
+
+services:
+  app:
+    container_name: "azullia"
+    build: ./
+    ports:
+      - "82:80"
+
+    networks:
+      - k-on-Web
+
+  mongo:
+    container_name: "mongoDB"
+    image: mongo:latest
+    ports:
+      - "27017:27017"
+    networks:
+      - k-on-Web
+
+networks:
+  k-on-Web:
+    external: false
+
+
