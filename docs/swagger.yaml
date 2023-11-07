@@ -31,42 +31,6 @@ paths:
       summary: 获取框架版本信息
       tags:
       - 系统
-  /api/articleList:
-    get:
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/service.GeneralJSONHeader'
-      summary: 获取列表
-      tags:
-      - 文章
-  /api/categoryList:
-    get:
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/service.GeneralJSONHeader'
-      summary: 获取分类列表
-      tags:
-      - 分类
-  /api/tagList:
-    get:
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/service.GeneralJSONHeader'
-      summary: 获取标签列表
-      tags:
-      - 标签
   /data/article/{id}:
     get:
       parameters:
@@ -119,6 +83,42 @@ paths:
           schema:
             $ref: '#/definitions/service.GeneralJSONHeader'
       summary: 获取标签
+      tags:
+      - 标签
+  /list/article:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 获取列表
+      tags:
+      - 文章
+  /list/category:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 获取分类列表
+      tags:
+      - 分类
+  /list/tag:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 获取标签列表
       tags:
       - 标签
 swagger: "2.0"
