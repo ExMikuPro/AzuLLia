@@ -1,6 +1,5 @@
 ## AzuLLia - Core
 
-
 ![](./docs/Logo.png)
 
 **AzuLLia-Core用于快速构建Blog内容管理接口**
@@ -28,6 +27,36 @@ const DBDataBase = "AzuLLia"                                       // 数据库�
 ```shell
 docker build -t azullia:latest .
 ```
+
+### 目录结构
+
+ ```
+AzuLLia
+├── Dockerfile
+├── README.md
+├── docker-compose.yml
+├── docs
+│  ├── Logo.png
+│  ├── docs.go
+│  ├── swagger.json
+│  └── swagger.yaml
+├── go.mod
+├── go.sum
+├── main.go
+├── service
+│  ├── api.go
+│  ├── database.go
+│  ├── file.go
+│  ├── function.go
+│  ├── router.go
+│  └── type.go
+├── staticFile
+│  ├── README.md
+│  └── favicon.ico
+└── uploadFile
+    └── README.md
+
+ ```
 
 ### 开发进度
 
