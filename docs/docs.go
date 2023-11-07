@@ -34,64 +34,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/api/articleList": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "文章"
-                ],
-                "summary": "获取列表",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/service.GeneralJSONHeader"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/categoryList": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "分类"
-                ],
-                "summary": "获取分类列表",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/service.GeneralJSONHeader"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/tagList": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "标签"
-                ],
-                "summary": "获取标签列表",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/service.GeneralJSONHeader"
-                        }
-                    }
-                }
-            }
-        },
-        "/data/article/{id}": {
+        "/content/article/{id}": {
             "get": {
                 "produces": [
                     "application/json"
@@ -119,7 +62,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/data/category/{id}": {
+        "/content/category/{id}": {
             "get": {
                 "produces": [
                     "application/json"
@@ -147,7 +90,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/data/tag/{id}": {
+        "/content/tag/{id}": {
             "get": {
                 "produces": [
                     "application/json"
@@ -165,6 +108,63 @@ const docTemplate = `{
                         "required": true
                     }
                 ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/service.GeneralJSONHeader"
+                        }
+                    }
+                }
+            }
+        },
+        "/list/article": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章"
+                ],
+                "summary": "获取列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/service.GeneralJSONHeader"
+                        }
+                    }
+                }
+            }
+        },
+        "/list/category": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "分类"
+                ],
+                "summary": "获取分类列表",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/service.GeneralJSONHeader"
+                        }
+                    }
+                }
+            }
+        },
+        "/list/tag": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "标签"
+                ],
+                "summary": "获取标签列表",
                 "responses": {
                     "200": {
                         "description": "OK",

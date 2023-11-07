@@ -54,7 +54,7 @@ func (_ *Get) ArticleList(ctx *gin.Context) { // 文章列表界面
 // @Produce	json
 // @Param id path string true "文章ID"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/data/article/{id} [GET]
+// @Router		/content/article/{id} [GET]
 func (_ *Get) GetArticle(ctx *gin.Context) { // 文章内容页面
 	cid, _ := primitive.ObjectIDFromHex(ctx.Param("id")) // 文章cid
 
@@ -125,7 +125,7 @@ func (_ *Get) CategoryList(ctx *gin.Context) { // 分类列表界面
 // @Produce	json
 // @Param id path string true "分类ID"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/data/category/{id} [GET]
+// @Router		/content/category/{id} [GET]
 func (_ *Get) GetType(ctx *gin.Context) {
 	cid, _ := primitive.ObjectIDFromHex(ctx.Param("id"))
 
@@ -156,7 +156,7 @@ func (_ *Get) GetType(ctx *gin.Context) {
 // @Produce	json
 // @Param id path string true "标签ID"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/data/tag/{id} [GET]
+// @Router		/content/tag/{id} [GET]
 func (_ *Get) GetTag(ctx *gin.Context) {
 	tid, _ := primitive.ObjectIDFromHex(ctx.Param("id"))
 	filter := bson.D{
