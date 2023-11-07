@@ -29,13 +29,13 @@ func (_ *Get) GetAbout(ctx *gin.Context) { // 框架版本界面
 	})
 }
 
-// GetPostList @Title 文章
+// ArticleList @Title 文章
 // @Tags 文章
 // @Summary	获取列表
 // @Produce	json
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/api/articleList [GET]
-func (_ *Get) GetPostList(ctx *gin.Context) { // 文章列表界面
+// @Router		/list/article [GET]
+func (_ *Get) ArticleList(ctx *gin.Context) { // 文章列表界面
 	data := dBService.ReadAllDB(DataBase, "paperList")
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
@@ -48,14 +48,14 @@ func (_ *Get) GetPostList(ctx *gin.Context) { // 文章列表界面
 	})
 }
 
-// GetPostContext @Title 文章
+// GetArticle @Title 文章
 // @Tags 文章
 // @Summary	获取文章内容
 // @Produce	json
 // @Param id path string true "文章ID"
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/data/article/{id} [GET]
-func (_ *Get) GetPostContext(ctx *gin.Context) { // 文章内容页面
+func (_ *Get) GetArticle(ctx *gin.Context) { // 文章内容页面
 	cid, _ := primitive.ObjectIDFromHex(ctx.Param("id")) // 文章cid
 
 	filter := bson.D{
@@ -81,13 +81,13 @@ func (_ *Get) GetPostContext(ctx *gin.Context) { // 文章内容页面
 	}
 }
 
-// GetTagList @Title 标签
+// TagList @Title 标签
 // @Tags 标签
 // @Summary	获取标签列表
 // @Produce	json
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/api/tagList [GET]
-func (_ *Get) GetTagList(ctx *gin.Context) { // 标签列表界面
+// @Router		/list/tag [GET]
+func (_ *Get) TagList(ctx *gin.Context) { // 标签列表界面
 	data := dBService.ReadAllDB(DataBase, "tag")
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
@@ -100,13 +100,13 @@ func (_ *Get) GetTagList(ctx *gin.Context) { // 标签列表界面
 	})
 }
 
-// GetTypeList @Title 分类
+// CategoryList @Title 分类
 // @Tags 分类
 // @Summary	获取分类列表
 // @Produce	json
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/api/categoryList [GET]
-func (_ *Get) GetTypeList(ctx *gin.Context) { // 分类列表界面
+// @Router		/list/category [GET]
+func (_ *Get) CategoryList(ctx *gin.Context) { // 分类列表界面
 	data := dBService.ReadAllDB(DataBase, "type")
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
@@ -222,7 +222,7 @@ func (_ *Add) AddTag(ctx *gin.Context) { // 添加新标签
 	}
 }
 
-func (_ *Add) AddPost(ctx *gin.Context) { // todo 完善文章内容写入管理
+func (_ *Add) AddArticle(ctx *gin.Context) { // todo 完善文章内容写入管理
 	var postData contextTable
 	err := ctx.ShouldBindJSON(&postData)
 	postData.ID = primitive.NewObjectID()
@@ -249,7 +249,7 @@ func (_ *Add) AddPost(ctx *gin.Context) { // todo 完善文章内容写入管理
 
 }
 
-func (_ *Add) AddType(ctx *gin.Context) {
+func (_ *Add) AddCategory(ctx *gin.Context) {
 	order, _ := strconv.Atoi(ctx.PostForm("order"))
 	typeData := typeTable{
 		ID:          primitive.NewObjectID(),     // 分配新_id
@@ -441,7 +441,7 @@ func (_ *Update) UpdateTag(ctx *gin.Context) {
 	}
 }
 
-func (_ *Update) UpdateType(ctx *gin.Context) {
+func (_ *Update) UpdateArticle(ctx *gin.Context) {
 	tid, _ := primitive.ObjectIDFromHex(ctx.PostForm("id"))
 	name := ctx.PostForm("name")
 	slug := ctx.PostForm("slug")
