@@ -1,7 +1,6 @@
 package service
 
 import (
-	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
@@ -33,8 +32,8 @@ var pageAddr = map[string]string{ // 路由地址
 	"admin": "/admin/", // 列表获取函数组
 	// 页面地址
 	// data组
-	"articleContext": "/articleContext/:cid", // 文章内容
-	"tag":            "/tag/:tid",
+	"articleContext": "/article/:id", // 文章内容
+	"tag":            "/tag/:id",
 	// api组
 	"tagList":     "/tagList",     // 标签列表
 	"articleList": "/articleList", // 文章列表
@@ -48,10 +47,10 @@ var pageAddr = map[string]string{ // 路由地址
 }
 
 type GeneralJSONHeader struct { // 全局通用标头
-	Code int    `json:"code"`
-	Msg  string `json:"msg"`
-	Path string `json:"path"`
-	Data gin.H  `json:"data"`
+	Code int                    `json:"code"`
+	Msg  string                 `json:"msg"`
+	Path string                 `json:"path"`
+	Data map[string]interface{} `json:"data"`
 }
 
 type Add struct { // 添加信息函数
