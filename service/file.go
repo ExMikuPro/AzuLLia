@@ -40,7 +40,7 @@ func UploadFile(context *gin.Context) {
 
 	if isFileType { // 如果文件类型允许上传
 		newFileName := uuid.New().String() + ext
-		err = context.SaveUploadedFile(file, pageAddr["uploadFile"]+newFileName) // 将文件名修改为UUID并保存
+		err = context.SaveUploadedFile(file, "./uploadFile/"+newFileName) // 将文件名修改为UUID并保存
 		if err != nil {
 			context.JSON(http.StatusOK, GeneralJSONHeader{
 				Code: FileSaveError,

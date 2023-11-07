@@ -59,7 +59,7 @@ func (_ *Get) GetArticle(ctx *gin.Context) { // 文章内容页面
 	cid, _ := primitive.ObjectIDFromHex(ctx.Param("id")) // 文章cid
 
 	filter := bson.D{
-		{"_id", cid},
+		{Key: "_id", Value: cid},
 	}
 
 	data, isExist := dBService.ReadOneDB(DataBase, "article", filter)
@@ -130,7 +130,7 @@ func (_ *Get) GetType(ctx *gin.Context) {
 	cid, _ := primitive.ObjectIDFromHex(ctx.Param("id"))
 
 	filter := bson.D{
-		{"_id", cid},
+		{Key: "_id", Value: cid},
 	}
 	data, isExist := dBService.ReadOneDB(DataBase, "type", filter)
 	if isExist {
@@ -160,7 +160,7 @@ func (_ *Get) GetType(ctx *gin.Context) {
 func (_ *Get) GetTag(ctx *gin.Context) {
 	tid, _ := primitive.ObjectIDFromHex(ctx.Param("id"))
 	filter := bson.D{
-		{"_id", tid},
+		{Key: "_id", Value: tid},
 	}
 	data, isExist := dBService.ReadOneDB(DataBase, "tag", filter)
 	if isExist { // 判断标签是否存在
@@ -222,7 +222,7 @@ func (_ *Add) AddTag(ctx *gin.Context) { // 添加新标签
 	}
 }
 
-func (_ *Add) AddArticle(ctx *gin.Context) { // todo 完善文章内容写入管理
+func (_ *Add) AddArticle(ctx *gin.Context) {
 	var postData contextTable
 	err := ctx.ShouldBindJSON(&postData)
 	postData.ID = primitive.NewObjectID()
@@ -373,16 +373,16 @@ func (_ *Update) UpdateUser(ctx *gin.Context) { // todo 前端注意请求值
 	url := ctx.PostForm("url")
 	screenName := ctx.PostForm("screenName")
 	group := ctx.PostForm("group")
-	filter := bson.D{{"_id", uid}}
+	filter := bson.D{{Key: "_id", Value: uid}}
 	update := bson.D{
-		{"$set", bson.D{
-			{"name", name},
-			{"passwd", passwdMD5},
-			{"mail", mail},
-			{"url", url},
-			{"screenName", screenName},
-			{"upData", time.Now().Unix()},
-			{"group", group},
+		{Key: "$set", Value: bson.D{
+			{Key: "name", Value: name},
+			{Key: "passwd", Value: passwdMD5},
+			{Key: "mail", Value: mail},
+			{Key: "url", Value: url},
+			{Key: "screenName", Value: screenName},
+			{Key: "upData", Value: time.Now().Unix()},
+			{Key: "group", Value: group},
 		}},
 	}
 
@@ -412,14 +412,14 @@ func (_ *Update) UpdateTag(ctx *gin.Context) {
 	description := ctx.PostForm("description")
 	order, _ := strconv.Atoi(ctx.PostForm("order"))
 
-	filter := bson.D{{"_id", tid}}
+	filter := bson.D{{Key: "_id", Value: tid}}
 	update := bson.D{
-		{"$set", bson.D{
-			{"name", name},
-			{"slug", slug},
-			{"type", types},
-			{"description", description},
-			{"order", order},
+		bson.E{Key: "$set", Value: bson.D{
+			{Key: "name", Value: name},
+			{Key: "slug", Value: slug},
+			{Key: "type", Value: types},
+			{Key: "description", Value: description},
+			{Key: "order", Value: order},
 		}},
 	}
 
@@ -448,13 +448,13 @@ func (_ *Update) UpdateArticle(ctx *gin.Context) {
 	description := ctx.PostForm("description")
 	order, _ := strconv.Atoi(ctx.PostForm("order"))
 
-	filter := bson.D{{"_id", tid}}
+	filter := bson.D{{Key: "_id", Value: tid}}
 	update := bson.D{
-		{"$set", bson.D{
-			{"name", name},
-			{"slug", slug},
-			{"description", description},
-			{"order", order},
+		bson.E{Key: "$set", Value: bson.D{
+			{Key: "name", Value: name},
+			{Key: "slug", Value: slug},
+			{Key: "description", Value: description},
+			{Key: "order", Value: order},
 		}},
 	}
 
@@ -480,10 +480,10 @@ func (_ *Update) UpdateGroup(ctx *gin.Context) {
 	tid, _ := primitive.ObjectIDFromHex(ctx.PostForm("id"))
 	name := ctx.PostForm("name")
 
-	filter := bson.D{{"_id", tid}}
+	filter := bson.D{{Key: "_id", Value: tid}}
 	update := bson.D{
-		{"$set", bson.D{
-			{"name", name},
+		bson.E{Key: "$set", Value: bson.D{
+			{Key: "name", Value: name},
 		}},
 	}
 

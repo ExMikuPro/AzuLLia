@@ -6,8 +6,6 @@ import (
 
 const Version = "1.0.0"              // 系统版本号
 const SuccessCode = 0                // 正常
-const ErrorVerify = 1                // 错误的验证密钥
-const ErrorSession = 2               // 错误的连接
 const UserInformationVerifyError = 4 // 用户信息认证错误
 const UnKnownFileType = 14           // 未知文件类型
 const FileSaveError = 15             // 文件保存错误
@@ -15,36 +13,12 @@ const ServerDeCodeError = 400        // 数据解析错误
 const NoDocuments = 20               // 无文档记录
 const DBWriteError = 21              // 数据库写入错误
 const DBUpdateError = 22             // 数据库更新错误
-const ErrorPermissions = 500         // 权限错误
 const WorkProgress = 520             // 正在构建的界面
-
-const seed = 15 //  生成随机认证码
 
 const DBAddress = "mongodb://localhost:27017" // 数据库地址
 const DBDataBase = "test"                     // 数据库名称
 
 var FileType = []string{".jpg", ".jpeg", ".png"} // 允许上传文件类型
-
-var pageAddr = map[string]string{ // 路由地址
-	// 组地址
-	"data":  "/data/",  // 内容获取函数组
-	"api":   "/api/",   // 列表获取函数组
-	"admin": "/admin/", // 列表获取函数组
-	// 页面地址
-	// data组
-	"articleContext": "/article/:id", // 文章内容
-	"tag":            "/tag/:id",
-	// api组
-	"tagList":     "/tagList",     // 标签列表
-	"articleList": "/articleList", // 文章列表
-	// 系统页面地址
-	"about":  "/about",  // 关于框架界面
-	"verify": "/verify", // 获取认证界面
-	// 文件系统
-	"upload":     "/upload",       // 文件上传地址
-	"uploadFile": "./uploadFile/", // 文件上传后保存位置
-
-}
 
 type GeneralJSONHeader struct { // 全局通用标头
 	Code int                    `json:"code"`
@@ -113,8 +87,8 @@ type typeTable struct { // 分类表
 }
 
 type userGroupTable struct { // 用户组表
-	ID   primitive.ObjectID `bson:"_id" json:"id"`     // 主键
-	Name string             `bson:"name" json:"name	"` // 组名
+	ID   primitive.ObjectID `bson:"_id" json:"id"`    // 主键
+	Name string             `bson:"name" json:"name"` // 组名
 }
 
 type userTable struct { // 用户表
@@ -129,25 +103,13 @@ type userTable struct { // 用户表
 	Group      string             `bson:"group" json:"group"`           // 所属用户组
 }
 
-type relationshipsTable struct { // 关系表
-	ID  primitive.ObjectID `bson:"_id" json:"id"`
-	CID string             `bson:"cid" json:"cid"`
-	TID string             `bson:"tid" json:"tid"`
-}
-
 type userLoginData struct { // 网页传回参数
 	Username string `json:"username"`
 	Passwd   string `json:"passwd"`
 }
 
-var RequiredHeaders = map[string]string{ // 验证服务
-	// 生成随机数
-	"Verify": verifyCode(seed),
-}
-
 var get = &Get{}                  // 基础页面主结构体
 var add = &Add{}                  // 添加函数结构体
-var adminPage = &AdminPage{}      // 后台页面相关接口
 var dBService = &DBService{}      // 数据库相关操作函数
 var utility = &Utility{}          // 基本操作函数
 var user = &User{}                // 用户操作函数
