@@ -12,6 +12,12 @@ import (
 	"time"
 )
 
+// GetAbout @Title 系统
+// @Tags 系统
+// @Summary	获取框架版本信息
+// @Produce	json
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/about [GET]
 func (_ *Get) GetAbout(ctx *gin.Context) { // 框架版本界面
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
@@ -23,6 +29,12 @@ func (_ *Get) GetAbout(ctx *gin.Context) { // 框架版本界面
 	})
 }
 
+// GetPostList @Title 文章
+// @Tags 文章
+// @Summary	获取列表
+// @Produce	json
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/api/articleList [GET]
 func (_ *Get) GetPostList(ctx *gin.Context) { // 文章列表界面
 	data := dBService.ReadAllDB(DataBase, "paperList")
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
@@ -36,23 +48,45 @@ func (_ *Get) GetPostList(ctx *gin.Context) { // 文章列表界面
 	})
 }
 
+// GetPostContext @Title 文章
+// @Tags 文章
+// @Summary	获取文章内容
+// @Produce	json
+// @Param id path string true "文章ID"
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/data/article/{id} [GET]
 func (_ *Get) GetPostContext(ctx *gin.Context) { // 文章内容页面
-	from := ctx.Query("from") // 文章对应的内容 todo 使用数据库原生id
-	// cid := context.Query("cid") // 文章cid
-	// todo 建立文章数据表
+	cid, _ := primitive.ObjectIDFromHex(ctx.Param("id")) // 文章cid
 
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  "success",
-		Path: ctx.Request.URL.Path,
-		Data: gin.H{
-			"isExist": true,          // todo 判断文章是否存在
-			"from":    from,          // 查找对应的文章
-			"context": "<p>文章主题</p>", // todo 文章主体内容
-		},
-	})
+	filter := bson.D{
+		{"_id", cid},
+	}
+
+	data, isExist := dBService.ReadOneDB(DataBase, "article", filter)
+
+	if isExist {
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: SuccessCode,
+			Msg:  "success",
+			Path: ctx.Request.URL.Path,
+			Data: data,
+		})
+	} else {
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: SuccessCode,
+			Msg:  "success",
+			Path: ctx.Request.URL.Path,
+			Data: gin.H{},
+		})
+	}
 }
 
+// GetTagList @Title 标签
+// @Tags 标签
+// @Summary	获取标签列表
+// @Produce	json
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/api/tagList [GET]
 func (_ *Get) GetTagList(ctx *gin.Context) { // 标签列表界面
 	data := dBService.ReadAllDB(DataBase, "tag")
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
@@ -66,6 +100,12 @@ func (_ *Get) GetTagList(ctx *gin.Context) { // 标签列表界面
 	})
 }
 
+// GetTypeList @Title 分类
+// @Tags 分类
+// @Summary	获取分类列表
+// @Produce	json
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/api/categoryList [GET]
 func (_ *Get) GetTypeList(ctx *gin.Context) { // 分类列表界面
 	data := dBService.ReadAllDB(DataBase, "type")
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
@@ -79,6 +119,44 @@ func (_ *Get) GetTypeList(ctx *gin.Context) { // 分类列表界面
 	})
 }
 
+// GetType @Title 分类
+// @Tags 分类
+// @Summary	获取分类
+// @Produce	json
+// @Param id path string true "分类ID"
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/data/category/{id} [GET]
+func (_ *Get) GetType(ctx *gin.Context) {
+	cid, _ := primitive.ObjectIDFromHex(ctx.Param("id"))
+
+	filter := bson.D{
+		{"_id", cid},
+	}
+	data, isExist := dBService.ReadOneDB(DataBase, "type", filter)
+	if isExist {
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: SuccessCode,
+			Msg:  "success",
+			Path: ctx.Request.URL.Path,
+			Data: data,
+		})
+	} else {
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: SuccessCode,
+			Msg:  "success",
+			Path: ctx.Request.URL.Path,
+			Data: gin.H{},
+		})
+	}
+}
+
+// GetTag @Title 标签
+// @Tags 标签
+// @Summary	获取标签
+// @Produce	json
+// @Param id path string true "标签ID"
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/data/tag/{id} [GET]
 func (_ *Get) GetTag(ctx *gin.Context) {
 	tid, _ := primitive.ObjectIDFromHex(ctx.Param("id"))
 	filter := bson.D{
