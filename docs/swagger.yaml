@@ -31,6 +31,181 @@ paths:
       summary: 获取框架版本信息
       tags:
       - 系统
+  /admin/add/article:
+    post:
+      parameters:
+      - description: 名称
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: 缩略名
+        in: formData
+        name: slug
+        required: true
+        type: string
+      - description: 类型
+        in: formData
+        name: type
+        required: true
+        type: string
+      - description: 描述
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: 排序
+        in: formData
+        name: order
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 添加文章
+      tags:
+      - 文章
+  /admin/add/category:
+    post:
+      parameters:
+      - description: 名称
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: 缩略名
+        in: formData
+        name: slug
+        required: true
+        type: string
+      - description: 描述
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: 排序
+        in: formData
+        name: order
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 添加分类
+      tags:
+      - 分类
+  /admin/add/group:
+    post:
+      parameters:
+      - description: 名称
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: 排序
+        in: formData
+        name: order
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 添加用户组
+      tags:
+      - 用户
+  /admin/add/tag:
+    post:
+      parameters:
+      - description: 名称
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: 缩略名
+        in: formData
+        name: slug
+        required: true
+        type: string
+      - description: 类型
+        in: formData
+        name: type
+        required: true
+        type: string
+      - description: 描述
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: 排序
+        in: formData
+        name: order
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 添加标签
+      tags:
+      - 标签
+  /admin/add/user:
+    post:
+      parameters:
+      - description: 名称
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: 密码
+        in: formData
+        name: passwd
+        required: true
+        type: string
+      - description: 邮箱
+        in: formData
+        name: mail
+        required: true
+        type: string
+      - description: 网站地址
+        in: formData
+        name: url
+        required: true
+        type: string
+      - description: 用户昵称
+        in: formData
+        name: screenName
+        required: true
+        type: string
+      - description: 用户组
+        in: formData
+        name: group
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 添加用户
+      tags:
+      - 用户
   /content/article/{id}:
     get:
       parameters:
