@@ -189,6 +189,17 @@ func (_ *Get) MainPage(ctx *gin.Context) { // 主页页面
 	})
 }
 
+// AddTag @Title 标签
+// @Tags 标签
+// @Summary	添加标签
+// @Produce	json
+// @Param name formData string true "名称"
+// @Param slug formData string true "缩略名"
+// @Param type formData string true "类型"
+// @Param description formData string true "描述"
+// @Param order formData int true "排序"
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/admin/add/tag [POST]
 func (_ *Add) AddTag(ctx *gin.Context) { // 添加新标签
 	order, _ := strconv.Atoi(ctx.PostForm("order"))
 	tageData := tageTable{
@@ -222,6 +233,17 @@ func (_ *Add) AddTag(ctx *gin.Context) { // 添加新标签
 	}
 }
 
+// AddArticle @Title 文章
+// @Tags 文章
+// @Summary	添加文章
+// @Produce	json
+// @Param name formData string true "名称"
+// @Param slug formData string true "缩略名"
+// @Param type formData string true "类型"
+// @Param description formData string true "描述"
+// @Param order formData int true "排序"
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/admin/add/article [POST]
 func (_ *Add) AddArticle(ctx *gin.Context) {
 	var postData contextTable
 	err := ctx.ShouldBindJSON(&postData)
@@ -249,6 +271,16 @@ func (_ *Add) AddArticle(ctx *gin.Context) {
 
 }
 
+// AddCategory @Title 分类
+// @Tags 分类
+// @Summary	添加分类
+// @Produce	json
+// @Param name formData string true "名称"
+// @Param slug formData string true "缩略名"
+// @Param description formData string true "描述"
+// @Param order formData int true "排序"
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/admin/add/category [POST]
 func (_ *Add) AddCategory(ctx *gin.Context) {
 	order, _ := strconv.Atoi(ctx.PostForm("order"))
 	typeData := typeTable{
@@ -280,6 +312,14 @@ func (_ *Add) AddCategory(ctx *gin.Context) {
 	}
 }
 
+// AddGroup @Title 用户
+// @Tags 用户
+// @Summary	添加用户组
+// @Produce	json
+// @Param name formData string true "名称"
+// @Param order formData int true "排序"
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/admin/add/group [POST]
 func (_ *Add) AddGroup(ctx *gin.Context) {
 	userGroup := userGroupTable{
 		ID:   primitive.NewObjectID(),
@@ -306,6 +346,18 @@ func (_ *Add) AddGroup(ctx *gin.Context) {
 	}
 }
 
+// AddUser @Title 用户
+// @Tags 用户
+// @Summary	添加用户
+// @Produce	json
+// @Param name formData string true "名称"
+// @Param passwd formData string true "密码"
+// @Param mail formData string true "邮箱"
+// @Param url formData string true "网站地址"
+// @Param screenName formData string true "用户昵称"
+// @Param group formData string true "用户组"
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/admin/add/user [POST]
 func (_ *Add) AddUser(ctx *gin.Context) { // 添加用户
 	userData := userTable{
 		ID:         primitive.NewObjectID(),
@@ -364,7 +416,7 @@ func (_ *User) UserLogin(ctx *gin.Context) {
 	}
 }
 
-func (_ *Update) UpdateUser(ctx *gin.Context) { // todo 前端注意请求值
+func (_ *Update) UpdateUser(ctx *gin.Context) {
 	uid, _ := primitive.ObjectIDFromHex(ctx.PostForm("id"))
 	name := ctx.PostForm("name")
 	passwd := md5.Sum([]byte(ctx.PostForm("passwd")))
