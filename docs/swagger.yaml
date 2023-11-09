@@ -34,31 +34,66 @@ paths:
   /admin/add/article:
     post:
       parameters:
-      - description: 名称
-        in: formData
-        name: name
+      - description: 标题
+        in: body
+        name: title
         required: true
-        type: string
-      - description: 缩略名
-        in: formData
+        schema:
+          type: string
+      - description: 标题缩略名
+        in: body
         name: slug
         required: true
-        type: string
-      - description: 类型
-        in: formData
-        name: type
+        schema:
+          type: string
+      - description: 内容文字
+        in: body
+        name: text
         required: true
-        type: string
-      - description: 描述
-        in: formData
-        name: description
-        required: true
-        type: string
+        schema:
+          type: string
       - description: 排序
-        in: formData
+        in: body
         name: order
         required: true
-        type: integer
+        schema:
+          type: integer
+      - description: 内容所属用户
+        in: body
+        name: authorId
+        required: true
+        schema:
+          type: string
+      - description: 模版文件
+        in: body
+        name: template
+        required: true
+        schema:
+          type: string
+      - description: 内容类别
+        in: body
+        name: type
+        required: true
+        schema:
+          type: string
+      - description: 内容状态
+        in: body
+        name: status
+        required: true
+        schema:
+          type: string
+      - description: 密码
+        in: body
+        name: password
+        required: true
+        schema:
+          type: string
+      - description: 是否允许评论
+        in: body
+        name: allowComment
+        required: true
+        schema:
+          type: boolean
       produces:
       - application/json
       responses:
