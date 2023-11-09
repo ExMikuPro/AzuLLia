@@ -59,7 +59,7 @@ type contextTable struct { // 文章内容表
 	Modified     int64              `bson:"modified" json:"modified"`         // 内容修改时的时间戳
 	Text         string             `bson:"text" json:"text"`                 // 内容文字
 	Order        int8               `bson:"order" json:"order"`               // 排序
-	AuthorId     int8               `bson:"authorId" json:"authorId"`         // 内容所属用户
+	AuthorId     string             `bson:"authorId" json:"authorId"`         // 内容所属用户
 	Template     string             `bson:"template" json:"template"`         // 内容所使用的模版
 	Type         string             `bson:"type" json:"type"`                 // 内容类别
 	Status       string             `bson:"status" json:"status"`             // 内容状态

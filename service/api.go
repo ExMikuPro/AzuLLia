@@ -237,11 +237,17 @@ func (_ *Add) AddTag(ctx *gin.Context) { // 添加新标签
 // @Tags 文章
 // @Summary	添加文章
 // @Produce	json
-// @Param name formData string true "名称"
-// @Param slug formData string true "缩略名"
-// @Param type formData string true "类型"
-// @Param description formData string true "描述"
-// @Param order formData int true "排序"
+// @Consumes json
+// @Param title body string true "标题"
+// @Param slug body string true "标题缩略名"
+// @Param text body string true "内容文字"
+// @Param order body int true "排序"
+// @Param authorId body string true "内容所属用户"
+// @Param template body string true "模版文件"
+// @Param type body string true "内容类别"
+// @Param status body string true "内容状态"
+// @Param password body string true "密码"
+// @Param allowComment body bool true "是否允许评论"
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/admin/add/article [POST]
 func (_ *Add) AddArticle(ctx *gin.Context) {
