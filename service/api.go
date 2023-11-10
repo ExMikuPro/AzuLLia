@@ -236,27 +236,17 @@ func (_ *Add) AddTag(ctx *gin.Context) { // 添加新标签
 // AddArticle @Title 文章
 // @Tags 文章
 // @Summary	添加文章
-// @Produce	json
-// @Consumes json
-// @Param title body string true "标题"
-// @Param slug body string true "标题缩略名"
-// @Param text body string true "内容文字"
-// @Param order body int true "排序"
-// @Param authorId body string true "内容所属用户"
-// @Param template body string true "模版文件"
-// @Param type body string true "内容类别"
-// @Param status body string true "内容状态"
-// @Param password body string true "密码"
-// @Param allowComment body bool true "是否允许评论"
+// @Param request_body body articleTable true "JSON数据"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/admin/add/article [POST]
+// @Router /admin/add/article [POST]
 func (_ *Add) AddArticle(ctx *gin.Context) {
-	var postData contextTable
-	err := ctx.ShouldBindJSON(&postData)
-	postData.ID = primitive.NewObjectID()
-	postData.Created = time.Now().Unix()
-	postData.Modified = time.Now().Unix()
+	var articleData articleTable
+	err := ctx.ShouldBindJSON(&articleData)
+	articleData.ID = primitive.NewObjectID()
+	articleData.Created = time.Now().Unix()
+	articleData.Modified = time.Now().Unix()
 	if err != nil {
+		utility.Log(err) // 错误调试输出
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
 			Code: ServerDeCodeError,
 			Msg:  "Server Error",
@@ -266,12 +256,14 @@ func (_ *Add) AddArticle(ctx *gin.Context) {
 		return
 	}
 
+	dBService.WriteOneDB(DataBase, "article", articleData)
+
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
 		Msg:  "success",
 		Path: ctx.Request.URL.Path,
 		Data: gin.H{
-			"postID": postData.ID,
+			"postID": articleData.ID,
 		},
 	})
 
