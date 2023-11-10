@@ -12,6 +12,48 @@ definitions:
       path:
         type: string
     type: object
+  service.articleTable:
+    properties:
+      allowComment:
+        description: 是否允许评论
+        type: boolean
+      authorId:
+        description: 内容所属用户
+        type: string
+      created:
+        description: 内容生成时的时间戳
+        type: integer
+      id:
+        description: 主键，自增
+        type: string
+      modified:
+        description: 内容修改时的时间戳
+        type: integer
+      order:
+        description: 排序
+        type: integer
+      password:
+        description: 受保护内容的密码
+        type: string
+      slug:
+        description: 内容缩略名
+        type: string
+      status:
+        description: 内容状态
+        type: string
+      template:
+        description: 内容所使用的模版
+        type: string
+      text:
+        description: 内容文字
+        type: string
+      title:
+        description: 内容标题
+        type: string
+      type:
+        description: 内容类别
+        type: string
+    type: object
 host: 127.0.0.1:8080
 info:
   contact: {}
@@ -34,68 +76,12 @@ paths:
   /admin/add/article:
     post:
       parameters:
-      - description: 标题
+      - description: JSON数据
         in: body
-        name: title
+        name: request_body
         required: true
         schema:
-          type: string
-      - description: 标题缩略名
-        in: body
-        name: slug
-        required: true
-        schema:
-          type: string
-      - description: 内容文字
-        in: body
-        name: text
-        required: true
-        schema:
-          type: string
-      - description: 排序
-        in: body
-        name: order
-        required: true
-        schema:
-          type: integer
-      - description: 内容所属用户
-        in: body
-        name: authorId
-        required: true
-        schema:
-          type: string
-      - description: 模版文件
-        in: body
-        name: template
-        required: true
-        schema:
-          type: string
-      - description: 内容类别
-        in: body
-        name: type
-        required: true
-        schema:
-          type: string
-      - description: 内容状态
-        in: body
-        name: status
-        required: true
-        schema:
-          type: string
-      - description: 密码
-        in: body
-        name: password
-        required: true
-        schema:
-          type: string
-      - description: 是否允许评论
-        in: body
-        name: allowComment
-        required: true
-        schema:
-          type: boolean
-      produces:
-      - application/json
+          $ref: '#/definitions/service.articleTable'
       responses:
         "200":
           description: OK

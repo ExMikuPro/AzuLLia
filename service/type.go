@@ -51,7 +51,7 @@ type User struct { // 用户相关函数
 type Update struct {
 }
 
-type contextTable struct { // 文章内容表
+type articleTable struct { // 文章内容表
 	ID           primitive.ObjectID `bson:"_id" json:"id"`                    // 主键，自增
 	Title        string             `bson:"title" json:"title"`               // 内容标题
 	Slug         string             `bson:"slug" json:"slug"`                 // 内容缩略名

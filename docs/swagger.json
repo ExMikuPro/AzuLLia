@@ -30,102 +30,18 @@
         },
         "/admin/add/article": {
             "post": {
-                "produces": [
-                    "application/json"
-                ],
                 "tags": [
                     "文章"
                 ],
                 "summary": "添加文章",
                 "parameters": [
                     {
-                        "description": "标题",
-                        "name": "title",
+                        "description": "JSON数据",
+                        "name": "request_body",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "标题缩略名",
-                        "name": "slug",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "内容文字",
-                        "name": "text",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "排序",
-                        "name": "order",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    },
-                    {
-                        "description": "内容所属用户",
-                        "name": "authorId",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "模版文件",
-                        "name": "template",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "内容类别",
-                        "name": "type",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "内容状态",
-                        "name": "status",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "密码",
-                        "name": "password",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "string"
-                        }
-                    },
-                    {
-                        "description": "是否允许评论",
-                        "name": "allowComment",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "type": "boolean"
+                            "$ref": "#/definitions/service.articleTable"
                         }
                     }
                 ],
@@ -499,6 +415,63 @@
                     "type": "string"
                 },
                 "path": {
+                    "type": "string"
+                }
+            }
+        },
+        "service.articleTable": {
+            "type": "object",
+            "properties": {
+                "allowComment": {
+                    "description": "是否允许评论",
+                    "type": "boolean"
+                },
+                "authorId": {
+                    "description": "内容所属用户",
+                    "type": "string"
+                },
+                "created": {
+                    "description": "内容生成时的时间戳",
+                    "type": "integer"
+                },
+                "id": {
+                    "description": "主键，自增",
+                    "type": "string"
+                },
+                "modified": {
+                    "description": "内容修改时的时间戳",
+                    "type": "integer"
+                },
+                "order": {
+                    "description": "排序",
+                    "type": "integer"
+                },
+                "password": {
+                    "description": "受保护内容的密码",
+                    "type": "string"
+                },
+                "slug": {
+                    "description": "内容缩略名",
+                    "type": "string"
+                },
+                "status": {
+                    "description": "内容状态",
+                    "type": "string"
+                },
+                "template": {
+                    "description": "内容所使用的模版",
+                    "type": "string"
+                },
+                "text": {
+                    "description": "内容文字",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "内容标题",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "内容类别",
                     "type": "string"
                 }
             }
