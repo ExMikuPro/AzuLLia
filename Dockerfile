@@ -4,7 +4,8 @@ WORKDIR /usr/src/app
 
 COPY ./ ./
 
-# RUN go env -w GOPROXY=https://goproxy.cn,direct # 国内镜像源
+# 国内镜像源
+RUN go env -w GOPROXY=https://goproxy.cn,direct
 
 # 安装运行依赖库
 RUN go install && \
