@@ -21,12 +21,6 @@ COPY ./staticFile ./staticFile
 
 RUN mkdir -p "uploadFile"
 
-# 设置服务器端口
-ENV ServerPort=":80"
-
-# or RunMode="debug"
-ENV RunMode="release"
-
 # 运行容器时执行
 CMD ["./app"]
 
