@@ -382,6 +382,13 @@ func (_ *Add) AddUser(ctx *gin.Context) { // 添加用户
 	}
 }
 
+// UserLogin @Title 用户
+// @Tags 用户
+// @Summary	用户登陆
+// @Produce	json
+// @Param request_body body userLoginData true "JSON数据"
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/userLogin [POST]
 func (_ *User) UserLogin(ctx *gin.Context) {
 	var userLogin userLoginData
 	err := ctx.ShouldBindJSON(&userLogin)

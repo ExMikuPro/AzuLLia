@@ -404,6 +404,36 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/userLogin": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户"
+                ],
+                "summary": "用户登陆",
+                "parameters": [
+                    {
+                        "description": "JSON数据",
+                        "name": "request_body",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/service.userLoginData"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/service.GeneralJSONHeader"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
@@ -478,6 +508,17 @@ const docTemplate = `{
                 },
                 "type": {
                     "description": "内容类别",
+                    "type": "string"
+                }
+            }
+        },
+        "service.userLoginData": {
+            "type": "object",
+            "properties": {
+                "passwd": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }

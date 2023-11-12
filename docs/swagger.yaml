@@ -54,6 +54,13 @@ definitions:
         description: 内容类别
         type: string
     type: object
+  service.userLoginData:
+    properties:
+      passwd:
+        type: string
+      username:
+        type: string
+    type: object
 host: 127.0.0.1:8080
 info:
   contact: {}
@@ -317,4 +324,23 @@ paths:
       summary: 获取标签列表
       tags:
       - 标签
+  /userLogin:
+    post:
+      parameters:
+      - description: JSON数据
+        in: body
+        name: request_body
+        required: true
+        schema:
+          $ref: '#/definitions/service.userLoginData'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 用户登陆
+      tags:
+      - 用户
 swagger: "2.0"
