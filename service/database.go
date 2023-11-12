@@ -20,7 +20,7 @@ func (_ *DBService) InitDB() *mongo.Database {
 		utility.Log("DB Service ERROR:", err)
 	}
 
-	return client.Database(DBDataBase) // 选择数据库
+	return client.Database(GetEvn("DB_DATA_BASE")) // 选择数据库
 }
 
 func (_ *DBService) ReadAllDB(server *mongo.Database, Collection string) []gin.H {
