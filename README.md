@@ -90,25 +90,26 @@ curl --request GET  \
 AzuLLia
 ├── Dockerfile
 ├── README.md
+├── Service.env
 ├── docker-compose.yml
 ├── docs
-│  ├── Logo.png
-│  ├── docs.go
-│  ├── swagger.json
-│  └── swagger.yaml
+│   ├── Logo.png
+│   ├── docs.go
+│   ├── swagger.json
+│   └── swagger.yaml
 ├── go.mod
 ├── go.sum
 ├── main.go
 ├── service
-│  ├── api.go
-│  ├── database.go
-│  ├── file.go
-│  ├── function.go
-│  ├── router.go
-│  └── type.go
+│   ├── api.go
+│   ├── database.go
+│   ├── file.go
+│   ├── function.go
+│   ├── router.go
+│   └── type.go
 ├── staticFile
-│  ├── README.md
-│  └── favicon.ico
+│   ├── README.md
+│   └── favicon.ico
 └── uploadFile
     └── README.md
 
