@@ -49,10 +49,6 @@ func (_ *Utility) Log(data ...any) { // Debug输出
 	}
 }
 
-func EvnLoad() {
-
-}
-
 func GetEvn(key string) string {
 	return os.Getenv(key)
 }
