@@ -15,7 +15,7 @@ import (
 // @host 127.0.0.1:8080
 // @BasePath /
 func main() {
-	service.EvnLoad()                       // 初始化环境
+	service.ServerBegin()
 	gin.SetMode(service.GetEvn("GIN_MODE")) //  设置运行模式
 	router := gin.Default()                 // 注册默认静态路由
 	router.MaxMultipartMemory = 8 << 20     // 设置默认上传大小限制为8MB

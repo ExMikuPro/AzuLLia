@@ -2,6 +2,7 @@ package service
 
 import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 )
 
 const Version = "1.0.0"              // 系统版本号
@@ -9,14 +10,8 @@ const SuccessCode = 0                // 正常
 const UserInformationVerifyError = 4 // 用户信息认证错误
 const UnKnownFileType = 14           // 未知文件类型
 const FileSaveError = 15             // 文件保存错误
-const ServerDeCodeError = 400        // 数据解析错误
-const NoDocuments = 20               // 无文档记录
-const DBWriteError = 21              // 数据库写入错误
-const DBUpdateError = 22             // 数据库更新错误
+const ServerError = 500              // 服务器错误
 const WorkProgress = 520             // 正在构建的界面
-
-const DBAddress = "mongodb://localhost:27017" // 数据库地址
-const DBDataBase = "test"                     // 数据库名称
 
 var FileType = []string{".jpg", ".jpeg", ".png"} // 允许上传文件类型
 
@@ -27,28 +22,30 @@ type GeneralJSONHeader struct { // 全局通用标头
 	Data map[string]interface{} `json:"data"`
 }
 
-type Add struct { // 添加信息函数
+type Begin struct { // 启动函数组
 }
 
-type AdminPage struct { // 后台管理界面
+type Add struct { // 添加信息函数组
 }
 
-type AdminFunction struct { // 数据管理处理函数
+type AdminFunction struct { // 数据管理处理函数组
 }
 
-type Get struct { // 基础页面函数
+type Get struct { // 基础页面函数组
 }
 
-type DBService struct { // 数据库操作函数
+type DBService struct { // 数据库操作函数组
+	Session mongo.Session
+	Client  *mongo.Client
 }
 
-type Utility struct { // 基本处理函数
+type Utility struct { // 基本处理函数组
 }
 
-type User struct { // 用户相关函数
+type User struct { // 用户相关函数组
 }
 
-type Update struct {
+type Update struct { // 信息更新函数组
 }
 
 type articleTable struct { // 文章内容表
@@ -108,10 +105,9 @@ type userLoginData struct { // 网页传回参数
 	Passwd   string `json:"passwd"`
 }
 
-var get = &Get{}                  // 基础页面主结构体
-var add = &Add{}                  // 添加函数结构体
-var dBService = &DBService{}      // 数据库相关操作函数
-var utility = &Utility{}          // 基本操作函数
-var user = &User{}                // 用户操作函数
-var update = &Update{}            // 更新操作函数
-var DataBase = dBService.InitDB() // 初始化数据库
+var get = &Get{}         // 基础页面主结构体
+var add = &Add{}         // 添加函数结构体
+var DataBase DBService   // 数据库相关操作函数
+var utility = &Utility{} // 基本操作函数
+var user = &User{}       // 用户操作函数
+var update = &Update{}   // 更新操作函数 // 初始化数据库
