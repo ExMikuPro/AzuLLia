@@ -7,28 +7,26 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"time"
 )
 
 // 数据库处理
 
 func (_ *DBService) InitDB() *mongo.Database {
-	clientOptions := options.Client().ApplyURI(DBAddress)
+	clientOptions := options.Client().ApplyURI("mongodb://" + GetEvn("DB_HOST") + ":" + GetEvn("DB_PORT")).SetTimeout(10 * time.Second)
+
 	client, err := mongo.Connect(context.Background(), clientOptions)
 	if err != nil {
 		utility.Log("DB Service ERROR:", err)
 	}
-	return client.Database(DBDataBase) // 选择数据库
+
+	return client.Database(GetEvn("DB_DATA_BASE")) // 选择数据库
 }
 
 func (_ *DBService) ReadAllDB(server *mongo.Database, Collection string) []gin.H {
-	// todo 做性能优化
 	// 读取数据库数据表内全部数据
 	collection := server.Collection(Collection)
-
-	filter := bson.D{}
-	option := options.Find()
-
-	cur, err := collection.Find(context.Background(), filter, option)
+	cur, err := collection.Find(context.Background(), bson.D{}, options.Find())
 	if err != nil {
 		utility.Log("Read DB Data ERROR", err)
 	}

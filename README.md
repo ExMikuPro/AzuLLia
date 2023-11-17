@@ -12,17 +12,24 @@
 git clone https://github.com/ExMikuPro/AzuLLia.git
 ```
 
-> 在编译之前需要在```./service/type.go```文件中配置一下框架基本配置参数:
->
 
-找到常量```DBAddress```&```DBAddress```
+开始之前修改```Service.env```文件配置
 
-```js
-const DBAddress = "mongodb://username:password@host:port/database" // 数据库地址
-const DBDataBase = "AzuLLia"                                       // 数据库名称
+```
+WEBSITE_HOST=127.0.0.1 # 网页服务地址
+WEBSITE_PORT=:80       # 网页服务端口
+
+DB_HOST=127.0.0.1      # 数据库地址
+DB_PORT=27017          # 数据库端口
+DB_USER=root           # 数据库用户名
+DB_PASSWD=12345678     # 数据库密码
+DB_POOL_SIZE=10        # 数据库连接池大小
+DB_DATA_BASE=azullia   # 数据库名称
+
+GIN_MODE=debug         # 框架运行模式
 ```
 
-修改完成后进行一下步骤(任选其一运行即可)
+根据需要修改完成后，进行一下步骤(任选其一部署方案即可)
 
 ---
 
@@ -90,25 +97,26 @@ curl --request GET  \
 AzuLLia
 ├── Dockerfile
 ├── README.md
+├── Service.env
 ├── docker-compose.yml
 ├── docs
-│  ├── Logo.png
-│  ├── docs.go
-│  ├── swagger.json
-│  └── swagger.yaml
+│   ├── Logo.png
+│   ├── docs.go
+│   ├── swagger.json
+│   └── swagger.yaml
 ├── go.mod
 ├── go.sum
 ├── main.go
 ├── service
-│  ├── api.go
-│  ├── database.go
-│  ├── file.go
-│  ├── function.go
-│  ├── router.go
-│  └── type.go
+│   ├── api.go
+│   ├── database.go
+│   ├── file.go
+│   ├── function.go
+│   ├── router.go
+│   └── type.go
 ├── staticFile
-│  ├── README.md
-│  └── favicon.ico
+│   ├── README.md
+│   └── favicon.ico
 └── uploadFile
     └── README.md
 
