@@ -12,20 +12,13 @@ import (
 // 中间件
 
 func (_ *Utility) UserPasswdVerify(data userLoginData) bool { // 用户密码认证函数
-	// userHAS, err := bcrypt.GenerateFromPassword([]byte(data.Username), bcrypt.DefaultCost) // 生成用户名的HAS值
-	//if err != nil {
-	//	return false
-	//}
-
-	DbData, have := dBService.ReadOneDB(DataBase, "user", bson.D{bson.E{Key: "name", Value: data.Username}})
-	if have {
-		if DbData["name"] != data.Username {
-			return false
-		}
-	} else {
+	DBData, err := DataBase.ReadOneDB("user", bson.D{bson.E{Key: "name", Value: data.Username}}, gin.H{})
+	if err != nil {
 		return false
 	}
-	utility.Log(len(data.Username))
+	if DBData["name"] != data.Username {
+		return false
+	}
 	return true
 }
 
@@ -56,13 +49,19 @@ func (_ *Utility) Log(data ...any) { // Debug输出
 	}
 }
 
-func EvnLoad() {
+func GetEvn(key string) string {
+	return os.Getenv(key)
+}
+
+func ServerBegin() { // 服务器启动前配置函数
+	// 初始化环境变量
 	err := godotenv.Load("Service.env")
 	if err != nil {
 		utility.Log(err)
 	}
-}
 
-func GetEvn(key string) string {
-	return os.Getenv(key)
+	DataBase = DBService{ // 初始化数据库函数
+		Session: InitSession(InitDB()),
+		Client:  InitDB(),
+	}
 }

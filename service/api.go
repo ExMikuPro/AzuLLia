@@ -36,7 +36,16 @@ func (_ *Get) GetAbout(ctx *gin.Context) { // 框架版本界面
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/list/article [GET]
 func (_ *Get) ArticleList(ctx *gin.Context) { // 文章列表界面
-	data := dBService.ReadAllDB(DataBase, "paperList")
+	data, err := DataBase.ReadAllDB("paperList", []gin.H{})
+	if err != nil {
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: ServerError,
+			Msg:  "server error",
+			Path: ctx.Request.URL.Path,
+			Data: nil,
+		})
+		return
+	}
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
 		Msg:  "success",
@@ -62,23 +71,24 @@ func (_ *Get) GetArticle(ctx *gin.Context) { // 文章内容页面
 		{Key: "_id", Value: cid},
 	}
 
-	data, isExist := dBService.ReadOneDB(DataBase, "article", filter)
+	data, err := DataBase.ReadOneDB("article", filter, gin.H{})
 
-	if isExist {
+	if err != nil {
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: SuccessCode,
-			Msg:  "success",
+			Code: ServerError,
+			Msg:  "server error",
 			Path: ctx.Request.URL.Path,
-			Data: data,
+			Data: nil,
 		})
-	} else {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: SuccessCode,
-			Msg:  "success",
-			Path: ctx.Request.URL.Path,
-			Data: gin.H{},
-		})
+		return
 	}
+
+	ctx.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: SuccessCode,
+		Msg:  "success",
+		Path: ctx.Request.URL.Path,
+		Data: data,
+	})
 }
 
 // TagList @Title 标签
@@ -88,7 +98,16 @@ func (_ *Get) GetArticle(ctx *gin.Context) { // 文章内容页面
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/list/tag [GET]
 func (_ *Get) TagList(ctx *gin.Context) { // 标签列表界面
-	data := dBService.ReadAllDB(DataBase, "tag")
+	data, err := DataBase.ReadAllDB("tag", []gin.H{})
+	if err != nil {
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: ServerError,
+			Msg:  "server error",
+			Path: ctx.Request.URL.Path,
+			Data: nil,
+		})
+		return
+	}
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
 		Msg:  "success",
@@ -107,7 +126,16 @@ func (_ *Get) TagList(ctx *gin.Context) { // 标签列表界面
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/list/category [GET]
 func (_ *Get) CategoryList(ctx *gin.Context) { // 分类列表界面
-	data := dBService.ReadAllDB(DataBase, "type")
+	data, err := DataBase.ReadAllDB("type", []gin.H{})
+	if err != nil {
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: ServerError,
+			Msg:  "server error",
+			Path: ctx.Request.URL.Path,
+			Data: nil,
+		})
+		return
+	}
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
 		Msg:  "success",
@@ -132,22 +160,22 @@ func (_ *Get) GetType(ctx *gin.Context) {
 	filter := bson.D{
 		{Key: "_id", Value: cid},
 	}
-	data, isExist := dBService.ReadOneDB(DataBase, "type", filter)
-	if isExist {
+	data, err := DataBase.ReadOneDB("type", filter, gin.H{})
+	if err != nil {
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: SuccessCode,
-			Msg:  "success",
+			Code: ServerError,
+			Msg:  "server error",
 			Path: ctx.Request.URL.Path,
-			Data: data,
+			Data: nil,
 		})
-	} else {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: SuccessCode,
-			Msg:  "success",
-			Path: ctx.Request.URL.Path,
-			Data: gin.H{},
-		})
+		return
 	}
+	ctx.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: SuccessCode,
+		Msg:  "success",
+		Path: ctx.Request.URL.Path,
+		Data: data,
+	})
 }
 
 // GetTag @Title 标签
@@ -162,22 +190,22 @@ func (_ *Get) GetTag(ctx *gin.Context) {
 	filter := bson.D{
 		{Key: "_id", Value: tid},
 	}
-	data, isExist := dBService.ReadOneDB(DataBase, "tag", filter)
-	if isExist { // 判断标签是否存在
+	data, err := DataBase.ReadOneDB("tag", filter, gin.H{})
+	if err != nil {
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: SuccessCode,
-			Msg:  "success",
+			Code: ServerError,
+			Msg:  "server error",
 			Path: ctx.Request.URL.Path,
-			Data: data,
+			Data: nil,
 		})
-	} else {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: NoDocuments,
-			Msg:  "DB No Documents",
-			Path: ctx.Request.URL.Path,
-			Data: data,
-		})
+		return
 	}
+	ctx.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: SuccessCode,
+		Msg:  "success",
+		Path: ctx.Request.URL.Path,
+		Data: data,
+	})
 }
 
 func (_ *Get) MainPage(ctx *gin.Context) { // 主页页面
@@ -212,25 +240,25 @@ func (_ *Add) AddTag(ctx *gin.Context) { // 添加新标签
 		Order:       order,                       // 项目排序
 	}
 
-	tid, isOK := dBService.WriteOneDB(DataBase, "tag", tageData)
-	if isOK {
+	err := DataBase.WriteOneDB("tag", tageData)
+	if err != nil {
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: SuccessCode,
-			Msg:  "success",
-			Path: ctx.Request.URL.Path,
-			Data: gin.H{
-				"tagInfo": tageData,
-				"tid":     tid,
-			},
-		})
-	} else {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: DBWriteError,
-			Msg:  "DB Write Error",
+			Code: ServerError,
+			Msg:  "server error",
 			Path: ctx.Request.URL.Path,
 			Data: nil,
 		})
+		return
 	}
+
+	ctx.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: SuccessCode,
+		Msg:  "success",
+		Path: ctx.Request.URL.Path,
+		Data: gin.H{
+			"tagInfo": tageData,
+		},
+	})
 }
 
 // AddArticle @Title 文章
@@ -246,17 +274,25 @@ func (_ *Add) AddArticle(ctx *gin.Context) {
 	articleData.Created = time.Now().Unix()
 	articleData.Modified = time.Now().Unix()
 	if err != nil {
-		utility.Log(err) // 错误调试输出
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerDeCodeError,
-			Msg:  "Server Error",
+			Code: ServerError,
+			Msg:  "server error",
 			Path: ctx.Request.URL.Path,
 			Data: nil,
 		})
 		return
 	}
 
-	dBService.WriteOneDB(DataBase, "article", articleData)
+	err = DataBase.WriteOneDB("article", articleData)
+	if err != nil {
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: ServerError,
+			Msg:  "server error",
+			Path: ctx.Request.URL.Path,
+			Data: nil,
+		})
+		return
+	}
 
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
@@ -289,25 +325,24 @@ func (_ *Add) AddCategory(ctx *gin.Context) {
 		Count:       0,                           //
 		Order:       order,                       // 项目排序
 	}
-	tid, isOK := dBService.WriteOneDB(DataBase, "type", typeData)
-	if isOK {
+	err := DataBase.WriteOneDB("type", typeData)
+	if err != nil {
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: SuccessCode,
-			Msg:  "success",
-			Path: ctx.Request.URL.Path,
-			Data: gin.H{
-				"typeInfo": typeData,
-				"tid":      tid,
-			},
-		})
-	} else {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: DBWriteError,
-			Msg:  "DB Write Error",
+			Code: ServerError,
+			Msg:  "server error",
 			Path: ctx.Request.URL.Path,
 			Data: nil,
 		})
+		return
 	}
+	ctx.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: SuccessCode,
+		Msg:  "success",
+		Path: ctx.Request.URL.Path,
+		Data: gin.H{
+			"typeInfo": typeData,
+		},
+	})
 }
 
 // AddGroup @Title 用户
@@ -323,25 +358,25 @@ func (_ *Add) AddGroup(ctx *gin.Context) {
 		ID:   primitive.NewObjectID(),
 		Name: ctx.PostForm("name"),
 	}
-	tid, isOK := dBService.WriteOneDB(DataBase, "group", userGroup)
-	if isOK {
+	err := DataBase.WriteOneDB("group", userGroup)
+	if err != nil {
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: SuccessCode,
-			Msg:  "success",
-			Path: ctx.Request.URL.Path,
-			Data: gin.H{
-				"groupInfo": userGroup,
-				"tid":       tid,
-			},
-		})
-	} else {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: DBWriteError,
-			Msg:  "DB Write Error",
+			Code: ServerError,
+			Msg:  "server error",
 			Path: ctx.Request.URL.Path,
 			Data: nil,
 		})
+		return
 	}
+
+	ctx.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: SuccessCode,
+		Msg:  "success",
+		Path: ctx.Request.URL.Path,
+		Data: gin.H{
+			"groupInfo": userGroup,
+		},
+	})
 }
 
 // AddUser @Title 用户
@@ -368,18 +403,25 @@ func (_ *Add) AddUser(ctx *gin.Context) { // 添加用户
 		UpData:     time.Now().Unix(),
 		Group:      ctx.PostForm("group"),
 	}
-	uid, isOK := dBService.WriteOneDB(DataBase, "user", userData)
-	if isOK {
+	err := DataBase.WriteOneDB("user", userData)
+	if err != nil {
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: SuccessCode,
-			Msg:  "success",
+			Code: ServerError,
+			Msg:  "server error",
 			Path: ctx.Request.URL.Path,
-			Data: gin.H{
-				"userInfo": userData,
-				"uid":      uid,
-			},
+			Data: nil,
 		})
+		return
 	}
+	ctx.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: SuccessCode,
+		Msg:  "success",
+		Path: ctx.Request.URL.Path,
+		Data: gin.H{
+			"userInfo": userData,
+		},
+	})
+
 }
 
 // UserLogin @Title 用户
@@ -443,22 +485,25 @@ func (_ *Update) UpdateUser(ctx *gin.Context) {
 		}},
 	}
 
-	data, isOK := dBService.UpdateOneDB(DataBase, "user", filter, update)
-	if isOK {
+	err := DataBase.UpdateOneDB("user", filter, update)
+	if err != nil {
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: SuccessCode,
-			Msg:  "success",
-			Path: ctx.Request.URL.Path,
-			Data: data,
-		})
-	} else {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: DBUpdateError,
-			Msg:  "DB Update Error",
+			Code: ServerError,
+			Msg:  "server error",
 			Path: ctx.Request.URL.Path,
 			Data: nil,
 		})
+		return
 	}
+
+	ctx.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: SuccessCode,
+		Msg:  "success",
+		Path: ctx.Request.URL.Path,
+		Data: gin.H{
+			"id": uid,
+		},
+	})
 }
 
 func (_ *Update) UpdateTag(ctx *gin.Context) {
@@ -480,22 +525,26 @@ func (_ *Update) UpdateTag(ctx *gin.Context) {
 		}},
 	}
 
-	data, isOK := dBService.UpdateOneDB(DataBase, "tag", filter, update)
-	if isOK {
+	err := DataBase.UpdateOneDB("tag", filter, update)
+	if err != nil {
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: SuccessCode,
-			Msg:  "success",
-			Path: ctx.Request.URL.Path,
-			Data: data,
-		})
-	} else {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: DBUpdateError,
-			Msg:  "DB Update Error",
+			Code: ServerError,
+			Msg:  "server error",
 			Path: ctx.Request.URL.Path,
 			Data: nil,
 		})
+
+		return
 	}
+
+	ctx.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: SuccessCode,
+		Msg:  "success",
+		Path: ctx.Request.URL.Path,
+		Data: gin.H{
+			"id": tid,
+		},
+	})
 }
 
 func (_ *Update) UpdateArticle(ctx *gin.Context) {
@@ -515,22 +564,24 @@ func (_ *Update) UpdateArticle(ctx *gin.Context) {
 		}},
 	}
 
-	data, isOK := dBService.UpdateOneDB(DataBase, "type", filter, update)
-	if isOK {
+	err := DataBase.UpdateOneDB("type", filter, update)
+	if err != nil {
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: SuccessCode,
-			Msg:  "success",
-			Path: ctx.Request.URL.Path,
-			Data: data,
-		})
-	} else {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: DBUpdateError,
-			Msg:  "DB Update Error",
+			Code: ServerError,
+			Msg:  "server error",
 			Path: ctx.Request.URL.Path,
 			Data: nil,
 		})
+		return
 	}
+	ctx.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: SuccessCode,
+		Msg:  "success",
+		Path: ctx.Request.URL.Path,
+		Data: gin.H{
+			"id": tid,
+		},
+	})
 }
 
 func (_ *Update) UpdateGroup(ctx *gin.Context) {
@@ -544,22 +595,25 @@ func (_ *Update) UpdateGroup(ctx *gin.Context) {
 		}},
 	}
 
-	data, isOK := dBService.UpdateOneDB(DataBase, "group", filter, update)
-	if isOK {
+	err := DataBase.UpdateOneDB("group", filter, update)
+	if err != nil {
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: SuccessCode,
-			Msg:  "success",
-			Path: ctx.Request.URL.Path,
-			Data: data,
-		})
-	} else {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: DBUpdateError,
-			Msg:  "DB Update Error",
+			Code: ServerError,
+			Msg:  "server error",
 			Path: ctx.Request.URL.Path,
 			Data: nil,
 		})
+		return
 	}
+
+	ctx.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: SuccessCode,
+		Msg:  "success",
+		Path: ctx.Request.URL.Path,
+		Data: gin.H{
+			"id": tid,
+		},
+	})
 }
 
 func test(ctx *gin.Context) {
