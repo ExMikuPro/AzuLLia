@@ -147,16 +147,24 @@ func (_ *Get) CategoryList(ctx *gin.Context) { // 分类列表界面
 	})
 }
 
-// GetType @Title 分类
+// GetCategory @Title 分类
 // @Tags 分类
 // @Summary	获取分类
 // @Produce	json
 // @Param id path string true "分类ID"
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/content/category/{id} [GET]
-func (_ *Get) GetType(ctx *gin.Context) {
-	cid, _ := primitive.ObjectIDFromHex(ctx.Param("id"))
-
+func (_ *Get) GetCategory(ctx *gin.Context) {
+	cid, err := primitive.ObjectIDFromHex(ctx.Param("id"))
+	if err != nil {
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: ServerError,
+			Msg:  "server error",
+			Path: ctx.Request.URL.Path,
+			Data: nil,
+		})
+		return
+	}
 	filter := bson.D{
 		{Key: "_id", Value: cid},
 	}

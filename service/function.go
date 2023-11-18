@@ -61,7 +61,6 @@ func ServerBegin() { // 服务器启动前配置函数
 	}
 
 	DataBase = DBService{ // 初始化数据库函数
-		Session: InitSession(InitDB()),
-		Client:  InitDB(),
+		Client: InitDB(),
 	}
 }

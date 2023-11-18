@@ -35,8 +35,7 @@ type Get struct { // 基础页面函数组
 }
 
 type DBService struct { // 数据库操作函数组
-	Session mongo.Session
-	Client  *mongo.Client
+	Client *mongo.Client
 }
 
 type Utility struct { // 基本处理函数组

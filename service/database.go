@@ -8,6 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
+	"log"
 	"time"
 )
 
@@ -22,29 +23,24 @@ func InitDB() *mongo.Client {
 		utility.Log("DB Service ERROR:", err)
 	}
 
-	defer func(client *mongo.Client, ctx context.Context) {
-		err := client.Disconnect(ctx)
-		if err != nil {
-			utility.Log(err)
-			return
-		}
-	}(client, context.Background()) // 关闭程序时断开数据库连接
-
-	return client
-}
-
-func InitSession(client *mongo.Client) mongo.Session { // 创建session
-	session, err := client.StartSession()
-	defer session.EndSession(context.Background())
+	err = client.Ping(context.Background(), nil)
 	if err != nil {
-		return nil
+		log.Fatal("Couldn't connect to the database:", err)
 	}
-	return session
+	return client
 }
 
 func (s *DBService) ReadAllDB(Collection string, Data []gin.H) ([]gin.H, error) {
 	// 读取数据库数据表内全部数据
-	err := mongo.WithSession(context.Background(), s.Session, func(sessionContext mongo.SessionContext) error {
+	session, err := s.Client.StartSession()
+	if err != nil {
+		return nil, err
+	}
+	err = session.StartTransaction()
+	if err != nil {
+		return nil, err
+	}
+	err = mongo.WithSession(context.Background(), session, func(sessionContext mongo.SessionContext) error {
 		collection := s.Client.Database(GetEvn("DB_DATA_BASE")).Collection(Collection)
 		cur, err := collection.Find(sessionContext, bson.D{}, options.Find())
 		if err != nil {
@@ -61,9 +57,9 @@ func (s *DBService) ReadAllDB(Collection string, Data []gin.H) ([]gin.H, error) 
 		return nil
 	})
 	if err != nil {
-		err := s.Session.AbortTransaction(context.Background()) // 事务回滚
+		err := session.AbortTransaction(context.Background()) // 事务回滚
 		if err != nil {
-			return []gin.H{}, err
+			return nil, err
 		}
 		return []gin.H{}, err
 	}
@@ -71,7 +67,11 @@ func (s *DBService) ReadAllDB(Collection string, Data []gin.H) ([]gin.H, error) 
 }
 
 func (s *DBService) ReadOneDB(Collection string, filter bson.D, Data gin.H) (gin.H, error) {
-	err := mongo.WithSession(context.Background(), s.Session, func(sessionContext mongo.SessionContext) error {
+	session, err := s.Client.StartSession()
+	if err != nil {
+		return nil, err
+	}
+	err = mongo.WithSession(context.Background(), session, func(sessionContext mongo.SessionContext) error {
 		collection := s.Client.Database(GetEvn("DB_DATA_BASE")).Collection(Collection)
 		err := collection.FindOne(sessionContext, filter).Decode(&Data)
 		if err != nil {
@@ -80,7 +80,7 @@ func (s *DBService) ReadOneDB(Collection string, filter bson.D, Data gin.H) (gin
 		return nil
 	})
 	if err != nil {
-		err := s.Session.AbortTransaction(context.Background())
+		err := session.AbortTransaction(context.Background())
 		if err != nil {
 			return nil, err
 		}
@@ -90,7 +90,11 @@ func (s *DBService) ReadOneDB(Collection string, filter bson.D, Data gin.H) (gin
 }
 
 func (s *DBService) WriteOneDB(Collection string, Data any) error {
-	err := mongo.WithSession(context.Background(), s.Session, func(sessionContext mongo.SessionContext) error {
+	session, err := s.Client.StartSession()
+	if err != nil {
+		return err
+	}
+	err = mongo.WithSession(context.Background(), session, func(sessionContext mongo.SessionContext) error {
 		collection := s.Client.Database(GetEvn("DB_DATA_BASE")).Collection(Collection)
 		result, err := collection.InsertOne(sessionContext, Data)
 		if err != nil {
@@ -106,7 +110,15 @@ func (s *DBService) WriteOneDB(Collection string, Data any) error {
 }
 
 func (s *DBService) UpdateOneDB(Collection string, filter bson.D, update bson.D) error {
-	err := mongo.WithSession(context.Background(), s.Session, func(sessionContext mongo.SessionContext) error {
+	session, err := s.Client.StartSession()
+	if err != nil {
+		return err
+	}
+	err = session.StartTransaction()
+	if err != nil {
+		return err
+	}
+	err = mongo.WithSession(context.Background(), session, func(sessionContext mongo.SessionContext) error {
 		collection := s.Client.Database(GetEvn("DB_DATA_BASE")).Collection(Collection)
 		_, err := collection.UpdateOne(sessionContext, filter, update)
 		if err != nil {
