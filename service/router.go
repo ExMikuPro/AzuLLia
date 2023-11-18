@@ -20,8 +20,9 @@ func routerMain(router *gin.Engine) {
 	listGroup.GET("/tag", get.TagList)           // 标签列表
 	listGroup.GET("/category", get.CategoryList) // 分类列表
 
-	contentGroup.GET("/article/:id", get.GetArticle) // 文章内容
-	contentGroup.GET("/tag/:id", get.GetTag)         // 标签内容
+	contentGroup.GET("/article/:id", get.GetArticle)   // 文章内容
+	contentGroup.GET("/tag/:id", get.GetTag)           // 标签内容
+	contentGroup.GET("/category/:id", get.GetCategory) // 标签内容
 
 	addGroup.POST("/tag", add.AddTag)           // 添加标签
 	addGroup.POST("/category", add.AddCategory) // 添加分类
