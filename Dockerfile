@@ -19,6 +19,8 @@ COPY --from=builder /usr/src/app/app .
 
 COPY ./staticFile ./staticFile
 
+COPY ./Service.env ./Service.env
+
 RUN mkdir -p "uploadFile"
 
 # 运行容器时执行
