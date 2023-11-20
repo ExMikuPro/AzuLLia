@@ -131,3 +131,22 @@ func (s *DBService) UpdateOneDB(Collection string, filter bson.D, update bson.D)
 	}
 	return nil
 }
+
+func (s *DBService) DeleteOneDB(Collection string, filter bson.D) error {
+	session, err := s.Client.StartSession()
+	if err != nil {
+		return err
+	}
+	err = mongo.WithSession(context.Background(), session, func(sessionContext mongo.SessionContext) error {
+		collection := s.Client.Database(GetEvn("DB_DATA_BASE")).Collection(Collection)
+		_, err := collection.DeleteOne(sessionContext, filter)
+		if err != nil {
+			return err
+		}
+		return nil
+	})
+	if err != nil {
+		return err
+	}
+	return nil
+}
