@@ -1,9 +1,9 @@
 package service
 
 import (
-	"crypto/md5"
+	"crypto/hmac"
+	"crypto/sha256"
 	"encoding/hex"
-	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -400,10 +400,12 @@ func (_ *Add) AddGroup(ctx *gin.Context) {
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/admin/add/user [POST]
 func (_ *Add) AddUser(ctx *gin.Context) { // 添加用户
+	hash := hmac.New(sha256.New, []byte("12345678"))
+	hash.Write([]byte(ctx.PostForm("passwd")))
 	userData := userTable{
 		ID:         primitive.NewObjectID(),
 		Name:       ctx.PostForm("name"),
-		Passwd:     ctx.PostForm("passwd"),
+		Passwd:     hex.EncodeToString(hash.Sum(nil)),
 		Mail:       ctx.PostForm("mail"),
 		Url:        ctx.PostForm("url"),
 		ScreenName: ctx.PostForm("screenName"),
@@ -436,23 +438,16 @@ func (_ *Add) AddUser(ctx *gin.Context) { // 添加用户
 // @Tags 用户
 // @Summary	用户登陆
 // @Produce	json
-// @Param request_body body userLoginData true "JSON数据"
+// @Param name formData string true "用户名"
+// @Param passwd formData string true "密码"
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/userLogin [POST]
 func (_ *User) UserLogin(ctx *gin.Context) {
-	var userLogin userLoginData
-	err := ctx.ShouldBindJSON(&userLogin)
-	if err != nil {
-		fmt.Println(err)
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: UserInformationVerifyError,
-			Msg:  "user information verify error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
-	}
-	if utility.UserPasswdVerify(userLogin) { // 判断是否符合数据库内数据
+	userName := ctx.PostForm("name")
+	hash := hmac.New(sha256.New, []byte("12345678"))
+	hash.Write([]byte(ctx.PostForm("passwd")))
+	passwd := hex.EncodeToString(hash.Sum(nil))
+	if utility.UserPasswdVerify(userName, passwd) { // 判断是否符合数据库内数据
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
 			Code: SuccessCode,
 			Msg:  "success",
@@ -471,11 +466,33 @@ func (_ *User) UserLogin(ctx *gin.Context) {
 	}
 }
 
+// UpdateUser @Title 用户
+// @Tags 用户
+// @Summary	更新用户
+// @Produce	json
+// @Param name formData string true "用户名"
+// @Param passwd formData string true "密码"
+// @Param mail formData string true "邮箱"
+// @Param url formData string true "网址"
+// @Param screenName formData string true "昵称"
+// @Param group formData string true "用户组"
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/update/user [POST]
 func (_ *Update) UpdateUser(ctx *gin.Context) {
-	uid, _ := primitive.ObjectIDFromHex(ctx.PostForm("id"))
+	uid, err := primitive.ObjectIDFromHex(ctx.PostForm("id"))
+	if err != nil {
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: ServerError,
+			Msg:  "server error",
+			Path: ctx.Request.URL.Path,
+			Data: nil,
+		})
+		return
+	}
 	name := ctx.PostForm("name")
-	passwd := md5.Sum([]byte(ctx.PostForm("passwd")))
-	passwdMD5 := hex.EncodeToString(passwd[:])
+	hash := hmac.New(sha256.New, []byte("12345678"))
+	hash.Write([]byte(ctx.PostForm("passwd")))
+	passwd := hex.EncodeToString(hash.Sum(nil))
 	mail := ctx.PostForm("mail")
 	url := ctx.PostForm("url")
 	screenName := ctx.PostForm("screenName")
@@ -484,7 +501,7 @@ func (_ *Update) UpdateUser(ctx *gin.Context) {
 	update := bson.D{
 		{Key: "$set", Value: bson.D{
 			{Key: "name", Value: name},
-			{Key: "passwd", Value: passwdMD5},
+			{Key: "passwd", Value: passwd},
 			{Key: "mail", Value: mail},
 			{Key: "url", Value: url},
 			{Key: "screenName", Value: screenName},
@@ -493,7 +510,7 @@ func (_ *Update) UpdateUser(ctx *gin.Context) {
 		}},
 	}
 
-	err := DataBase.UpdateOneDB("user", filter, update)
+	err = DataBase.UpdateOneDB("user", filter, update)
 	if err != nil {
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
 			Code: ServerError,

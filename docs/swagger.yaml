@@ -54,13 +54,6 @@ definitions:
         description: 内容类别
         type: string
     type: object
-  service.userLoginData:
-    properties:
-      passwd:
-        type: string
-      username:
-        type: string
-    type: object
 host: 127.0.0.1:8080
 info:
   contact: {}
@@ -324,15 +317,62 @@ paths:
       summary: 获取标签列表
       tags:
       - 标签
+  /update/user:
+    post:
+      parameters:
+      - description: 用户名
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: 密码
+        in: formData
+        name: passwd
+        required: true
+        type: string
+      - description: 邮箱
+        in: formData
+        name: mail
+        required: true
+        type: string
+      - description: 网址
+        in: formData
+        name: url
+        required: true
+        type: string
+      - description: 昵称
+        in: formData
+        name: screenName
+        required: true
+        type: string
+      - description: 用户组
+        in: formData
+        name: group
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 更新用户
+      tags:
+      - 用户
   /userLogin:
     post:
       parameters:
-      - description: JSON数据
-        in: body
-        name: request_body
+      - description: 用户名
+        in: formData
+        name: name
         required: true
-        schema:
-          $ref: '#/definitions/service.userLoginData'
+        type: string
+      - description: 密码
+        in: formData
+        name: passwd
+        required: true
+        type: string
       produces:
       - application/json
       responses:

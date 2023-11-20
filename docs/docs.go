@@ -405,6 +405,69 @@ const docTemplate = `{
                 }
             }
         },
+        "/update/user": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户"
+                ],
+                "summary": "更新用户",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户名",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "密码",
+                        "name": "passwd",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "邮箱",
+                        "name": "mail",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "网址",
+                        "name": "url",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "昵称",
+                        "name": "screenName",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "用户组",
+                        "name": "group",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/service.GeneralJSONHeader"
+                        }
+                    }
+                }
+            }
+        },
         "/userLogin": {
             "post": {
                 "produces": [
@@ -416,13 +479,18 @@ const docTemplate = `{
                 "summary": "用户登陆",
                 "parameters": [
                     {
-                        "description": "JSON数据",
-                        "name": "request_body",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/service.userLoginData"
-                        }
+                        "type": "string",
+                        "description": "用户名",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "密码",
+                        "name": "passwd",
+                        "in": "formData",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -508,17 +576,6 @@ const docTemplate = `{
                 },
                 "type": {
                     "description": "内容类别",
-                    "type": "string"
-                }
-            }
-        },
-        "service.userLoginData": {
-            "type": "object",
-            "properties": {
-                "passwd": {
-                    "type": "string"
-                },
-                "username": {
                     "type": "string"
                 }
             }
