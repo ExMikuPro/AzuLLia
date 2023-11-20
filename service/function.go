@@ -11,12 +11,16 @@ import (
 
 // 中间件
 
-func (_ *Utility) UserPasswdVerify(data userLoginData) bool { // 用户密码认证函数
-	DBData, err := DataBase.ReadOneDB("user", bson.D{bson.E{Key: "name", Value: data.Username}}, gin.H{})
+func (_ *Utility) UserPasswdVerify(userName string, passwd string) bool { // 用户密码认证函数
+	DBData, err := DataBase.ReadOneDB("user", bson.D{bson.E{Key: "name", Value: userName}}, gin.H{})
 	if err != nil {
 		return false
 	}
-	if DBData["name"] != data.Username {
+	if DBData["name"] != userName {
+		return false
+	}
+
+	if DBData["passwd"] != passwd {
 		return false
 	}
 	return true

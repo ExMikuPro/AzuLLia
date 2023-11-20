@@ -99,11 +99,6 @@ type userTable struct { // 用户表
 	Group      string             `bson:"group" json:"group"`           // 所属用户组
 }
 
-type userLoginData struct { // 网页传回参数
-	Username string `json:"username"`
-	Passwd   string `json:"passwd"`
-}
-
 var get = &Get{}         // 基础页面主结构体
 var add = &Add{}         // 添加函数结构体
 var DataBase DBService   // 数据库相关操作函数
