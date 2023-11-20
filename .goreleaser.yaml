@@ -45,4 +45,5 @@ changelog:
       - "^docs:"
       - "^test:"
       - "^ci:"
-      - "style:"
+      - "^style:"
+      - "^Merge"
