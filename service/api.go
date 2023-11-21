@@ -447,7 +447,7 @@ func (_ *User) UserLogin(ctx *gin.Context) {
 	hash := hmac.New(sha256.New, []byte("12345678"))
 	hash.Write([]byte(ctx.PostForm("passwd")))
 	passwd := hex.EncodeToString(hash.Sum(nil))
-	if utility.UserPasswdVerify(userName, passwd) { // 判断是否符合数据库内数据
+	if utilityFunction.UserPasswdVerify(userName, passwd) { // 判断是否符合数据库内数据
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
 			Code: SuccessCode,
 			Msg:  "success",
@@ -639,6 +639,26 @@ func (_ *Update) UpdateGroup(ctx *gin.Context) {
 			"id": tid,
 		},
 	})
+}
+
+func (_ *Delete) DeleteTag(ctx *gin.Context) { // 删除标签函数
+	ctx.JSON(http.StatusOK, gin.H{})
+}
+
+func (_ *Delete) DeleteCategory(ctx *gin.Context) { // 删除类别函数
+	ctx.JSON(http.StatusOK, gin.H{})
+}
+
+func (_ *Delete) DeleteGroup(ctx *gin.Context) { // 删除用户组函数
+	ctx.JSON(http.StatusOK, gin.H{})
+}
+
+func (_ *Delete) DeleteUser(ctx *gin.Context) { // 删除用户函数
+	ctx.JSON(http.StatusOK, gin.H{})
+}
+
+func (_ *Delete) DeleteArticle(ctx *gin.Context) { // 删除文章函数
+	ctx.JSON(http.StatusOK, gin.H{})
 }
 
 func test(ctx *gin.Context) {
