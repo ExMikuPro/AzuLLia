@@ -11,6 +11,7 @@ func routerMain(router *gin.Engine) {
 	adminGroup := router.Group("/admin/")       // 管理
 	addGroup := adminGroup.Group("/add/")       // 添加
 	updateGroup := adminGroup.Group("/update/") // 更新
+	deleteGroup := adminGroup.Group("/delete/") // 删除
 
 	// 添加中间键
 	adminGroup.Use(utility.CheckLoginMiddleware())  // 登陆认证
@@ -35,6 +36,11 @@ func routerMain(router *gin.Engine) {
 	updateGroup.POST("/group", update.UpdateGroup)      // 更新用户组
 	updateGroup.POST("/user", update.UpdateUser)        // 更新用户
 
+	deleteGroup.POST("/tag", deleteFunction.DeleteTag)           // 删除标签
+	deleteGroup.POST("/category", deleteFunction.DeleteCategory) // 删除类别
+	deleteGroup.POST("/group", deleteFunction.DeleteGroup)       // 删除用户组
+	deleteGroup.POST("/user", deleteFunction.DeleteUser)         // 删除用户
+	deleteGroup.POST("/article", deleteFunction.DeleteArticle)   // 删除文章函数
 	// 通用型路由组
 	router.GET("/", get.MainPage) // 主页
 
