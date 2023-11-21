@@ -8,7 +8,6 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
-	"log"
 	"time"
 )
 
@@ -25,7 +24,8 @@ func InitDB() *mongo.Client {
 
 	err = client.Ping(context.Background(), nil)
 	if err != nil {
-		log.Fatal("Couldn't connect to the database:", err)
+		utilityFunction.Log("Couldn't connect to the database:", err)
+		return nil
 	}
 	return client
 }
