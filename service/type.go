@@ -108,4 +108,4 @@ var DataBase DBService           // 数据库相关操作函数
 var deleteFunction = &Delete{}   // 数据库删除函数组
 var utilityFunction = &Utility{} // 基本操作函数
 var userFunction = &User{}       // 用户操作函数
-var update = &Update{}           // 更新操作函数 // 初始化数据库
+var updateFunction = &Update{}   // 更新操作函数 // 初始化数据库
