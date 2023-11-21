@@ -102,10 +102,10 @@ type userTable struct { // 用户表
 	Group      string             `bson:"group" json:"group"`           // 所属用户组
 }
 
-var get = &Get{}               // 基础页面主结构体
-var add = &Add{}               // 添加函数结构体
-var DataBase DBService         // 数据库相关操作函数
-var deleteFunction = &Delete{} // 数据库删除函数组
-var utility = &Utility{}       // 基本操作函数
-var user = &User{}             // 用户操作函数
-var update = &Update{}         // 更新操作函数 // 初始化数据库
+var getFunction = &Get{}         // 基础页面主结构体
+var addFunction = &Add{}         // 添加函数结构体
+var DataBase DBService           // 数据库相关操作函数
+var deleteFunction = &Delete{}   // 数据库删除函数组
+var utilityFunction = &Utility{} // 基本操作函数
+var userFunction = &User{}       // 用户操作函数
+var update = &Update{}           // 更新操作函数 // 初始化数据库
