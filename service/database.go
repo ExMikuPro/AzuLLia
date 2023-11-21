@@ -20,7 +20,7 @@ func InitDB() *mongo.Client {
 
 	client, err := mongo.Connect(context.Background(), clientOptions)
 	if err != nil {
-		utility.Log("DB Service ERROR:", err)
+		utilityFunction.Log("DB Service ERROR:", err)
 	}
 
 	err = client.Ping(context.Background(), nil)

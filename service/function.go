@@ -61,7 +61,7 @@ func ServerBegin() { // 服务器启动前配置函数
 	// 初始化环境变量
 	err := godotenv.Load("Service.env")
 	if err != nil {
-		utility.Log(err)
+		utilityFunction.Log(err)
 	}
 
 	DataBase = DBService{ // 初始化数据库函数

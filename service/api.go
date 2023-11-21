@@ -447,7 +447,7 @@ func (_ *User) UserLogin(ctx *gin.Context) {
 	hash := hmac.New(sha256.New, []byte("12345678"))
 	hash.Write([]byte(ctx.PostForm("passwd")))
 	passwd := hex.EncodeToString(hash.Sum(nil))
-	if utility.UserPasswdVerify(userName, passwd) { // 判断是否符合数据库内数据
+	if utilityFunction.UserPasswdVerify(userName, passwd) { // 判断是否符合数据库内数据
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
 			Code: SuccessCode,
 			Msg:  "success",
