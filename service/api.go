@@ -641,6 +641,26 @@ func (_ *Update) UpdateGroup(ctx *gin.Context) {
 	})
 }
 
+func (_ *Delete) DeleteTag(ctx *gin.Context) { // 删除标签函数
+	ctx.JSON(http.StatusOK, gin.H{})
+}
+
+func (_ *Delete) DeleteCategory(ctx *gin.Context) { // 删除类别函数
+	ctx.JSON(http.StatusOK, gin.H{})
+}
+
+func (_ *Delete) DeleteGroup(ctx *gin.Context) { // 删除用户组函数
+	ctx.JSON(http.StatusOK, gin.H{})
+}
+
+func (_ *Delete) DeleteUser(ctx *gin.Context) { // 删除用户函数
+	ctx.JSON(http.StatusOK, gin.H{})
+}
+
+func (_ *Delete) DeleteArticle(ctx *gin.Context) { // 删除文章函数
+	ctx.JSON(http.StatusOK, gin.H{})
+}
+
 func test(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"context": "<p>hello</p>",
