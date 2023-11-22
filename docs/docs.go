@@ -264,6 +264,34 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/delete/tag": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "标签"
+                ],
+                "summary": "删除标签",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "标签id",
+                        "name": "id",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/service.GeneralJSONHeader"
+                        }
+                    }
+                }
+            }
+        },
         "/content/article/{id}": {
             "get": {
                 "produces": [
