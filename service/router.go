@@ -40,7 +40,7 @@ func routerMain(router *gin.Engine) {
 	deleteGroup.POST("/category", deleteFunction.DeleteCategory) // 删除类别
 	deleteGroup.POST("/group", deleteFunction.DeleteGroup)       // 删除用户组
 	deleteGroup.POST("/user", deleteFunction.DeleteUser)         // 删除用户
-	deleteGroup.POST("/article", deleteFunction.DeleteArticle)   // 删除文章函数
+	deleteGroup.POST("/article", deleteFunction.DeleteArticle)   // 删除文章
 	// 通用型路由组
 	router.GET("/", getFunction.MainPage) // 主页
 
