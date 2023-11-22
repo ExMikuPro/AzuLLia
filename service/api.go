@@ -641,8 +641,43 @@ func (_ *Update) UpdateGroup(ctx *gin.Context) {
 	})
 }
 
+// DeleteTag @Title 标签
+// @Tags 标签
+// @Summary	删除标签
+// @Produce	json
+// @Param id formData string true "标签id"
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/admin/delete/tag [POST]
 func (_ *Delete) DeleteTag(ctx *gin.Context) { // 删除标签函数
-	ctx.JSON(http.StatusOK, gin.H{})
+	tid, err := primitive.ObjectIDFromHex(ctx.PostForm("id"))
+	if err != nil {
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: ServerError,
+			Msg:  "server error",
+			Path: ctx.Request.URL.Path,
+			Data: nil,
+		})
+		return
+	}
+	filter := bson.D{{Key: "_id", Value: tid}}
+	err = DataBase.DeleteOneDB("tag", filter)
+	if err != nil {
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: ServerError,
+			Msg:  "server error",
+			Path: ctx.Request.URL.Path,
+			Data: nil,
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: SuccessCode,
+		Msg:  "success",
+		Path: ctx.Request.URL.Path,
+		Data: gin.H{
+			"id": tid,
+		},
+	})
 }
 
 func (_ *Delete) DeleteCategory(ctx *gin.Context) { // 删除类别函数
