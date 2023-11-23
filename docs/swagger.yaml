@@ -227,6 +227,24 @@ paths:
       summary: 添加用户
       tags:
       - 用户
+  /admin/delete/article:
+    post:
+      parameters:
+      - description: 文章id
+        in: formData
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 删除文章
+      tags:
+      - 文章
   /admin/delete/category:
     post:
       parameters:
@@ -245,6 +263,24 @@ paths:
       summary: 删除分类
       tags:
       - 分类
+  /admin/delete/group:
+    post:
+      parameters:
+      - description: 用户组id
+        in: formData
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 删除用户组
+      tags:
+      - 用户
   /admin/delete/tag:
     post:
       parameters:
@@ -263,6 +299,67 @@ paths:
       summary: 删除标签
       tags:
       - 标签
+  /admin/delete/user:
+    post:
+      parameters:
+      - description: 用户id
+        in: formData
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 删除用户
+      tags:
+      - 用户
+  /admin/update/user:
+    post:
+      parameters:
+      - description: 用户名
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: 密码
+        in: formData
+        name: passwd
+        required: true
+        type: string
+      - description: 邮箱
+        in: formData
+        name: mail
+        required: true
+        type: string
+      - description: 网址
+        in: formData
+        name: url
+        required: true
+        type: string
+      - description: 昵称
+        in: formData
+        name: screenName
+        required: true
+        type: string
+      - description: 用户组
+        in: formData
+        name: group
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 更新用户
+      tags:
+      - 用户
   /content/article/{id}:
     get:
       parameters:
@@ -353,49 +450,6 @@ paths:
       summary: 获取标签列表
       tags:
       - 标签
-  /update/user:
-    post:
-      parameters:
-      - description: 用户名
-        in: formData
-        name: name
-        required: true
-        type: string
-      - description: 密码
-        in: formData
-        name: passwd
-        required: true
-        type: string
-      - description: 邮箱
-        in: formData
-        name: mail
-        required: true
-        type: string
-      - description: 网址
-        in: formData
-        name: url
-        required: true
-        type: string
-      - description: 昵称
-        in: formData
-        name: screenName
-        required: true
-        type: string
-      - description: 用户组
-        in: formData
-        name: group
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/service.GeneralJSONHeader'
-      summary: 更新用户
-      tags:
-      - 用户
   /userLogin:
     post:
       parameters:
