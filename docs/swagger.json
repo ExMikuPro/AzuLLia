@@ -258,6 +258,34 @@
                 }
             }
         },
+        "/admin/delete/category": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "分类"
+                ],
+                "summary": "删除分类",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "分类id",
+                        "name": "id",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/service.GeneralJSONHeader"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/delete/tag": {
             "post": {
                 "produces": [

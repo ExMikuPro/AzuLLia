@@ -126,7 +126,7 @@ func (_ *Get) TagList(ctx *gin.Context) { // 标签列表界面
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/list/category [GET]
 func (_ *Get) CategoryList(ctx *gin.Context) { // 分类列表界面
-	data, err := DataBase.ReadAllDB("type", []gin.H{})
+	data, err := DataBase.ReadAllDB("category", []gin.H{})
 	if err != nil {
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
 			Code: ServerError,
@@ -168,7 +168,7 @@ func (_ *Get) GetCategory(ctx *gin.Context) {
 	filter := bson.D{
 		{Key: "_id", Value: cid},
 	}
-	data, err := DataBase.ReadOneDB("type", filter, gin.H{})
+	data, err := DataBase.ReadOneDB("category", filter, gin.H{})
 	if err != nil {
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
 			Code: ServerError,
@@ -333,7 +333,7 @@ func (_ *Add) AddCategory(ctx *gin.Context) {
 		Count:       0,                           //
 		Order:       order,                       // 项目排序
 	}
-	err := DataBase.WriteOneDB("type", typeData)
+	err := DataBase.WriteOneDB("category", typeData)
 	if err != nil {
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
 			Code: ServerError,
@@ -589,7 +589,7 @@ func (_ *Update) UpdateArticle(ctx *gin.Context) {
 		}},
 	}
 
-	err := DataBase.UpdateOneDB("type", filter, update)
+	err := DataBase.UpdateOneDB("category", filter, update)
 	if err != nil {
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
 			Code: ServerError,
@@ -680,8 +680,43 @@ func (_ *Delete) DeleteTag(ctx *gin.Context) { // 删除标签函数
 	})
 }
 
-func (_ *Delete) DeleteCategory(ctx *gin.Context) { // 删除类别函数
-	ctx.JSON(http.StatusOK, gin.H{})
+// DeleteCategory @Title 分类
+// @Tags 分类
+// @Summary	删除分类
+// @Produce	json
+// @Param id formData string true "分类id"
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/admin/delete/category [POST]
+func (_ *Delete) DeleteCategory(ctx *gin.Context) { // 删除分类函数
+	cid, err := primitive.ObjectIDFromHex(ctx.PostForm("id"))
+	if err != nil {
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: ServerError,
+			Msg:  "server error",
+			Path: ctx.Request.URL.Path,
+			Data: nil,
+		})
+		return
+	}
+	filter := bson.D{{Key: "_id", Value: cid}}
+	err = DataBase.DeleteOneDB("category", filter)
+	if err != nil {
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: ServerError,
+			Msg:  "server error",
+			Path: ctx.Request.URL.Path,
+			Data: nil,
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: SuccessCode,
+		Msg:  "success",
+		Path: ctx.Request.URL.Path,
+		Data: gin.H{
+			"id": cid,
+		},
+	})
 }
 
 func (_ *Delete) DeleteGroup(ctx *gin.Context) { // 删除用户组函数
