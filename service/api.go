@@ -477,7 +477,7 @@ func (_ *User) UserLogin(ctx *gin.Context) {
 // @Param screenName formData string true "昵称"
 // @Param group formData string true "用户组"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/update/user [POST]
+// @Router		/admin/update/user [POST]
 func (_ *Update) UpdateUser(ctx *gin.Context) {
 	uid, err := primitive.ObjectIDFromHex(ctx.PostForm("id"))
 	if err != nil {
