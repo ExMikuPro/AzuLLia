@@ -227,6 +227,24 @@ paths:
       summary: 添加用户
       tags:
       - 用户
+  /admin/delete/article:
+    post:
+      parameters:
+      - description: 文章id
+        in: formData
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 删除文章
+      tags:
+      - 文章
   /admin/delete/category:
     post:
       parameters:

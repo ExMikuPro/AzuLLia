@@ -797,8 +797,43 @@ func (_ *Delete) DeleteUser(ctx *gin.Context) { // 删除用户函数
 	})
 }
 
+// DeleteArticle @Title 文章
+// @Tags 文章
+// @Summary	删除文章
+// @Produce	json
+// @Param id formData string true "文章id"
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/admin/delete/article [POST]
 func (_ *Delete) DeleteArticle(ctx *gin.Context) { // 删除文章函数
-	ctx.JSON(http.StatusOK, gin.H{})
+	aid, err := primitive.ObjectIDFromHex(ctx.PostForm("id"))
+	if err != nil {
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: ServerError,
+			Msg:  "server error",
+			Path: ctx.Request.URL.Path,
+			Data: nil,
+		})
+		return
+	}
+	filter := bson.D{{Key: "_id", Value: aid}}
+	err = DataBase.DeleteOneDB("article", filter)
+	if err != nil {
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: ServerError,
+			Msg:  "server error",
+			Path: ctx.Request.URL.Path,
+			Data: nil,
+		})
+		return
+	}
+	ctx.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: SuccessCode,
+		Msg:  "success",
+		Path: ctx.Request.URL.Path,
+		Data: gin.H{
+			"id": aid,
+		},
+	})
 }
 
 func test(ctx *gin.Context) {
