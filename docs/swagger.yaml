@@ -317,6 +317,38 @@ paths:
       summary: 删除用户
       tags:
       - 用户
+  /admin/update/tag:
+    post:
+      parameters:
+      - description: 名称
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: 缩略名
+        in: formData
+        name: slug
+        required: true
+        type: string
+      - description: 分类
+        in: formData
+        name: type
+        required: true
+        type: string
+      - description: 描述
+        in: formData
+        name: description
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      tags:
+      - 标签
   /admin/update/user:
     post:
       parameters:
