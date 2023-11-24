@@ -531,6 +531,16 @@ func (_ *Update) UpdateUser(ctx *gin.Context) {
 	})
 }
 
+// UpdateTag @Title 标签
+// @Tags 标签
+// @Summary更新标签
+// @Produce	json
+// @Param name formData string true "名称"
+// @Param slug formData string true "缩略名"
+// @Param type formData string true "分类"
+// @Param description formData string true "描述"
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/admin/update/tag [POST]
 func (_ *Update) UpdateTag(ctx *gin.Context) {
 	tid, _ := primitive.ObjectIDFromHex(ctx.PostForm("id"))
 	name := ctx.PostForm("name")
