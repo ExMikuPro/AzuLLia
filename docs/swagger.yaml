@@ -340,6 +340,11 @@ paths:
         name: description
         required: true
         type: string
+      - description: 排序
+        in: formData
+        name: order
+        required: true
+        type: string
       produces:
       - application/json
       responses:
@@ -347,8 +352,9 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 更新文章
       tags:
-      - 标签
+      - 文章
   /admin/update/user:
     post:
       parameters:

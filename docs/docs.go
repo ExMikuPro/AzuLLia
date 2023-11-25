@@ -410,8 +410,9 @@ const docTemplate = `{
                     "application/json"
                 ],
                 "tags": [
-                    "标签"
+                    "文章"
                 ],
+                "summary": "更新文章",
                 "parameters": [
                     {
                         "type": "string",
@@ -438,6 +439,13 @@ const docTemplate = `{
                         "type": "string",
                         "description": "描述",
                         "name": "description",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "排序",
+                        "name": "order",
                         "in": "formData",
                         "required": true
                     }
