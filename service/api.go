@@ -630,6 +630,14 @@ func (_ *Update) UpdateArticle(ctx *gin.Context) {
 	})
 }
 
+// UpdateGroup @Title 文章
+// @Tags 文章
+// @Summary 更新文章
+// @Produce	json
+// @Param id formData string true "ID"
+// @Param name formData string true "名称"
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/admin/update/group [POST]
 func (_ *Update) UpdateGroup(ctx *gin.Context) {
 	tid, _ := primitive.ObjectIDFromHex(ctx.PostForm("id"))
 	name := ctx.PostForm("name")
