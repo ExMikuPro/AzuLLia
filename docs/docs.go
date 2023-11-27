@@ -558,7 +558,26 @@ const docTemplate = `{
                 }
             }
         },
-        "/content/article/{id}": {
+        "/get/about": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统"
+                ],
+                "summary": "获取前端基本信息",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/service.GeneralJSONHeader"
+                        }
+                    }
+                }
+            }
+        },
+        "/get/article/{id}": {
             "get": {
                 "produces": [
                     "application/json"
@@ -586,7 +605,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/content/category/{id}": {
+        "/get/category/{id}": {
             "get": {
                 "produces": [
                     "application/json"
@@ -614,7 +633,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/content/tag/{id}": {
+        "/get/tag/{id}": {
             "get": {
                 "produces": [
                     "application/json"

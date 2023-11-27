@@ -421,7 +421,19 @@ paths:
       summary: 更新用户
       tags:
       - 用户
-  /content/article/{id}:
+  /get/about:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 获取前端基本信息
+      tags:
+      - 系统
+  /get/article/{id}:
     get:
       parameters:
       - description: 文章ID
@@ -439,7 +451,7 @@ paths:
       summary: 获取文章内容
       tags:
       - 文章
-  /content/category/{id}:
+  /get/category/{id}:
     get:
       parameters:
       - description: 分类ID
@@ -457,7 +469,7 @@ paths:
       summary: 获取分类
       tags:
       - 分类
-  /content/tag/{id}:
+  /get/tag/{id}:
     get:
       parameters:
       - description: 标签ID
