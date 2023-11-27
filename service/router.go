@@ -7,7 +7,7 @@ import (
 func routerMain(router *gin.Engine) {
 	// 功能型接口路由组
 	listGroup := router.Group("/list/")         // 列表
-	contentGroup := router.Group("/content/")   // 内容
+	getGroup := router.Group("/get/")           // 内容
 	adminGroup := router.Group("/admin/")       // 管理
 	addGroup := adminGroup.Group("/add/")       // 添加
 	updateGroup := adminGroup.Group("/update/") // 更新
@@ -21,9 +21,10 @@ func routerMain(router *gin.Engine) {
 	listGroup.GET("/tag", getFunction.TagList)           // 标签列表
 	listGroup.GET("/category", getFunction.CategoryList) // 分类列表
 
-	contentGroup.GET("/article/:id", getFunction.GetArticle)   // 文章内容
-	contentGroup.GET("/tag/:id", getFunction.GetTag)           // 标签内容
-	contentGroup.GET("/category/:id", getFunction.GetCategory) // 标签内容
+	getGroup.GET("/article/:id", getFunction.GetArticle)   // 文章内容
+	getGroup.GET("/tag/:id", getFunction.GetTag)           // 标签内容
+	getGroup.GET("/category/:id", getFunction.GetCategory) // 标签内容
+	getGroup.GET("/info", getFunction.getInfo)             // 网页内容
 
 	addGroup.POST("/tag", addFunction.AddTag)           // 添加标签
 	addGroup.POST("/category", addFunction.AddCategory) // 添加分类

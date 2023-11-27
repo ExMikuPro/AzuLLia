@@ -421,18 +421,6 @@ paths:
       summary: 更新用户
       tags:
       - 用户
-  /get/about:
-    get:
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/service.GeneralJSONHeader'
-      summary: 获取前端基本信息
-      tags:
-      - 系统
   /get/article/{id}:
     get:
       parameters:
@@ -469,6 +457,18 @@ paths:
       summary: 获取分类
       tags:
       - 分类
+  /get/info:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 获取网页基本信息
+      tags:
+      - 系统
   /get/tag/{id}:
     get:
       parameters:
