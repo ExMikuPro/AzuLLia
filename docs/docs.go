@@ -404,6 +404,41 @@ const docTemplate = `{
                 }
             }
         },
+        "/admin/update/group": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "文章"
+                ],
+                "summary": "更新文章",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "ID",
+                        "name": "id",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "名称",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/service.GeneralJSONHeader"
+                        }
+                    }
+                }
+            }
+        },
         "/admin/update/tag": {
             "post": {
                 "produces": [
@@ -523,7 +558,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/content/article/{id}": {
+        "/get/article/{id}": {
             "get": {
                 "produces": [
                     "application/json"
@@ -551,7 +586,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/content/category/{id}": {
+        "/get/category/{id}": {
             "get": {
                 "produces": [
                     "application/json"
@@ -579,7 +614,26 @@ const docTemplate = `{
                 }
             }
         },
-        "/content/tag/{id}": {
+        "/get/info": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "系统"
+                ],
+                "summary": "获取网页基本信息",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/service.GeneralJSONHeader"
+                        }
+                    }
+                }
+            }
+        },
+        "/get/tag/{id}": {
             "get": {
                 "produces": [
                     "application/json"

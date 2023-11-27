@@ -29,6 +29,24 @@ func (_ *Get) GetAbout(ctx *gin.Context) { // 框架版本界面
 	})
 }
 
+// GetAbout @Title 系统
+// @Tags 系统
+// @Summary	获取网页基本信息
+// @Produce	json
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/get/info [GET]
+func (_ *Get) getInfo(ctx *gin.Context) {
+	ctx.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: SuccessCode,
+		Msg:  "success",
+		Path: ctx.Request.URL.Path,
+		Data: gin.H{
+			"title": "网页主标题",
+			"url":   "http://127.0.0.1/",
+		},
+	})
+}
+
 // ArticleList @Title 文章
 // @Tags 文章
 // @Summary	获取列表
@@ -63,7 +81,7 @@ func (_ *Get) ArticleList(ctx *gin.Context) { // 文章列表界面
 // @Produce	json
 // @Param id path string true "文章ID"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/content/article/{id} [GET]
+// @Router		/get/article/{id} [GET]
 func (_ *Get) GetArticle(ctx *gin.Context) { // 文章内容页面
 	cid, _ := primitive.ObjectIDFromHex(ctx.Param("id")) // 文章cid
 
@@ -153,7 +171,7 @@ func (_ *Get) CategoryList(ctx *gin.Context) { // 分类列表界面
 // @Produce	json
 // @Param id path string true "分类ID"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/content/category/{id} [GET]
+// @Router		/get/category/{id} [GET]
 func (_ *Get) GetCategory(ctx *gin.Context) {
 	cid, err := primitive.ObjectIDFromHex(ctx.Param("id"))
 	if err != nil {
@@ -192,7 +210,7 @@ func (_ *Get) GetCategory(ctx *gin.Context) {
 // @Produce	json
 // @Param id path string true "标签ID"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/content/tag/{id} [GET]
+// @Router		/get/tag/{id} [GET]
 func (_ *Get) GetTag(ctx *gin.Context) {
 	tid, _ := primitive.ObjectIDFromHex(ctx.Param("id"))
 	filter := bson.D{
@@ -630,6 +648,14 @@ func (_ *Update) UpdateArticle(ctx *gin.Context) {
 	})
 }
 
+// UpdateGroup @Title 文章
+// @Tags 文章
+// @Summary 更新文章
+// @Produce	json
+// @Param id formData string true "ID"
+// @Param name formData string true "名称"
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/admin/update/group [POST]
 func (_ *Update) UpdateGroup(ctx *gin.Context) {
 	tid, _ := primitive.ObjectIDFromHex(ctx.PostForm("id"))
 	name := ctx.PostForm("name")

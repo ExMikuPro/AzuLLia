@@ -317,6 +317,29 @@ paths:
       summary: 删除用户
       tags:
       - 用户
+  /admin/update/group:
+    post:
+      parameters:
+      - description: ID
+        in: formData
+        name: id
+        required: true
+        type: string
+      - description: 名称
+        in: formData
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 更新文章
+      tags:
+      - 文章
   /admin/update/tag:
     post:
       parameters:
@@ -398,7 +421,7 @@ paths:
       summary: 更新用户
       tags:
       - 用户
-  /content/article/{id}:
+  /get/article/{id}:
     get:
       parameters:
       - description: 文章ID
@@ -416,7 +439,7 @@ paths:
       summary: 获取文章内容
       tags:
       - 文章
-  /content/category/{id}:
+  /get/category/{id}:
     get:
       parameters:
       - description: 分类ID
@@ -434,7 +457,19 @@ paths:
       summary: 获取分类
       tags:
       - 分类
-  /content/tag/{id}:
+  /get/info:
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 获取网页基本信息
+      tags:
+      - 系统
+  /get/tag/{id}:
     get:
       parameters:
       - description: 标签ID
