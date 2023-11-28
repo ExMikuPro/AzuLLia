@@ -614,25 +614,6 @@ const docTemplate = `{
                 }
             }
         },
-        "/get/info": {
-            "get": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "系统"
-                ],
-                "summary": "获取网页基本信息",
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/service.GeneralJSONHeader"
-                        }
-                    }
-                }
-            }
-        },
         "/get/tag/{id}": {
             "get": {
                 "produces": [

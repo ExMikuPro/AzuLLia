@@ -24,7 +24,6 @@ func routerMain(router *gin.Engine) {
 	getGroup.GET("/article/:id", getFunction.GetArticle)   // 文章内容
 	getGroup.GET("/tag/:id", getFunction.GetTag)           // 标签内容
 	getGroup.GET("/category/:id", getFunction.GetCategory) // 标签内容
-	getGroup.GET("/info", getFunction.getInfo)             // 网页内容
 
 	addGroup.POST("/tag", addFunction.AddTag)           // 添加标签
 	addGroup.POST("/category", addFunction.AddCategory) // 添加分类

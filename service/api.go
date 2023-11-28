@@ -29,24 +29,6 @@ func (_ *Get) GetAbout(ctx *gin.Context) { // 框架版本界面
 	})
 }
 
-// GetAbout @Title 系统
-// @Tags 系统
-// @Summary	获取网页基本信息
-// @Produce	json
-// @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/get/info [GET]
-func (_ *Get) getInfo(ctx *gin.Context) {
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  "success",
-		Path: ctx.Request.URL.Path,
-		Data: gin.H{
-			"title": "网页主标题",
-			"url":   "http://127.0.0.1/",
-		},
-	})
-}
-
 // ArticleList @Title 文章
 // @Tags 文章
 // @Summary	获取列表
