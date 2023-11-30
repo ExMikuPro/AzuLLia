@@ -14,6 +14,7 @@ func routerMain(router *gin.Engine) {
 	deleteGroup := adminGroup.Group("/delete/") // 删除
 
 	// 添加中间键
+	router.Use(utilityFunction.ReturnHeader())
 	adminGroup.Use(utilityFunction.CheckLoginMiddleware())  // 登陆认证
 	adminGroup.Use(utilityFunction.verifyHeaderLoginCode()) // 请求头认证
 
