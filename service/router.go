@@ -29,10 +29,11 @@ func routerMain(router *gin.Engine) {
 	v1Group.POST("/user", addFunction.AddUser)         // 添加用户
 	v1Group.POST("/article", addFunction.AddArticle)   // 添加文章
 
-	v1Group.PUT("/tag", updateFunction.UpdateTag)          // 更新标签
-	v1Group.PUT("/category", updateFunction.UpdateArticle) // 更新类别
-	v1Group.PUT("/group", updateFunction.UpdateGroup)      // 更新用户组
-	v1Group.PUT("/user", updateFunction.UpdateUser)        // 更新用户
+	v1Group.PUT("/tag", updateFunction.UpdateTag)         // 更新标签
+	v1Group.PUT("/article", updateFunction.UpdateArticle) // 更新文章
+	v1Group.PUT("/group", updateFunction.UpdateGroup)     // 更新用户组
+	v1Group.PUT("/user", updateFunction.UpdateUser)       // 更新用户
+	v1Group.PUT("/category")                              // 更新分类
 
 	v1Group.DELETE("/tag", deleteFunction.DeleteTag)           // 删除标签
 	v1Group.DELETE("/category", deleteFunction.DeleteCategory) // 删除类别

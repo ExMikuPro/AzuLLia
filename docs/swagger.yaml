@@ -234,6 +234,38 @@ paths:
       summary: 添加分类
       tags:
       - 分类
+    put:
+      parameters:
+      - description: 名称
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: 缩略名
+        in: formData
+        name: slug
+        required: true
+        type: string
+      - description: 选项描述
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: 项目个数
+        in: formData
+        name: count
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 更新分类
+      tags:
+      - 分类
   /api/v1/category/{id}:
     get:
       parameters:
@@ -269,7 +301,7 @@ paths:
             $ref: '#/definitions/service.GeneralJSONHeader'
       summary: 删除用户组
       tags:
-      - 用户
+      - 用户组
     post:
       parameters:
       - description: 名称
@@ -291,7 +323,7 @@ paths:
             $ref: '#/definitions/service.GeneralJSONHeader'
       summary: 添加用户组
       tags:
-      - 用户
+      - 用户组
     put:
       parameters:
       - description: ID
@@ -313,7 +345,7 @@ paths:
             $ref: '#/definitions/service.GeneralJSONHeader'
       summary: 更新用户组
       tags:
-      - 用户
+      - 用户组
   /api/v1/tag:
     delete:
       parameters:

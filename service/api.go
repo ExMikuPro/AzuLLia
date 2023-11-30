@@ -353,8 +353,8 @@ func (_ *Add) AddCategory(ctx *gin.Context) {
 	})
 }
 
-// AddGroup @Title 用户
-// @Tags 用户
+// AddGroup @Title 用户组
+// @Tags 用户组
 // @Summary	添加用户组
 // @Produce	json
 // @Param name formData string true "名称"
@@ -582,6 +582,58 @@ func (_ *Update) UpdateTag(ctx *gin.Context) {
 	})
 }
 
+// UpdateCategory @Title分类
+// @Tags 分类
+// @Summary 更新分类
+// @Produce	json
+// @Param name formData string true "名称"
+// @Param slug formData string true "缩略名"
+// @Param description formData string true "选项描述"
+// @Param count formData string true "项目个数"
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/api/v1/category [PUT]
+func (_ *Update) UpdateCategory(ctx *gin.Context) {
+	tid, _ := primitive.ObjectIDFromHex(ctx.PostForm("id"))
+	name := ctx.PostForm("name")
+	slug := ctx.PostForm("slug")
+	description := ctx.PostForm("description")
+	count := ctx.PostForm("count")
+	order, _ := strconv.Atoi(ctx.PostForm("order"))
+
+	filter := bson.D{{Key: "_id", Value: tid}}
+	update := bson.D{
+		bson.E{Key: "$set", Value: bson.D{
+			{Key: "name", Value: name},
+			{Key: "slug", Value: slug},
+			{Key: "type", Value: description},
+			{Key: "description", Value: description},
+			{Key: "count", Value: count},
+			{Key: "order", Value: order},
+		}},
+	}
+
+	err := DataBase.UpdateOneDB("tag", filter, update)
+	if err != nil {
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: ServerError,
+			Msg:  "server error",
+			Path: ctx.Request.URL.Path,
+			Data: nil,
+		})
+
+		return
+	}
+
+	ctx.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: SuccessCode,
+		Msg:  "success",
+		Path: ctx.Request.URL.Path,
+		Data: gin.H{
+			"id": tid,
+		},
+	})
+}
+
 // UpdateArticle @Title 文章
 // @Tags 文章
 // @Summary 更新文章
@@ -630,8 +682,8 @@ func (_ *Update) UpdateArticle(ctx *gin.Context) {
 	})
 }
 
-// UpdateGroup @Title 用户
-// @Tags 用户
+// UpdateGroup @Title 用户组
+// @Tags 用户组
 // @Summary 更新用户组
 // @Produce	json
 // @Param id formData string true "ID"
@@ -748,8 +800,8 @@ func (_ *Delete) DeleteCategory(ctx *gin.Context) { // 删除分类函数
 	})
 }
 
-// DeleteGroup @Title 用户
-// @Tags 用户
+// DeleteGroup @Title 用户组
+// @Tags 用户组
 // @Summary	删除用户组
 // @Produce	json
 // @Param id formData string true "用户组id"
