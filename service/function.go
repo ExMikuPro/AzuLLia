@@ -26,6 +26,12 @@ func (_ *Utility) UserPasswdVerify(userName string, passwd string) bool { // 用
 	return true
 }
 
+func (_ *Utility) ReturnHeader() gin.HandlerFunc { // 通过cookie认证
+	return func(ctx *gin.Context) {
+		ctx.Writer.Header().Set("Allow", "GET,POST,PUT,DELETE")
+	}
+}
+
 func (_ *Utility) CheckLoginMiddleware() gin.HandlerFunc { // 通过cookie认证
 	return func(ctx *gin.Context) {
 		// cookie, err := ctx.Cookie("")
