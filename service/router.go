@@ -40,14 +40,15 @@ func routerMain(router *gin.Engine) {
 	v1Group.DELETE("/group", deleteFunction.DeleteGroup)       // 删除用户组
 	v1Group.DELETE("/user", deleteFunction.DeleteUser)         // 删除用户
 	v1Group.DELETE("/article", deleteFunction.DeleteArticle)   // 删除文章
+
+	v1Group.POST("/userLogin", userFunction.UserLogin) // 用户登陆
+
 	// 通用型路由组
 	router.GET("/", getFunction.MainPage) // 主页
 
 	router.GET("/about", getFunction.GetAbout) // 关于
 
 	router.POST("/upload", UploadFile) // 上传
-
-	router.POST("/userLogin", userFunction.UserLogin) // 登陆
 
 	router.GET("/test", test) // 测试
 

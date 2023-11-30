@@ -441,7 +441,7 @@ func (_ *Add) AddUser(ctx *gin.Context) { // 添加用户
 // @Param name formData string true "用户名"
 // @Param passwd formData string true "密码"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/userLogin [POST]
+// @Router		/api/v1/userLogin [POST]
 func (_ *User) UserLogin(ctx *gin.Context) {
 	userName := ctx.PostForm("name")
 	hash := hmac.New(sha256.New, []byte("12345678"))

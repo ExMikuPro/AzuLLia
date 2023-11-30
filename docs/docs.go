@@ -771,7 +771,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/userLogin": {
+        "/api/v1/userLogin": {
             "post": {
                 "produces": [
                     "application/json"

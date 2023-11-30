@@ -564,7 +564,7 @@ paths:
       summary: 更新用户
       tags:
       - 用户
-  /userLogin:
+  /api/v1/userLogin:
     post:
       parameters:
       - description: 用户名
