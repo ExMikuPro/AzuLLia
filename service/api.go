@@ -34,7 +34,7 @@ func (_ *Get) GetAbout(ctx *gin.Context) { // 框架版本界面
 // @Summary	获取列表
 // @Produce	json
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/list/article [GET]
+// @Router		/api/v1/article [GET]
 func (_ *Get) ArticleList(ctx *gin.Context) { // 文章列表界面
 	data, err := DataBase.ReadAllDB("paperList", []gin.H{})
 	if err != nil {
@@ -63,7 +63,7 @@ func (_ *Get) ArticleList(ctx *gin.Context) { // 文章列表界面
 // @Produce	json
 // @Param id path string true "文章ID"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/get/article/{id} [GET]
+// @Router		/api/v1/article/{id} [GET]
 func (_ *Get) GetArticle(ctx *gin.Context) { // 文章内容页面
 	cid, _ := primitive.ObjectIDFromHex(ctx.Param("id")) // 文章cid
 
@@ -96,7 +96,7 @@ func (_ *Get) GetArticle(ctx *gin.Context) { // 文章内容页面
 // @Summary	获取标签列表
 // @Produce	json
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/list/tag [GET]
+// @Router		/api/v1/tag [GET]
 func (_ *Get) TagList(ctx *gin.Context) { // 标签列表界面
 	data, err := DataBase.ReadAllDB("tag", []gin.H{})
 	if err != nil {
@@ -124,7 +124,7 @@ func (_ *Get) TagList(ctx *gin.Context) { // 标签列表界面
 // @Summary	获取分类列表
 // @Produce	json
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/list/category [GET]
+// @Router		/api/v1/category [GET]
 func (_ *Get) CategoryList(ctx *gin.Context) { // 分类列表界面
 	data, err := DataBase.ReadAllDB("category", []gin.H{})
 	if err != nil {
@@ -153,7 +153,7 @@ func (_ *Get) CategoryList(ctx *gin.Context) { // 分类列表界面
 // @Produce	json
 // @Param id path string true "分类ID"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/get/category/{id} [GET]
+// @Router		/api/v1/category/{id} [GET]
 func (_ *Get) GetCategory(ctx *gin.Context) {
 	cid, err := primitive.ObjectIDFromHex(ctx.Param("id"))
 	if err != nil {
@@ -192,7 +192,7 @@ func (_ *Get) GetCategory(ctx *gin.Context) {
 // @Produce	json
 // @Param id path string true "标签ID"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/get/tag/{id} [GET]
+// @Router		/api/v1/tag/{id} [GET]
 func (_ *Get) GetTag(ctx *gin.Context) {
 	tid, _ := primitive.ObjectIDFromHex(ctx.Param("id"))
 	filter := bson.D{
@@ -235,7 +235,7 @@ func (_ *Get) MainPage(ctx *gin.Context) { // 主页页面
 // @Param description formData string true "描述"
 // @Param order formData int true "排序"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/admin/add/tag [POST]
+// @Router		/api/v1/tag [POST]
 func (_ *Add) AddTag(ctx *gin.Context) { // 添加新标签
 	order, _ := strconv.Atoi(ctx.PostForm("order"))
 	tageData := tageTable{
@@ -274,7 +274,7 @@ func (_ *Add) AddTag(ctx *gin.Context) { // 添加新标签
 // @Summary	添加文章
 // @Param request_body body articleTable true "JSON数据"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router /admin/add/article [POST]
+// @Router /api/v1/article [POST]
 func (_ *Add) AddArticle(ctx *gin.Context) {
 	var articleData articleTable
 	err := ctx.ShouldBindJSON(&articleData)
@@ -322,7 +322,7 @@ func (_ *Add) AddArticle(ctx *gin.Context) {
 // @Param description formData string true "描述"
 // @Param order formData int true "排序"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/admin/add/category [POST]
+// @Router		/api/v1/category [POST]
 func (_ *Add) AddCategory(ctx *gin.Context) {
 	order, _ := strconv.Atoi(ctx.PostForm("order"))
 	typeData := typeTable{
@@ -353,14 +353,14 @@ func (_ *Add) AddCategory(ctx *gin.Context) {
 	})
 }
 
-// AddGroup @Title 用户
-// @Tags 用户
+// AddGroup @Title 用户组
+// @Tags 用户组
 // @Summary	添加用户组
 // @Produce	json
 // @Param name formData string true "名称"
 // @Param order formData int true "排序"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/admin/add/group [POST]
+// @Router		/api/v1/group [POST]
 func (_ *Add) AddGroup(ctx *gin.Context) {
 	userGroup := userGroupTable{
 		ID:   primitive.NewObjectID(),
@@ -398,7 +398,7 @@ func (_ *Add) AddGroup(ctx *gin.Context) {
 // @Param screenName formData string true "用户昵称"
 // @Param group formData string true "用户组"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/admin/add/user [POST]
+// @Router		/api/v1/user [POST]
 func (_ *Add) AddUser(ctx *gin.Context) { // 添加用户
 	hash := hmac.New(sha256.New, []byte("12345678"))
 	hash.Write([]byte(ctx.PostForm("passwd")))
@@ -441,7 +441,7 @@ func (_ *Add) AddUser(ctx *gin.Context) { // 添加用户
 // @Param name formData string true "用户名"
 // @Param passwd formData string true "密码"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/userLogin [POST]
+// @Router		/api/v1/userLogin [POST]
 func (_ *User) UserLogin(ctx *gin.Context) {
 	userName := ctx.PostForm("name")
 	hash := hmac.New(sha256.New, []byte("12345678"))
@@ -477,7 +477,7 @@ func (_ *User) UserLogin(ctx *gin.Context) {
 // @Param screenName formData string true "昵称"
 // @Param group formData string true "用户组"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/admin/update/user [POST]
+// @Router		/api/v1/user [PUT]
 func (_ *Update) UpdateUser(ctx *gin.Context) {
 	uid, err := primitive.ObjectIDFromHex(ctx.PostForm("id"))
 	if err != nil {
@@ -540,7 +540,7 @@ func (_ *Update) UpdateUser(ctx *gin.Context) {
 // @Param type formData string true "分类"
 // @Param description formData string true "描述"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/admin/update/tag [POST]
+// @Router		/api/v1/tag [PUT]
 func (_ *Update) UpdateTag(ctx *gin.Context) {
 	tid, _ := primitive.ObjectIDFromHex(ctx.PostForm("id"))
 	name := ctx.PostForm("name")
@@ -582,6 +582,58 @@ func (_ *Update) UpdateTag(ctx *gin.Context) {
 	})
 }
 
+// UpdateCategory @Title 分类
+// @Tags 分类
+// @Summary 更新分类
+// @Produce	json
+// @Param name formData string true "名称"
+// @Param slug formData string true "缩略名"
+// @Param description formData string true "选项描述"
+// @Param count formData string true "项目个数"
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/api/v1/category [PUT]
+func (_ *Update) UpdateCategory(ctx *gin.Context) {
+	tid, _ := primitive.ObjectIDFromHex(ctx.PostForm("id"))
+	name := ctx.PostForm("name")
+	slug := ctx.PostForm("slug")
+	description := ctx.PostForm("description")
+	count := ctx.PostForm("count")
+	order, _ := strconv.Atoi(ctx.PostForm("order"))
+
+	filter := bson.D{{Key: "_id", Value: tid}}
+	update := bson.D{
+		bson.E{Key: "$set", Value: bson.D{
+			{Key: "name", Value: name},
+			{Key: "slug", Value: slug},
+			{Key: "type", Value: description},
+			{Key: "description", Value: description},
+			{Key: "count", Value: count},
+			{Key: "order", Value: order},
+		}},
+	}
+
+	err := DataBase.UpdateOneDB("tag", filter, update)
+	if err != nil {
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: ServerError,
+			Msg:  "server error",
+			Path: ctx.Request.URL.Path,
+			Data: nil,
+		})
+
+		return
+	}
+
+	ctx.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: SuccessCode,
+		Msg:  "success",
+		Path: ctx.Request.URL.Path,
+		Data: gin.H{
+			"id": tid,
+		},
+	})
+}
+
 // UpdateArticle @Title 文章
 // @Tags 文章
 // @Summary 更新文章
@@ -592,7 +644,7 @@ func (_ *Update) UpdateTag(ctx *gin.Context) {
 // @Param description formData string true "描述"
 // @Param order formData string true "排序"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/admin/update/tag [POST]
+// @Router		/api/v1/article [PUT]
 func (_ *Update) UpdateArticle(ctx *gin.Context) {
 	tid, _ := primitive.ObjectIDFromHex(ctx.PostForm("id"))
 	name := ctx.PostForm("name")
@@ -630,14 +682,14 @@ func (_ *Update) UpdateArticle(ctx *gin.Context) {
 	})
 }
 
-// UpdateGroup @Title 文章
-// @Tags 文章
-// @Summary 更新文章
+// UpdateGroup @Title 用户组
+// @Tags 用户组
+// @Summary 更新用户组
 // @Produce	json
 // @Param id formData string true "ID"
 // @Param name formData string true "名称"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/admin/update/group [POST]
+// @Router		/api/v1/group [PUT]
 func (_ *Update) UpdateGroup(ctx *gin.Context) {
 	tid, _ := primitive.ObjectIDFromHex(ctx.PostForm("id"))
 	name := ctx.PostForm("name")
@@ -676,7 +728,7 @@ func (_ *Update) UpdateGroup(ctx *gin.Context) {
 // @Produce	json
 // @Param id formData string true "标签id"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/admin/delete/tag [POST]
+// @Router		/api/v1/tag [DELETE]
 func (_ *Delete) DeleteTag(ctx *gin.Context) { // 删除标签函数
 	tid, err := primitive.ObjectIDFromHex(ctx.PostForm("id"))
 	if err != nil {
@@ -715,7 +767,7 @@ func (_ *Delete) DeleteTag(ctx *gin.Context) { // 删除标签函数
 // @Produce	json
 // @Param id formData string true "分类id"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/admin/delete/category [POST]
+// @Router		/api/v1/category [DELETE]
 func (_ *Delete) DeleteCategory(ctx *gin.Context) { // 删除分类函数
 	cid, err := primitive.ObjectIDFromHex(ctx.PostForm("id"))
 	if err != nil {
@@ -748,13 +800,13 @@ func (_ *Delete) DeleteCategory(ctx *gin.Context) { // 删除分类函数
 	})
 }
 
-// DeleteGroup @Title 用户
-// @Tags 用户
+// DeleteGroup @Title 用户组
+// @Tags 用户组
 // @Summary	删除用户组
 // @Produce	json
 // @Param id formData string true "用户组id"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/admin/delete/group [POST]
+// @Router		/api/v1/group [DELETE]
 func (_ *Delete) DeleteGroup(ctx *gin.Context) { // 删除用户组函数
 	gid, err := primitive.ObjectIDFromHex(ctx.PostForm("id"))
 	if err != nil {
@@ -793,7 +845,7 @@ func (_ *Delete) DeleteGroup(ctx *gin.Context) { // 删除用户组函数
 // @Produce	json
 // @Param id formData string true "用户id"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/admin/delete/user [POST]
+// @Router		/api/v1/user [DELETE]
 func (_ *Delete) DeleteUser(ctx *gin.Context) { // 删除用户函数
 	uid, err := primitive.ObjectIDFromHex(ctx.PostForm("id"))
 	if err != nil {
@@ -832,7 +884,7 @@ func (_ *Delete) DeleteUser(ctx *gin.Context) { // 删除用户函数
 // @Produce	json
 // @Param id formData string true "文章id"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/admin/delete/article [POST]
+// @Router		/api/v1/article [DELETE]
 func (_ *Delete) DeleteArticle(ctx *gin.Context) { // 删除文章函数
 	aid, err := primitive.ObjectIDFromHex(ctx.PostForm("id"))
 	if err != nil {

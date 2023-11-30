@@ -6,50 +6,46 @@ import (
 
 func routerMain(router *gin.Engine) {
 	// 功能型接口路由组
-	listGroup := router.Group("/list/")         // 列表
-	getGroup := router.Group("/get/")           // 内容
-	adminGroup := router.Group("/admin/")       // 管理
-	addGroup := adminGroup.Group("/add/")       // 添加
-	updateGroup := adminGroup.Group("/update/") // 更新
-	deleteGroup := adminGroup.Group("/delete/") // 删除
+	apiGroup := router.Group("/api/") // 外部调用接口
+	v1Group := apiGroup.Group("/v1/") // 版本号
 
 	// 添加中间键
-	router.Use(utilityFunction.ReturnHeader())
-	adminGroup.Use(utilityFunction.CheckLoginMiddleware())  // 登陆认证
-	adminGroup.Use(utilityFunction.verifyHeaderLoginCode()) // 请求头认证
+	router.Use(utilityFunction.ReturnHeader()) // 响应头中间件
 
-	listGroup.GET("/article", getFunction.ArticleList)   // 文章列表
-	listGroup.GET("/tag", getFunction.TagList)           // 标签列表
-	listGroup.GET("/category", getFunction.CategoryList) // 分类列表
+	v1Group.GET("/article", getFunction.ArticleList)   // 文章列表
+	v1Group.GET("/tag", getFunction.TagList)           // 标签列表
+	v1Group.GET("/category", getFunction.CategoryList) // 分类列表
 
-	getGroup.GET("/article/:id", getFunction.GetArticle)   // 文章内容
-	getGroup.GET("/tag/:id", getFunction.GetTag)           // 标签内容
-	getGroup.GET("/category/:id", getFunction.GetCategory) // 标签内容
+	v1Group.GET("/article/:id", getFunction.GetArticle)   // 文章内容
+	v1Group.GET("/tag/:id", getFunction.GetTag)           // 标签内容
+	v1Group.GET("/category/:id", getFunction.GetCategory) // 标签内容
 
-	addGroup.POST("/tag", addFunction.AddTag)           // 添加标签
-	addGroup.POST("/category", addFunction.AddCategory) // 添加分类
-	addGroup.POST("/group", addFunction.AddGroup)       // 添加用户组
-	addGroup.POST("/user", addFunction.AddUser)         // 添加用户
-	addGroup.POST("/article", addFunction.AddArticle)   // 添加文章
+	v1Group.POST("/tag", utilityFunction.verifyHeaderLoginCode(), addFunction.AddTag)           // 添加标签
+	v1Group.POST("/category", utilityFunction.verifyHeaderLoginCode(), addFunction.AddCategory) // 添加分类
+	v1Group.POST("/group", utilityFunction.verifyHeaderLoginCode(), addFunction.AddGroup)       // 添加用户组
+	v1Group.POST("/user", utilityFunction.verifyHeaderLoginCode(), addFunction.AddUser)         // 添加用户
+	v1Group.POST("/article", utilityFunction.verifyHeaderLoginCode(), addFunction.AddArticle)   // 添加文章
 
-	updateGroup.POST("/tag", updateFunction.UpdateTag)          // 更新标签
-	updateGroup.POST("/category", updateFunction.UpdateArticle) // 更新类别
-	updateGroup.POST("/group", updateFunction.UpdateGroup)      // 更新用户组
-	updateGroup.POST("/user", updateFunction.UpdateUser)        // 更新用户
+	v1Group.PUT("/tag", utilityFunction.verifyHeaderLoginCode(), updateFunction.UpdateTag)           // 更新标签
+	v1Group.PUT("/article", utilityFunction.verifyHeaderLoginCode(), updateFunction.UpdateArticle)   // 更新文章
+	v1Group.PUT("/group", utilityFunction.verifyHeaderLoginCode(), updateFunction.UpdateGroup)       // 更新用户组
+	v1Group.PUT("/user", utilityFunction.verifyHeaderLoginCode(), updateFunction.UpdateUser)         // 更新用户
+	v1Group.PUT("/category", utilityFunction.verifyHeaderLoginCode(), updateFunction.UpdateCategory) // 更新分类
 
-	deleteGroup.POST("/tag", deleteFunction.DeleteTag)           // 删除标签
-	deleteGroup.POST("/category", deleteFunction.DeleteCategory) // 删除类别
-	deleteGroup.POST("/group", deleteFunction.DeleteGroup)       // 删除用户组
-	deleteGroup.POST("/user", deleteFunction.DeleteUser)         // 删除用户
-	deleteGroup.POST("/article", deleteFunction.DeleteArticle)   // 删除文章
+	v1Group.DELETE("/tag", utilityFunction.verifyHeaderLoginCode(), deleteFunction.DeleteTag)           // 删除标签
+	v1Group.DELETE("/category", utilityFunction.verifyHeaderLoginCode(), deleteFunction.DeleteCategory) // 删除类别
+	v1Group.DELETE("/group", utilityFunction.verifyHeaderLoginCode(), deleteFunction.DeleteGroup)       // 删除用户组
+	v1Group.DELETE("/user", utilityFunction.verifyHeaderLoginCode(), deleteFunction.DeleteUser)         // 删除用户
+	v1Group.DELETE("/article", utilityFunction.verifyHeaderLoginCode(), deleteFunction.DeleteArticle)   // 删除文章
+
+	v1Group.POST("/userLogin", userFunction.UserLogin) // 用户登陆
+
 	// 通用型路由组
 	router.GET("/", getFunction.MainPage) // 主页
 
 	router.GET("/about", getFunction.GetAbout) // 关于
 
 	router.POST("/upload", UploadFile) // 上传
-
-	router.POST("/userLogin", userFunction.UserLogin) // 登陆
 
 	router.GET("/test", test) // 测试
 
