@@ -582,7 +582,7 @@ func (_ *Update) UpdateTag(ctx *gin.Context) {
 	})
 }
 
-// UpdateCategory @Title分类
+// UpdateCategory @Title 分类
 // @Tags 分类
 // @Summary 更新分类
 // @Produce	json

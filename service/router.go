@@ -26,11 +26,11 @@ func routerMain(router *gin.Engine) {
 	v1Group.POST("/user", utilityFunction.verifyHeaderLoginCode(), addFunction.AddUser)         // 添加用户
 	v1Group.POST("/article", utilityFunction.verifyHeaderLoginCode(), addFunction.AddArticle)   // 添加文章
 
-	v1Group.PUT("/tag", utilityFunction.verifyHeaderLoginCode(), updateFunction.UpdateTag)         // 更新标签
-	v1Group.PUT("/article", utilityFunction.verifyHeaderLoginCode(), updateFunction.UpdateArticle) // 更新文章
-	v1Group.PUT("/group", utilityFunction.verifyHeaderLoginCode(), updateFunction.UpdateGroup)     // 更新用户组
-	v1Group.PUT("/user", utilityFunction.verifyHeaderLoginCode(), updateFunction.UpdateUser)       // 更新用户
-	v1Group.PUT("/category")                                                                       // 更新分类
+	v1Group.PUT("/tag", utilityFunction.verifyHeaderLoginCode(), updateFunction.UpdateTag)           // 更新标签
+	v1Group.PUT("/article", utilityFunction.verifyHeaderLoginCode(), updateFunction.UpdateArticle)   // 更新文章
+	v1Group.PUT("/group", utilityFunction.verifyHeaderLoginCode(), updateFunction.UpdateGroup)       // 更新用户组
+	v1Group.PUT("/user", utilityFunction.verifyHeaderLoginCode(), updateFunction.UpdateUser)         // 更新用户
+	v1Group.PUT("/category", utilityFunction.verifyHeaderLoginCode(), updateFunction.UpdateCategory) // 更新分类
 
 	v1Group.DELETE("/tag", utilityFunction.verifyHeaderLoginCode(), deleteFunction.DeleteTag)           // 删除标签
 	v1Group.DELETE("/category", utilityFunction.verifyHeaderLoginCode(), deleteFunction.DeleteCategory) // 删除类别
