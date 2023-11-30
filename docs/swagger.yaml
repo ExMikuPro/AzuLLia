@@ -73,7 +73,35 @@ paths:
       summary: 获取框架版本信息
       tags:
       - 系统
-  /admin/add/article:
+  /api/v1/article:
+    delete:
+      parameters:
+      - description: 文章id
+        in: formData
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 删除文章
+      tags:
+      - 文章
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 获取列表
+      tags:
+      - 文章
     post:
       parameters:
       - description: JSON数据
@@ -90,7 +118,90 @@ paths:
       summary: 添加文章
       tags:
       - 文章
-  /admin/add/category:
+    put:
+      parameters:
+      - description: 名称
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: 缩略名
+        in: formData
+        name: slug
+        required: true
+        type: string
+      - description: 分类
+        in: formData
+        name: type
+        required: true
+        type: string
+      - description: 描述
+        in: formData
+        name: description
+        required: true
+        type: string
+      - description: 排序
+        in: formData
+        name: order
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 更新文章
+      tags:
+      - 文章
+  /api/v1/article/{id}:
+    get:
+      parameters:
+      - description: 文章ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 获取文章内容
+      tags:
+      - 文章
+  /api/v1/category:
+    delete:
+      parameters:
+      - description: 分类id
+        in: formData
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 删除分类
+      tags:
+      - 分类
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 获取分类列表
+      tags:
+      - 分类
     post:
       parameters:
       - description: 名称
@@ -123,7 +234,42 @@ paths:
       summary: 添加分类
       tags:
       - 分类
-  /admin/add/group:
+  /api/v1/category/{id}:
+    get:
+      parameters:
+      - description: 分类ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 获取分类
+      tags:
+      - 分类
+  /api/v1/group:
+    delete:
+      parameters:
+      - description: 用户组id
+        in: formData
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 删除用户组
+      tags:
+      - 用户
     post:
       parameters:
       - description: 名称
@@ -146,7 +292,57 @@ paths:
       summary: 添加用户组
       tags:
       - 用户
-  /admin/add/tag:
+    put:
+      parameters:
+      - description: ID
+        in: formData
+        name: id
+        required: true
+        type: string
+      - description: 名称
+        in: formData
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 更新用户组
+      tags:
+      - 用户
+  /api/v1/tag:
+    delete:
+      parameters:
+      - description: 标签id
+        in: formData
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 删除标签
+      tags:
+      - 标签
+    get:
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 获取标签列表
+      tags:
+      - 标签
     post:
       parameters:
       - description: 名称
@@ -184,7 +380,74 @@ paths:
       summary: 添加标签
       tags:
       - 标签
-  /admin/add/user:
+    put:
+      parameters:
+      - description: 名称
+        in: formData
+        name: name
+        required: true
+        type: string
+      - description: 缩略名
+        in: formData
+        name: slug
+        required: true
+        type: string
+      - description: 分类
+        in: formData
+        name: type
+        required: true
+        type: string
+      - description: 描述
+        in: formData
+        name: description
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 更新标签
+      tags:
+      - 标签
+  /api/v1/tag/{id}:
+    get:
+      parameters:
+      - description: 标签ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 获取标签
+      tags:
+      - 标签
+  /api/v1/user:
+    delete:
+      parameters:
+      - description: 用户id
+        in: formData
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 删除用户
+      tags:
+      - 用户
     post:
       parameters:
       - description: 名称
@@ -227,159 +490,7 @@ paths:
       summary: 添加用户
       tags:
       - 用户
-  /admin/delete/article:
-    post:
-      parameters:
-      - description: 文章id
-        in: formData
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/service.GeneralJSONHeader'
-      summary: 删除文章
-      tags:
-      - 文章
-  /admin/delete/category:
-    post:
-      parameters:
-      - description: 分类id
-        in: formData
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/service.GeneralJSONHeader'
-      summary: 删除分类
-      tags:
-      - 分类
-  /admin/delete/group:
-    post:
-      parameters:
-      - description: 用户组id
-        in: formData
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/service.GeneralJSONHeader'
-      summary: 删除用户组
-      tags:
-      - 用户
-  /admin/delete/tag:
-    post:
-      parameters:
-      - description: 标签id
-        in: formData
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/service.GeneralJSONHeader'
-      summary: 删除标签
-      tags:
-      - 标签
-  /admin/delete/user:
-    post:
-      parameters:
-      - description: 用户id
-        in: formData
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/service.GeneralJSONHeader'
-      summary: 删除用户
-      tags:
-      - 用户
-  /admin/update/group:
-    post:
-      parameters:
-      - description: ID
-        in: formData
-        name: id
-        required: true
-        type: string
-      - description: 名称
-        in: formData
-        name: name
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/service.GeneralJSONHeader'
-      summary: 更新文章
-      tags:
-      - 文章
-  /admin/update/tag:
-    post:
-      parameters:
-      - description: 名称
-        in: formData
-        name: name
-        required: true
-        type: string
-      - description: 缩略名
-        in: formData
-        name: slug
-        required: true
-        type: string
-      - description: 分类
-        in: formData
-        name: type
-        required: true
-        type: string
-      - description: 描述
-        in: formData
-        name: description
-        required: true
-        type: string
-      - description: 排序
-        in: formData
-        name: order
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/service.GeneralJSONHeader'
-      summary: 更新文章
-      tags:
-      - 文章
-  /admin/update/user:
-    post:
+    put:
       parameters:
       - description: 用户名
         in: formData
@@ -421,96 +532,6 @@ paths:
       summary: 更新用户
       tags:
       - 用户
-  /get/article/{id}:
-    get:
-      parameters:
-      - description: 文章ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/service.GeneralJSONHeader'
-      summary: 获取文章内容
-      tags:
-      - 文章
-  /get/category/{id}:
-    get:
-      parameters:
-      - description: 分类ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/service.GeneralJSONHeader'
-      summary: 获取分类
-      tags:
-      - 分类
-  /get/tag/{id}:
-    get:
-      parameters:
-      - description: 标签ID
-        in: path
-        name: id
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/service.GeneralJSONHeader'
-      summary: 获取标签
-      tags:
-      - 标签
-  /list/article:
-    get:
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/service.GeneralJSONHeader'
-      summary: 获取列表
-      tags:
-      - 文章
-  /list/category:
-    get:
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/service.GeneralJSONHeader'
-      summary: 获取分类列表
-      tags:
-      - 分类
-  /list/tag:
-    get:
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/service.GeneralJSONHeader'
-      summary: 获取标签列表
-      tags:
-      - 标签
   /userLogin:
     post:
       parameters:
