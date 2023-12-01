@@ -1,6 +1,8 @@
 package service
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
@@ -8,6 +10,17 @@ import (
 	"net/http"
 	"os"
 )
+
+func HashSHA256(input string) string { // 创建hash256
+	hash := sha256.New()
+	hash.Write([]byte(input))
+	return hex.EncodeToString(hash.Sum(nil))
+}
+
+func VerifyHash(input string, verify string) bool { // 验证hash256
+	recomputedHash := HashSHA256(input)
+	return recomputedHash == verify
+}
 
 // 中间件
 
