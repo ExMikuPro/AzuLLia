@@ -47,7 +47,7 @@ func routerMain(router *gin.Engine) {
 
 	router.POST("/upload", UploadFile) // 上传
 
-	router.GET("/test", test) // 测试
+	router.GET("/test/:id", test) // 测试
 
 }
 

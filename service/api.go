@@ -918,7 +918,8 @@ func (_ *Delete) DeleteArticle(ctx *gin.Context) { // 删除文章函数
 }
 
 func test(ctx *gin.Context) {
+	hid := ctx.Param("id") // 文章cid
 	ctx.JSON(http.StatusOK, gin.H{
-		"context": "<p>hello</p>",
+		"Hash": HashSHA256(hid),
 	})
 }
