@@ -27,6 +27,8 @@ DB_POOL_SIZE=10        # 数据库连接池大小
 DB_DATA_BASE=azullia   # 数据库名称
 
 GIN_MODE=debug         # 框架运行模式
+
+JWT_KEY = 12345678     # JWT加密密钥(需要自行修改)
 ```
 
 根据需要修改完成后，进行一下步骤(任选其一部署方案即可)
