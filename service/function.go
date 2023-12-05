@@ -4,11 +4,13 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"fmt"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
 	"net/http"
 	"os"
+	"time"
 )
 
 func HashSHA256(input string) string { // 创建hash256
@@ -70,6 +72,19 @@ func (_ *Utility) Log(data ...any) { // Debug输出
 	if gin.Mode() == gin.DebugMode {
 		fmt.Println(data...)
 	}
+}
+
+func (_ *Utility) JWTCreate(uid string) (string, error) { // 创建JWT认证码
+	claims := jwt.MapClaims{
+		"user_id": HashSHA256(uid),                       // 用户id
+		"exp":     time.Now().Add(time.Hour * 72).Unix(), // 生效时间
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	accessToken, err := token.SignedString([]byte(GetEvn("JWT_KEY")))
+	if err != nil {
+		return "", err
+	}
+	return accessToken, nil
 }
 
 func GetEvn(key string) string {
