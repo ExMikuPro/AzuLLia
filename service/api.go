@@ -1,12 +1,10 @@
 package service
 
 import (
-	"crypto/hmac"
-	"crypto/sha256"
-	"encoding/hex"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"strconv"
 	"time"
@@ -400,12 +398,20 @@ func (_ *Add) AddGroup(ctx *gin.Context) {
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/api/v1/user [POST]
 func (_ *Add) AddUser(ctx *gin.Context) { // 添加用户
-	hash := hmac.New(sha256.New, []byte("12345678"))
-	hash.Write([]byte(ctx.PostForm("passwd")))
+	passwd, err := bcrypt.GenerateFromPassword([]byte(ctx.PostForm("passwd")), bcrypt.DefaultCost)
+	if err != nil {
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: ServerError,
+			Msg:  "server error",
+			Path: ctx.Request.URL.Path,
+			Data: nil,
+		})
+		return
+	}
 	userData := userTable{
 		ID:         primitive.NewObjectID(),
 		Name:       ctx.PostForm("name"),
-		Passwd:     hex.EncodeToString(hash.Sum(nil)),
+		Passwd:     string(passwd),
 		Mail:       ctx.PostForm("mail"),
 		Url:        ctx.PostForm("url"),
 		ScreenName: ctx.PostForm("screenName"),
@@ -413,7 +419,7 @@ func (_ *Add) AddUser(ctx *gin.Context) { // 添加用户
 		UpData:     time.Now().Unix(),
 		Group:      ctx.PostForm("group"),
 	}
-	err := DataBase.WriteOneDB("user", userData)
+	err = DataBase.WriteOneDB("user", userData)
 	if err != nil {
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
 			Code: ServerError,
@@ -444,16 +450,23 @@ func (_ *Add) AddUser(ctx *gin.Context) { // 添加用户
 // @Router		/api/v1/userLogin [POST]
 func (_ *User) UserLogin(ctx *gin.Context) {
 	userName := ctx.PostForm("name")
-	hash := hmac.New(sha256.New, []byte("12345678"))
-	hash.Write([]byte(ctx.PostForm("passwd")))
-	passwd := hex.EncodeToString(hash.Sum(nil))
+	passwd := ctx.PostForm("passwd")
 	if utilityFunction.UserPasswdVerify(userName, passwd) { // 判断是否符合数据库内数据
+		token, err := utilityFunction.JWTCreate(userName)
+		if err != nil {
+			ctx.JSON(http.StatusOK, GeneralJSONHeader{
+				Code: UserInformationVerifyError,
+				Msg:  "user information verify error",
+				Path: ctx.Request.URL.Path,
+				Data: nil,
+			})
+		}
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
 			Code: SuccessCode,
 			Msg:  "success",
 			Path: ctx.Request.URL.Path,
 			Data: gin.H{
-				"status": "success",
+				"token": token,
 			},
 		})
 	} else {
@@ -490,9 +503,7 @@ func (_ *Update) UpdateUser(ctx *gin.Context) {
 		return
 	}
 	name := ctx.PostForm("name")
-	hash := hmac.New(sha256.New, []byte("12345678"))
-	hash.Write([]byte(ctx.PostForm("passwd")))
-	passwd := hex.EncodeToString(hash.Sum(nil))
+	passwd, err := bcrypt.GenerateFromPassword([]byte(ctx.PostForm("passwd")), bcrypt.DefaultCost)
 	mail := ctx.PostForm("mail")
 	url := ctx.PostForm("url")
 	screenName := ctx.PostForm("screenName")
@@ -501,7 +512,7 @@ func (_ *Update) UpdateUser(ctx *gin.Context) {
 	update := bson.D{
 		{Key: "$set", Value: bson.D{
 			{Key: "name", Value: name},
-			{Key: "passwd", Value: passwd},
+			{Key: "passwd", Value: string(passwd)},
 			{Key: "mail", Value: mail},
 			{Key: "url", Value: url},
 			{Key: "screenName", Value: screenName},
