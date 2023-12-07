@@ -4,6 +4,7 @@ import (
 	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -82,6 +83,17 @@ func (_ *Utility) JWTCreate(uid string) (string, error) { // 创建JWT认证码
 		return "", err
 	}
 	return accessToken, nil
+}
+
+func (_ *Utility) JWTVerify(tokenString string) (bool, error) { // 认证JWT认证码
+	token, _ := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(GetEvn("JWT_KEY")), nil
+	})
+	claims, _ := token.Claims.(jwt.MapClaims)
+	if claims["verify"] != utilityFunction.HashSHA256(claims["user_id"].(string)) {
+		return false, errors.New("JWT Verify Error")
+	}
+	return true, nil
 }
 
 func GetEvn(key string) string {
