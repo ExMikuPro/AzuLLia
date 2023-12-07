@@ -496,6 +496,15 @@ func (_ *Update) UpdateUser(ctx *gin.Context) {
 	}
 	name := ctx.PostForm("name")
 	passwd, err := bcrypt.GenerateFromPassword([]byte(ctx.PostForm("passwd")), bcrypt.DefaultCost)
+	if err != nil {
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: ServerError,
+			Msg:  "server error",
+			Path: ctx.Request.URL.Path,
+			Data: nil,
+		})
+		return
+	}
 	mail := ctx.PostForm("mail")
 	url := ctx.PostForm("url")
 	screenName := ctx.PostForm("screenName")
