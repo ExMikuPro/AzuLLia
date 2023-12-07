@@ -1,8 +1,10 @@
 package service
 
 import (
+	"crypto/hmac"
 	"crypto/sha256"
 	"encoding/hex"
+	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -13,15 +15,10 @@ import (
 	"time"
 )
 
-func HashSHA256(input string) string { // 创建hash256
-	hash := sha256.New()
+func (_ *Utility) HashSHA256(input string) string { // 创建hash256
+	hash := hmac.New(sha256.New, []byte(GetEvn("HASH_KEY")))
 	hash.Write([]byte(input))
 	return hex.EncodeToString(hash.Sum(nil))
-}
-
-func VerifyHash(input string, verify string) bool { // 验证hash256
-	recomputedHash := HashSHA256(input)
-	return recomputedHash == verify
 }
 
 // 中间件
@@ -55,7 +52,7 @@ func (_ *Utility) CheckLoginMiddleware() gin.HandlerFunc { // 通过cookie认证
 
 func (_ *Utility) verifyHeaderLoginCode() gin.HandlerFunc { // 通过请求头认证
 	return func(ctx *gin.Context) {
-
+		// fmt.Println(ctx.Request.Header.Get("token")) // 获取请求头认证信息
 	}
 }
 
@@ -76,7 +73,8 @@ func (_ *Utility) Log(data ...any) { // Debug输出
 
 func (_ *Utility) JWTCreate(uid string) (string, error) { // 创建JWT认证码
 	claims := jwt.MapClaims{
-		"user_id": HashSHA256(uid),                       // 用户id
+		"user_id": uid,                                   // 用户id
+		"verify":  utilityFunction.HashSHA256(uid),       // 校验用户id
 		"exp":     time.Now().Add(time.Hour * 72).Unix(), // 生效时间
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
@@ -85,6 +83,17 @@ func (_ *Utility) JWTCreate(uid string) (string, error) { // 创建JWT认证码
 		return "", err
 	}
 	return accessToken, nil
+}
+
+func (_ *Utility) JWTVerify(tokenString string) (bool, error) { // 认证JWT认证码
+	token, _ := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(GetEvn("JWT_KEY")), nil
+	})
+	claims, _ := token.Claims.(jwt.MapClaims)
+	if claims["verify"] != utilityFunction.HashSHA256(claims["user_id"].(string)) {
+		return false, errors.New("JWT Verify Error")
+	}
+	return true, nil
 }
 
 func GetEvn(key string) string {

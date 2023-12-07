@@ -917,9 +917,17 @@ func (_ *Delete) DeleteArticle(ctx *gin.Context) { // 删除文章函数
 	})
 }
 
+// DeleteArticle @Title 测试
+// @Tags c测试
+// @Summary	测试函数
+// @Produce	json
+// @Param id formData string false "文章id"
+// @Param to header string  false "token"
+// @Header 200 {string} Token "访问令牌"
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/test/123 [GET]
 func test(ctx *gin.Context) {
-	hid := ctx.Param("id") // 文章cid
-	token, _ := utilityFunction.JWTCreate(hid)
+	token, _ := utilityFunction.JWTCreate("123")
 	ctx.JSON(http.StatusOK, gin.H{
 		"token": token,
 	})

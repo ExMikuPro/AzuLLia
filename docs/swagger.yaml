@@ -587,4 +587,25 @@ paths:
       summary: 用户登陆
       tags:
       - 用户
+  /test/123:
+    get:
+      parameters:
+      - description: 文章id
+        in: formData
+        name: id
+        type: string
+      - description: token
+        in: header
+        name: to
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 测试函数
+      tags:
+      - c测试
 swagger: "2.0"
