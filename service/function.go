@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
+	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"os"
 	"time"
@@ -28,14 +29,13 @@ func (_ *Utility) UserPasswdVerify(userName string, passwd string) bool { // 用
 	if err != nil {
 		return false
 	}
-	if DBData["name"] != userName {
+	err = bcrypt.CompareHashAndPassword([]byte(DBData["passwd"].(string)), []byte(passwd)) // 密码验证
+	fmt.Println(err)
+	if err != nil {
 		return false
+	} else {
+		return true
 	}
-
-	if DBData["passwd"] != passwd {
-		return false
-	}
-	return true
 }
 
 func (_ *Utility) ReturnHeader() gin.HandlerFunc { // 通过cookie认证
@@ -90,6 +90,7 @@ func (_ *Utility) JWTVerify(tokenString string) (bool, error) { // 认证JWT认�
 		return []byte(GetEvn("JWT_KEY")), nil
 	})
 	claims, _ := token.Claims.(jwt.MapClaims)
+	fmt.Println(token.Valid)
 	if claims["verify"] != utilityFunction.HashSHA256(claims["user_id"].(string)) {
 		return false, errors.New("JWT Verify Error")
 	}
