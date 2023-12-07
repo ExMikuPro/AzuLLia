@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"golang.org/x/crypto/bcrypt"
 	"net/http"
 	"os"
@@ -24,17 +25,21 @@ func (_ *Utility) HashSHA256(input string) string { // 创建hash256
 
 // 中间件
 
-func (_ *Utility) UserPasswdVerify(userName string, passwd string) bool { // 用户密码认证函数
+func (_ *Utility) UserPasswdVerify(userName string, passwd string) (string, bool) { // 用户密码认证函数
 	DBData, err := DataBase.ReadOneDB("user", bson.D{bson.E{Key: "name", Value: userName}}, gin.H{})
 	if err != nil {
-		return false
+		return "", false
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(DBData["passwd"].(string)), []byte(passwd)) // 密码验证
-	fmt.Println(err)
+	// fmt.Println(DBData)
 	if err != nil {
-		return false
+		return "", false
 	} else {
-		return true
+		create, err := utilityFunction.JWTCreate(DBData["_id"].(primitive.ObjectID).Hex())
+		if err != nil {
+			return "", false
+		}
+		return create, true
 	}
 }
 

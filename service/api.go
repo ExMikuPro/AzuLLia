@@ -451,16 +451,8 @@ func (_ *Add) AddUser(ctx *gin.Context) { // 添加用户
 func (_ *User) UserLogin(ctx *gin.Context) {
 	userName := ctx.PostForm("name")
 	passwd := ctx.PostForm("passwd")
-	if utilityFunction.UserPasswdVerify(userName, passwd) { // 判断是否符合数据库内数据
-		token, err := utilityFunction.JWTCreate(userName)
-		if err != nil {
-			ctx.JSON(http.StatusOK, GeneralJSONHeader{
-				Code: UserInformationVerifyError,
-				Msg:  "user information verify error",
-				Path: ctx.Request.URL.Path,
-				Data: nil,
-			})
-		}
+
+	if token, ok := utilityFunction.UserPasswdVerify(userName, passwd); ok { // 判断是否符合数据库内数据
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
 			Code: SuccessCode,
 			Msg:  "success",
