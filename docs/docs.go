@@ -805,6 +805,39 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/test/123": {
+            "get": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "c测试"
+                ],
+                "summary": "测试函数",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "文章id",
+                        "name": "id",
+                        "in": "formData"
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "to",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/service.GeneralJSONHeader"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {
