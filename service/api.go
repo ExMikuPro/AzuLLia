@@ -440,15 +440,15 @@ func (_ *Add) AddUser(ctx *gin.Context) { // 添加用户
 
 }
 
-// UserLogin @Title 用户
-// @Tags 用户
+// SignIn @Title Token
+// @Tags Token
 // @Summary	用户登陆
 // @Produce	json
 // @Param name formData string true "用户名"
 // @Param passwd formData string true "密码"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/api/v1/userLogin [POST]
-func (_ *User) UserLogin(ctx *gin.Context) {
+// @Router		/api/v1/auth/signin [POST]
+func (_ *User) SignIn(ctx *gin.Context) {
 	userName := ctx.PostForm("name")
 	passwd := ctx.PostForm("passwd")
 
@@ -925,6 +925,32 @@ func (_ *Delete) DeleteArticle(ctx *gin.Context) { // 删除文章函数
 		Path: ctx.Request.URL.Path,
 		Data: gin.H{
 			"id": aid,
+		},
+	})
+}
+
+// Refresh @Title Token
+// @Tags Token
+// @Summary	身份认证获取
+// @Produce	json
+// @Param token formData string true "Token"
+// @Param refresh_token formData string true "Refresh_Token"
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/v1/auth/refresh [POST]
+func (_ *User) Refresh(ctx *gin.Context) {
+	// 接入传输token
+	//token := ctx.PostForm("token")
+	//refreshToken := ctx.PostForm("refresh_token")
+	// 判断刷新token是否过期
+
+	// 判断登录token是否过期
+	// 刷新token过期重新请求登录token
+	ctx.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: SuccessCode,
+		Msg:  "success",
+		Path: ctx.Request.URL.Path,
+		Data: gin.H{
+			"hello": "world",
 		},
 	})
 }
