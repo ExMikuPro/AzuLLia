@@ -232,6 +232,7 @@ func (_ *Get) MainPage(ctx *gin.Context) { // 主页页面
 // @Param type formData string true "类型"
 // @Param description formData string true "描述"
 // @Param order formData int true "排序"
+// @Param token header string  false "token"
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/api/v1/tag [POST]
 func (_ *Add) AddTag(ctx *gin.Context) { // 添加新标签
@@ -271,6 +272,7 @@ func (_ *Add) AddTag(ctx *gin.Context) { // 添加新标签
 // @Tags 文章
 // @Summary	添加文章
 // @Param request_body body articleTable true "JSON数据"
+// @Param token header string  false "token"
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router /api/v1/article [POST]
 func (_ *Add) AddArticle(ctx *gin.Context) {
@@ -319,6 +321,7 @@ func (_ *Add) AddArticle(ctx *gin.Context) {
 // @Param slug formData string true "缩略名"
 // @Param description formData string true "描述"
 // @Param order formData int true "排序"
+// @Param token header string  false "token"
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/api/v1/category [POST]
 func (_ *Add) AddCategory(ctx *gin.Context) {
@@ -357,6 +360,7 @@ func (_ *Add) AddCategory(ctx *gin.Context) {
 // @Produce	json
 // @Param name formData string true "名称"
 // @Param order formData int true "排序"
+// @Param token header string  false "token"
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/api/v1/group [POST]
 func (_ *Add) AddGroup(ctx *gin.Context) {
@@ -395,6 +399,7 @@ func (_ *Add) AddGroup(ctx *gin.Context) {
 // @Param url formData string true "网站地址"
 // @Param screenName formData string true "用户昵称"
 // @Param group formData string true "用户组"
+// @Param token header string  false "token"
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/api/v1/user [POST]
 func (_ *Add) AddUser(ctx *gin.Context) { // 添加用户
@@ -440,15 +445,15 @@ func (_ *Add) AddUser(ctx *gin.Context) { // 添加用户
 
 }
 
-// UserLogin @Title 用户
-// @Tags 用户
+// SignIn @Title Token
+// @Tags Token
 // @Summary	用户登陆
 // @Produce	json
 // @Param name formData string true "用户名"
 // @Param passwd formData string true "密码"
 // @Success 200 {object} GeneralJSONHeader "OK"
-// @Router		/api/v1/userLogin [POST]
-func (_ *User) UserLogin(ctx *gin.Context) {
+// @Router		/api/v1/auth/signin [POST]
+func (_ *User) SignIn(ctx *gin.Context) {
 	userName := ctx.PostForm("name")
 	passwd := ctx.PostForm("passwd")
 
@@ -481,6 +486,7 @@ func (_ *User) UserLogin(ctx *gin.Context) {
 // @Param url formData string true "网址"
 // @Param screenName formData string true "昵称"
 // @Param group formData string true "用户组"
+// @Param token header string  false "token"
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/api/v1/user [PUT]
 func (_ *Update) UpdateUser(ctx *gin.Context) {
@@ -551,6 +557,7 @@ func (_ *Update) UpdateUser(ctx *gin.Context) {
 // @Param slug formData string true "缩略名"
 // @Param type formData string true "分类"
 // @Param description formData string true "描述"
+// @Param token header string  false "token"
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/api/v1/tag [PUT]
 func (_ *Update) UpdateTag(ctx *gin.Context) {
@@ -602,6 +609,7 @@ func (_ *Update) UpdateTag(ctx *gin.Context) {
 // @Param slug formData string true "缩略名"
 // @Param description formData string true "选项描述"
 // @Param count formData string true "项目个数"
+// @Param token header string  false "token"
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/api/v1/category [PUT]
 func (_ *Update) UpdateCategory(ctx *gin.Context) {
@@ -655,6 +663,7 @@ func (_ *Update) UpdateCategory(ctx *gin.Context) {
 // @Param type formData string true "分类"
 // @Param description formData string true "描述"
 // @Param order formData string true "排序"
+// @Param token header string  false "token"
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/api/v1/article [PUT]
 func (_ *Update) UpdateArticle(ctx *gin.Context) {
@@ -700,6 +709,7 @@ func (_ *Update) UpdateArticle(ctx *gin.Context) {
 // @Produce	json
 // @Param id formData string true "ID"
 // @Param name formData string true "名称"
+// @Param token header string  false "token"
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/api/v1/group [PUT]
 func (_ *Update) UpdateGroup(ctx *gin.Context) {
@@ -739,6 +749,7 @@ func (_ *Update) UpdateGroup(ctx *gin.Context) {
 // @Summary	删除标签
 // @Produce	json
 // @Param id formData string true "标签id"
+// @Param token header string  false "token"
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/api/v1/tag [DELETE]
 func (_ *Delete) DeleteTag(ctx *gin.Context) { // 删除标签函数
@@ -778,6 +789,7 @@ func (_ *Delete) DeleteTag(ctx *gin.Context) { // 删除标签函数
 // @Summary	删除分类
 // @Produce	json
 // @Param id formData string true "分类id"
+// @Param token header string  false "token"
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/api/v1/category [DELETE]
 func (_ *Delete) DeleteCategory(ctx *gin.Context) { // 删除分类函数
@@ -817,6 +829,7 @@ func (_ *Delete) DeleteCategory(ctx *gin.Context) { // 删除分类函数
 // @Summary	删除用户组
 // @Produce	json
 // @Param id formData string true "用户组id"
+// @Param token header string  false "token"
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/api/v1/group [DELETE]
 func (_ *Delete) DeleteGroup(ctx *gin.Context) { // 删除用户组函数
@@ -856,6 +869,7 @@ func (_ *Delete) DeleteGroup(ctx *gin.Context) { // 删除用户组函数
 // @Summary	删除用户
 // @Produce	json
 // @Param id formData string true "用户id"
+// @Param token header string  false "token"
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/api/v1/user [DELETE]
 func (_ *Delete) DeleteUser(ctx *gin.Context) { // 删除用户函数
@@ -895,6 +909,7 @@ func (_ *Delete) DeleteUser(ctx *gin.Context) { // 删除用户函数
 // @Summary	删除文章
 // @Produce	json
 // @Param id formData string true "文章id"
+// @Param token header string  false "token"
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/api/v1/article [DELETE]
 func (_ *Delete) DeleteArticle(ctx *gin.Context) { // 删除文章函数
@@ -927,6 +942,52 @@ func (_ *Delete) DeleteArticle(ctx *gin.Context) { // 删除文章函数
 			"id": aid,
 		},
 	})
+}
+
+// Refresh @Title Token
+// @Tags Token
+// @Summary	身份认证获取
+// @Description 当refresh_token失效时请求，需要传入过期的refresh_token，如果一致则返回新的refresh_token
+// @Produce	json
+// @Param refresh_token formData string true "Refresh_Token"
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/api/v1/auth/refresh [POST]
+func (_ *User) Refresh(ctx *gin.Context) {
+	// 接入传输token
+	refreshToken := ctx.PostForm("refresh_token")
+	// 判断刷新token是否过期
+	if ok, err := utilityFunction.JWTRefreshVerify(refreshToken); !ok { // 验证是否被篡改
+		if err != nil {
+			ctx.JSON(http.StatusOK, GeneralJSONHeader{
+				Code: ServerError,
+				Msg:  "server error",
+				Path: ctx.Request.URL.Path,
+				Data: nil,
+			})
+		}
+	} else {
+		// 尝试生成新的refreshToken
+		refreshToken, err := utilityFunction.JWTRefreshCreate()
+		if err != nil {
+			ctx.JSON(http.StatusOK, GeneralJSONHeader{
+				Code: ServerError,
+				Msg:  "server error",
+				Path: ctx.Request.URL.Path,
+				Data: nil,
+			})
+		}
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: SuccessCode,
+			Msg:  "success",
+			Path: ctx.Request.URL.Path,
+			Data: gin.H{
+				"refresh_token": refreshToken,
+			},
+		})
+	}
+	// 判断登录token是否过期
+	// 刷新token过期重新请求登录token
+
 }
 
 // DeleteArticle @Title 测试

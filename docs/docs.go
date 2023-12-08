@@ -95,6 +95,12 @@ const docTemplate = `{
                         "name": "order",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -120,6 +126,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/service.articleTable"
                         }
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -146,6 +158,12 @@ const docTemplate = `{
                         "name": "id",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -173,6 +191,70 @@ const docTemplate = `{
                         "description": "文章ID",
                         "name": "id",
                         "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/service.GeneralJSONHeader"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/refresh": {
+            "post": {
+                "description": "当refresh_token失效时请求，需要传入过期的refresh_token，如果一致则返回新的refresh_token",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Token"
+                ],
+                "summary": "身份认证获取",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Refresh_Token",
+                        "name": "refresh_token",
+                        "in": "formData",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/service.GeneralJSONHeader"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/v1/auth/signin": {
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Token"
+                ],
+                "summary": "用户登陆",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "用户名",
+                        "name": "name",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "密码",
+                        "name": "passwd",
+                        "in": "formData",
                         "required": true
                     }
                 ],
@@ -240,6 +322,12 @@ const docTemplate = `{
                         "name": "count",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -287,6 +375,12 @@ const docTemplate = `{
                         "name": "order",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -313,6 +407,12 @@ const docTemplate = `{
                         "name": "id",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -376,6 +476,12 @@ const docTemplate = `{
                         "name": "name",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -409,6 +515,12 @@ const docTemplate = `{
                         "name": "order",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -435,6 +547,12 @@ const docTemplate = `{
                         "name": "id",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -501,6 +619,12 @@ const docTemplate = `{
                         "name": "description",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -555,6 +679,12 @@ const docTemplate = `{
                         "name": "order",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -581,6 +711,12 @@ const docTemplate = `{
                         "name": "id",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -672,6 +808,12 @@ const docTemplate = `{
                         "name": "group",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -733,6 +875,12 @@ const docTemplate = `{
                         "name": "group",
                         "in": "formData",
                         "required": true
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header"
                     }
                 ],
                 "responses": {
@@ -759,41 +907,12 @@ const docTemplate = `{
                         "name": "id",
                         "in": "formData",
                         "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/service.GeneralJSONHeader"
-                        }
-                    }
-                }
-            }
-        },
-        "/api/v1/userLogin": {
-            "post": {
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "用户"
-                ],
-                "summary": "用户登陆",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "用户名",
-                        "name": "name",
-                        "in": "formData",
-                        "required": true
                     },
                     {
                         "type": "string",
-                        "description": "密码",
-                        "name": "passwd",
-                        "in": "formData",
-                        "required": true
+                        "description": "token",
+                        "name": "token",
+                        "in": "header"
                     }
                 ],
                 "responses": {

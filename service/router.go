@@ -6,8 +6,9 @@ import (
 
 func routerMain(router *gin.Engine) {
 	// 功能型接口路由组
-	apiGroup := router.Group("/api/") // 外部调用接口
-	v1Group := apiGroup.Group("/v1/") // 版本号
+	apiGroup := router.Group("/api/")    // 外部调用接口
+	v1Group := apiGroup.Group("/v1/")    // 版本号
+	authGroup := v1Group.Group("/auth/") // 用户认证组
 
 	// 添加中间键
 	router.Use(utilityFunction.ReturnHeader()) // 响应头中间件
@@ -38,7 +39,9 @@ func routerMain(router *gin.Engine) {
 	v1Group.DELETE("/user", utilityFunction.verifyHeaderLoginCode(), utilityFunction.CheckLoginMiddleware(), deleteFunction.DeleteUser)         // 删除用户
 	v1Group.DELETE("/article", utilityFunction.verifyHeaderLoginCode(), utilityFunction.CheckLoginMiddleware(), deleteFunction.DeleteArticle)   // 删除文章
 
-	v1Group.POST("/userLogin", userFunction.UserLogin) // 用户登陆
+	v1Group.POST("/auth/signin", userFunction.SignIn) // 用户登陆
+
+	authGroup.POST("/refresh", userFunction.Refresh) // Token认证更新
 
 	// 通用型路由组
 	router.GET("/", getFunction.MainPage) // 主页
