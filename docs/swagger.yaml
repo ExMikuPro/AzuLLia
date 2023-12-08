@@ -81,6 +81,10 @@ paths:
         name: id
         required: true
         type: string
+      - description: token
+        in: header
+        name: token
+        type: string
       produces:
       - application/json
       responses:
@@ -110,6 +114,10 @@ paths:
         required: true
         schema:
           $ref: '#/definitions/service.articleTable'
+      - description: token
+        in: header
+        name: token
+        type: string
       responses:
         "200":
           description: OK
@@ -145,6 +153,10 @@ paths:
         name: order
         required: true
         type: string
+      - description: token
+        in: header
+        name: token
+        type: string
       produces:
       - application/json
       responses:
@@ -173,6 +185,25 @@ paths:
       summary: 获取文章内容
       tags:
       - 文章
+  /api/v1/auth/refresh:
+    post:
+      description: 当refresh_token失效时请求，需要传入过期的refresh_token，如果一致则返回新的refresh_token
+      parameters:
+      - description: Refresh_Token
+        in: formData
+        name: refresh_token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 身份认证获取
+      tags:
+      - Token
   /api/v1/auth/signin:
     post:
       parameters:
@@ -203,6 +234,10 @@ paths:
         in: formData
         name: id
         required: true
+        type: string
+      - description: token
+        in: header
+        name: token
         type: string
       produces:
       - application/json
@@ -247,6 +282,10 @@ paths:
         name: order
         required: true
         type: integer
+      - description: token
+        in: header
+        name: token
+        type: string
       produces:
       - application/json
       responses:
@@ -278,6 +317,10 @@ paths:
         in: formData
         name: count
         required: true
+        type: string
+      - description: token
+        in: header
+        name: token
         type: string
       produces:
       - application/json
@@ -315,6 +358,10 @@ paths:
         name: id
         required: true
         type: string
+      - description: token
+        in: header
+        name: token
+        type: string
       produces:
       - application/json
       responses:
@@ -337,6 +384,10 @@ paths:
         name: order
         required: true
         type: integer
+      - description: token
+        in: header
+        name: token
+        type: string
       produces:
       - application/json
       responses:
@@ -359,6 +410,10 @@ paths:
         name: name
         required: true
         type: string
+      - description: token
+        in: header
+        name: token
+        type: string
       produces:
       - application/json
       responses:
@@ -376,6 +431,10 @@ paths:
         in: formData
         name: id
         required: true
+        type: string
+      - description: token
+        in: header
+        name: token
         type: string
       produces:
       - application/json
@@ -425,6 +484,10 @@ paths:
         name: order
         required: true
         type: integer
+      - description: token
+        in: header
+        name: token
+        type: string
       produces:
       - application/json
       responses:
@@ -456,6 +519,10 @@ paths:
         in: formData
         name: description
         required: true
+        type: string
+      - description: token
+        in: header
+        name: token
         type: string
       produces:
       - application/json
@@ -492,6 +559,10 @@ paths:
         in: formData
         name: id
         required: true
+        type: string
+      - description: token
+        in: header
+        name: token
         type: string
       produces:
       - application/json
@@ -535,6 +606,10 @@ paths:
         name: group
         required: true
         type: string
+      - description: token
+        in: header
+        name: token
+        type: string
       produces:
       - application/json
       responses:
@@ -577,6 +652,10 @@ paths:
         name: group
         required: true
         type: string
+      - description: token
+        in: header
+        name: token
+        type: string
       produces:
       - application/json
       responses:
@@ -608,27 +687,4 @@ paths:
       summary: 测试函数
       tags:
       - c测试
-  /v1/auth/refresh:
-    post:
-      parameters:
-      - description: Token
-        in: formData
-        name: token
-        required: true
-        type: string
-      - description: Refresh_Token
-        in: formData
-        name: refresh_token
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/service.GeneralJSONHeader'
-      summary: 身份认证获取
-      tags:
-      - Token
 swagger: "2.0"
