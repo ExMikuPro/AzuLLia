@@ -50,7 +50,7 @@ func routerMain(router *gin.Engine) {
 
 	router.POST("/upload", UploadFile) // 上传
 
-	router.GET("/test/:id", utilityFunction.verifyHeaderLoginCode(), test) // 测试
+	router.GET("/test/:id", utilityFunction.verifyHeaderLoginCode(), test) // 测试 todo 添加运行版本检测，在发行版本时禁用
 
 }
 
