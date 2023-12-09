@@ -17,6 +17,7 @@ const docTemplate = `{
     "paths": {
         "/about": {
             "get": {
+                "description": "获取框架版本信息",
                 "produces": [
                     "application/json"
                 ],
@@ -36,6 +37,7 @@ const docTemplate = `{
         },
         "/api/v1/article": {
             "get": {
+                "description": "获取全部文章列表",
                 "produces": [
                     "application/json"
                 ],
@@ -53,6 +55,7 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "description": "更新指定id文章(需要相关权限token)",
                 "produces": [
                     "application/json"
                 ],
@@ -113,6 +116,10 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "description": "添加新文章(需要相关权限token)",
+                "produces": [
+                    "application/json"
+                ],
                 "tags": [
                     "文章"
                 ],
@@ -144,6 +151,7 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "description": "删除指定id文章(需要相关权限token)",
                 "produces": [
                     "application/json"
                 ],
@@ -178,6 +186,7 @@ const docTemplate = `{
         },
         "/api/v1/article/{id}": {
             "get": {
+                "description": "获取指定id文章列表",
                 "produces": [
                     "application/json"
                 ],
@@ -206,7 +215,7 @@ const docTemplate = `{
         },
         "/api/v1/auth/refresh": {
             "post": {
-                "description": "当refresh_token失效时请求，需要传入过期的refresh_token，如果一致则返回新的refresh_token",
+                "description": "当refresh_token失效时请求，需要传入过期的refresh_token，如通过校验则返回新的refresh_token",
                 "produces": [
                     "application/json"
                 ],
@@ -235,6 +244,7 @@ const docTemplate = `{
         },
         "/api/v1/auth/signin": {
             "post": {
+                "description": "使用账户名和密码进行登录并返回token和refresh_token，其中token每两小过期，需要refresh_token获取新的token，refresh_token每一周过期",
                 "produces": [
                     "application/json"
                 ],
@@ -270,6 +280,7 @@ const docTemplate = `{
         },
         "/api/v1/category": {
             "get": {
+                "description": "获取全部分类列表",
                 "produces": [
                     "application/json"
                 ],
@@ -287,6 +298,7 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "description": "更新指定id分类(需要相关权限token)",
                 "produces": [
                     "application/json"
                 ],
@@ -340,6 +352,7 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "description": "添加新分类(需要相关权限token)",
                 "produces": [
                     "application/json"
                 ],
@@ -393,6 +406,7 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "description": "删除指定id分类(需要相关权限token)",
                 "produces": [
                     "application/json"
                 ],
@@ -427,6 +441,7 @@ const docTemplate = `{
         },
         "/api/v1/category/{id}": {
             "get": {
+                "description": "获取指定id分类列表",
                 "produces": [
                     "application/json"
                 ],
@@ -455,6 +470,7 @@ const docTemplate = `{
         },
         "/api/v1/group": {
             "put": {
+                "description": "更新指定id用户组(需要相关权限token)",
                 "produces": [
                     "application/json"
                 ],
@@ -494,6 +510,7 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "description": "添加新用户组(需要相关权限token)",
                 "produces": [
                     "application/json"
                 ],
@@ -533,6 +550,7 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "description": "删除指定id分类(需要相关权限token)",
                 "produces": [
                     "application/json"
                 ],
@@ -567,6 +585,7 @@ const docTemplate = `{
         },
         "/api/v1/tag": {
             "get": {
+                "description": "获取全部标签列表",
                 "produces": [
                     "application/json"
                 ],
@@ -584,6 +603,7 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "description": "更新指定id标签(需要相关权限token)",
                 "produces": [
                     "application/json"
                 ],
@@ -637,6 +657,7 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "description": "添加新标签(需要相关权限token)",
                 "produces": [
                     "application/json"
                 ],
@@ -697,6 +718,7 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "description": "删除指定id标签(需要相关权限token)",
                 "produces": [
                     "application/json"
                 ],
@@ -731,6 +753,7 @@ const docTemplate = `{
         },
         "/api/v1/tag/{id}": {
             "get": {
+                "description": "获取全部标签列表",
                 "produces": [
                     "application/json"
                 ],
@@ -759,6 +782,7 @@ const docTemplate = `{
         },
         "/api/v1/user": {
             "put": {
+                "description": "更新指定id用户(需要相关权限token)",
                 "produces": [
                     "application/json"
                 ],
@@ -826,6 +850,7 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "description": "添加新用户(需要相关权限token)",
                 "produces": [
                     "application/json"
                 ],
@@ -893,6 +918,7 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "description": "删除指定id用户(需要相关权限token)",
                 "produces": [
                     "application/json"
                 ],
@@ -927,11 +953,12 @@ const docTemplate = `{
         },
         "/test/123": {
             "get": {
+                "description": "这是一个测试函数，用于在开发模式中测试各种功能(发行版模式下会失效)",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "c测试"
+                    "测试"
                 ],
                 "summary": "测试函数",
                 "parameters": [

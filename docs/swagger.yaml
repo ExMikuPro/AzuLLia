@@ -63,6 +63,7 @@ info:
 paths:
   /about:
     get:
+      description: 获取框架版本信息
       produces:
       - application/json
       responses:
@@ -75,6 +76,7 @@ paths:
       - 系统
   /api/v1/article:
     delete:
+      description: 删除指定id文章(需要相关权限token)
       parameters:
       - description: 文章id
         in: formData
@@ -96,6 +98,7 @@ paths:
       tags:
       - 文章
     get:
+      description: 获取全部文章列表
       produces:
       - application/json
       responses:
@@ -107,6 +110,7 @@ paths:
       tags:
       - 文章
     post:
+      description: 添加新文章(需要相关权限token)
       parameters:
       - description: JSON数据
         in: body
@@ -118,6 +122,8 @@ paths:
         in: header
         name: token
         type: string
+      produces:
+      - application/json
       responses:
         "200":
           description: OK
@@ -127,6 +133,7 @@ paths:
       tags:
       - 文章
     put:
+      description: 更新指定id文章(需要相关权限token)
       parameters:
       - description: 名称
         in: formData
@@ -169,6 +176,7 @@ paths:
       - 文章
   /api/v1/article/{id}:
     get:
+      description: 获取指定id文章列表
       parameters:
       - description: 文章ID
         in: path
@@ -187,7 +195,7 @@ paths:
       - 文章
   /api/v1/auth/refresh:
     post:
-      description: 当refresh_token失效时请求，需要传入过期的refresh_token，如果一致则返回新的refresh_token
+      description: 当refresh_token失效时请求，需要传入过期的refresh_token，如通过校验则返回新的refresh_token
       parameters:
       - description: Refresh_Token
         in: formData
@@ -206,6 +214,7 @@ paths:
       - Token
   /api/v1/auth/signin:
     post:
+      description: 使用账户名和密码进行登录并返回token和refresh_token，其中token每两小过期，需要refresh_token获取新的token，refresh_token每一周过期
       parameters:
       - description: 用户名
         in: formData
@@ -229,6 +238,7 @@ paths:
       - Token
   /api/v1/category:
     delete:
+      description: 删除指定id分类(需要相关权限token)
       parameters:
       - description: 分类id
         in: formData
@@ -250,6 +260,7 @@ paths:
       tags:
       - 分类
     get:
+      description: 获取全部分类列表
       produces:
       - application/json
       responses:
@@ -261,6 +272,7 @@ paths:
       tags:
       - 分类
     post:
+      description: 添加新分类(需要相关权限token)
       parameters:
       - description: 名称
         in: formData
@@ -297,6 +309,7 @@ paths:
       tags:
       - 分类
     put:
+      description: 更新指定id分类(需要相关权限token)
       parameters:
       - description: 名称
         in: formData
@@ -334,6 +347,7 @@ paths:
       - 分类
   /api/v1/category/{id}:
     get:
+      description: 获取指定id分类列表
       parameters:
       - description: 分类ID
         in: path
@@ -352,6 +366,7 @@ paths:
       - 分类
   /api/v1/group:
     delete:
+      description: 删除指定id分类(需要相关权限token)
       parameters:
       - description: 用户组id
         in: formData
@@ -373,6 +388,7 @@ paths:
       tags:
       - 用户组
     post:
+      description: 添加新用户组(需要相关权限token)
       parameters:
       - description: 名称
         in: formData
@@ -399,6 +415,7 @@ paths:
       tags:
       - 用户组
     put:
+      description: 更新指定id用户组(需要相关权限token)
       parameters:
       - description: ID
         in: formData
@@ -426,6 +443,7 @@ paths:
       - 用户组
   /api/v1/tag:
     delete:
+      description: 删除指定id标签(需要相关权限token)
       parameters:
       - description: 标签id
         in: formData
@@ -447,6 +465,7 @@ paths:
       tags:
       - 标签
     get:
+      description: 获取全部标签列表
       produces:
       - application/json
       responses:
@@ -458,6 +477,7 @@ paths:
       tags:
       - 标签
     post:
+      description: 添加新标签(需要相关权限token)
       parameters:
       - description: 名称
         in: formData
@@ -499,6 +519,7 @@ paths:
       tags:
       - 标签
     put:
+      description: 更新指定id标签(需要相关权限token)
       parameters:
       - description: 名称
         in: formData
@@ -536,6 +557,7 @@ paths:
       - 标签
   /api/v1/tag/{id}:
     get:
+      description: 获取全部标签列表
       parameters:
       - description: 标签ID
         in: path
@@ -554,6 +576,7 @@ paths:
       - 标签
   /api/v1/user:
     delete:
+      description: 删除指定id用户(需要相关权限token)
       parameters:
       - description: 用户id
         in: formData
@@ -575,6 +598,7 @@ paths:
       tags:
       - 用户
     post:
+      description: 添加新用户(需要相关权限token)
       parameters:
       - description: 名称
         in: formData
@@ -621,6 +645,7 @@ paths:
       tags:
       - 用户
     put:
+      description: 更新指定id用户(需要相关权限token)
       parameters:
       - description: 用户名
         in: formData
@@ -668,6 +693,7 @@ paths:
       - 用户
   /test/123:
     get:
+      description: 这是一个测试函数，用于在开发模式中测试各种功能(发行版模式下会失效)
       parameters:
       - description: 文章id
         in: formData
@@ -686,5 +712,5 @@ paths:
             $ref: '#/definitions/service.GeneralJSONHeader'
       summary: 测试函数
       tags:
-      - c测试
+      - 测试
 swagger: "2.0"

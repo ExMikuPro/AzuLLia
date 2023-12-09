@@ -13,6 +13,7 @@ import (
 // GetAbout @Title 系统
 // @Tags 系统
 // @Summary	获取框架版本信息
+// @Description 获取框架版本信息
 // @Produce	json
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/about [GET]
@@ -30,6 +31,7 @@ func (_ *Get) GetAbout(ctx *gin.Context) { // 框架版本界面
 // ArticleList @Title 文章
 // @Tags 文章
 // @Summary	获取列表
+// @Description 获取全部文章列表
 // @Produce	json
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/api/v1/article [GET]
@@ -58,6 +60,7 @@ func (_ *Get) ArticleList(ctx *gin.Context) { // 文章列表界面
 // GetArticle @Title 文章
 // @Tags 文章
 // @Summary	获取文章内容
+// @Description 获取指定id文章列表
 // @Produce	json
 // @Param id path string true "文章ID"
 // @Success 200 {object} GeneralJSONHeader "OK"
@@ -92,6 +95,7 @@ func (_ *Get) GetArticle(ctx *gin.Context) { // 文章内容页面
 // TagList @Title 标签
 // @Tags 标签
 // @Summary	获取标签列表
+// @Description 获取全部标签列表
 // @Produce	json
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/api/v1/tag [GET]
@@ -120,6 +124,7 @@ func (_ *Get) TagList(ctx *gin.Context) { // 标签列表界面
 // CategoryList @Title 分类
 // @Tags 分类
 // @Summary	获取分类列表
+// @Description 获取全部分类列表
 // @Produce	json
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/api/v1/category [GET]
@@ -148,6 +153,7 @@ func (_ *Get) CategoryList(ctx *gin.Context) { // 分类列表界面
 // GetCategory @Title 分类
 // @Tags 分类
 // @Summary	获取分类
+// @Description 获取指定id分类列表
 // @Produce	json
 // @Param id path string true "分类ID"
 // @Success 200 {object} GeneralJSONHeader "OK"
@@ -187,6 +193,7 @@ func (_ *Get) GetCategory(ctx *gin.Context) {
 // GetTag @Title 标签
 // @Tags 标签
 // @Summary	获取标签
+// @Description 获取全部标签列表
 // @Produce	json
 // @Param id path string true "标签ID"
 // @Success 200 {object} GeneralJSONHeader "OK"
@@ -226,6 +233,7 @@ func (_ *Get) MainPage(ctx *gin.Context) { // 主页页面
 // AddTag @Title 标签
 // @Tags 标签
 // @Summary	添加标签
+// @Description 添加新标签(需要相关权限token)
 // @Produce	json
 // @Param name formData string true "名称"
 // @Param slug formData string true "缩略名"
@@ -271,6 +279,8 @@ func (_ *Add) AddTag(ctx *gin.Context) { // 添加新标签
 // AddArticle @Title 文章
 // @Tags 文章
 // @Summary	添加文章
+// @Produce	json
+// @Description 添加新文章(需要相关权限token)
 // @Param request_body body articleTable true "JSON数据"
 // @Param token header string  false "token"
 // @Success 200 {object} GeneralJSONHeader "OK"
@@ -317,6 +327,7 @@ func (_ *Add) AddArticle(ctx *gin.Context) {
 // @Tags 分类
 // @Summary	添加分类
 // @Produce	json
+// @Description 添加新分类(需要相关权限token)
 // @Param name formData string true "名称"
 // @Param slug formData string true "缩略名"
 // @Param description formData string true "描述"
@@ -358,6 +369,7 @@ func (_ *Add) AddCategory(ctx *gin.Context) {
 // @Tags 用户组
 // @Summary	添加用户组
 // @Produce	json
+// @Description 添加新用户组(需要相关权限token)
 // @Param name formData string true "名称"
 // @Param order formData int true "排序"
 // @Param token header string  false "token"
@@ -393,6 +405,7 @@ func (_ *Add) AddGroup(ctx *gin.Context) {
 // @Tags 用户
 // @Summary	添加用户
 // @Produce	json
+// @Description 添加新用户(需要相关权限token)
 // @Param name formData string true "名称"
 // @Param passwd formData string true "密码"
 // @Param mail formData string true "邮箱"
@@ -449,6 +462,7 @@ func (_ *Add) AddUser(ctx *gin.Context) { // 添加用户
 // @Tags Token
 // @Summary	用户登陆
 // @Produce	json
+// @Description 使用账户名和密码进行登录并返回token和refresh_token，其中token每两小过期，需要refresh_token获取新的token，refresh_token每一周过期
 // @Param name formData string true "用户名"
 // @Param passwd formData string true "密码"
 // @Success 200 {object} GeneralJSONHeader "OK"
@@ -480,6 +494,7 @@ func (_ *User) SignIn(ctx *gin.Context) {
 // @Tags 用户
 // @Summary	更新用户
 // @Produce	json
+// @Description 更新指定id用户(需要相关权限token)
 // @Param name formData string true "用户名"
 // @Param passwd formData string true "密码"
 // @Param mail formData string true "邮箱"
@@ -553,6 +568,7 @@ func (_ *Update) UpdateUser(ctx *gin.Context) {
 // @Tags 标签
 // @Summary 更新标签
 // @Produce	json
+// @Description 更新指定id标签(需要相关权限token)
 // @Param name formData string true "名称"
 // @Param slug formData string true "缩略名"
 // @Param type formData string true "分类"
@@ -605,6 +621,7 @@ func (_ *Update) UpdateTag(ctx *gin.Context) {
 // @Tags 分类
 // @Summary 更新分类
 // @Produce	json
+// @Description 更新指定id分类(需要相关权限token)
 // @Param name formData string true "名称"
 // @Param slug formData string true "缩略名"
 // @Param description formData string true "选项描述"
@@ -658,6 +675,7 @@ func (_ *Update) UpdateCategory(ctx *gin.Context) {
 // @Tags 文章
 // @Summary 更新文章
 // @Produce	json
+// @Description 更新指定id文章(需要相关权限token)
 // @Param name formData string true "名称"
 // @Param slug formData string true "缩略名"
 // @Param type formData string true "分类"
@@ -707,6 +725,7 @@ func (_ *Update) UpdateArticle(ctx *gin.Context) {
 // @Tags 用户组
 // @Summary 更新用户组
 // @Produce	json
+// @Description 更新指定id用户组(需要相关权限token)
 // @Param id formData string true "ID"
 // @Param name formData string true "名称"
 // @Param token header string  false "token"
@@ -748,6 +767,7 @@ func (_ *Update) UpdateGroup(ctx *gin.Context) {
 // @Tags 标签
 // @Summary	删除标签
 // @Produce	json
+// @Description 删除指定id标签(需要相关权限token)
 // @Param id formData string true "标签id"
 // @Param token header string  false "token"
 // @Success 200 {object} GeneralJSONHeader "OK"
@@ -788,6 +808,7 @@ func (_ *Delete) DeleteTag(ctx *gin.Context) { // 删除标签函数
 // @Tags 分类
 // @Summary	删除分类
 // @Produce	json
+// @Description 删除指定id分类(需要相关权限token)
 // @Param id formData string true "分类id"
 // @Param token header string  false "token"
 // @Success 200 {object} GeneralJSONHeader "OK"
@@ -828,6 +849,7 @@ func (_ *Delete) DeleteCategory(ctx *gin.Context) { // 删除分类函数
 // @Tags 用户组
 // @Summary	删除用户组
 // @Produce	json
+// @Description 删除指定id分类(需要相关权限token)
 // @Param id formData string true "用户组id"
 // @Param token header string  false "token"
 // @Success 200 {object} GeneralJSONHeader "OK"
@@ -868,6 +890,7 @@ func (_ *Delete) DeleteGroup(ctx *gin.Context) { // 删除用户组函数
 // @Tags 用户
 // @Summary	删除用户
 // @Produce	json
+// @Description 删除指定id用户(需要相关权限token)
 // @Param id formData string true "用户id"
 // @Param token header string  false "token"
 // @Success 200 {object} GeneralJSONHeader "OK"
@@ -908,6 +931,7 @@ func (_ *Delete) DeleteUser(ctx *gin.Context) { // 删除用户函数
 // @Tags 文章
 // @Summary	删除文章
 // @Produce	json
+// @Description 删除指定id文章(需要相关权限token)
 // @Param id formData string true "文章id"
 // @Param token header string  false "token"
 // @Success 200 {object} GeneralJSONHeader "OK"
@@ -947,7 +971,7 @@ func (_ *Delete) DeleteArticle(ctx *gin.Context) { // 删除文章函数
 // Refresh @Title Token
 // @Tags Token
 // @Summary	身份认证获取
-// @Description 当refresh_token失效时请求，需要传入过期的refresh_token，如果一致则返回新的refresh_token
+// @Description 当refresh_token失效时请求，需要传入过期的refresh_token，如通过校验则返回新的refresh_token
 // @Produce	json
 // @Param refresh_token formData string true "Refresh_Token"
 // @Success 200 {object} GeneralJSONHeader "OK"
@@ -991,9 +1015,10 @@ func (_ *User) Refresh(ctx *gin.Context) {
 }
 
 // DeleteArticle @Title 测试
-// @Tags c测试
+// @Tags 测试
 // @Summary	测试函数
 // @Produce	json
+// @Description 这是一个测试函数，用于在开发模式中测试各种功能(发行版模式下会失效)
 // @Param id formData string false "文章id"
 // @Param to header string  false "token"
 // @Header 200 {string} Token "访问令牌"
