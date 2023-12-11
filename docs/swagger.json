@@ -775,6 +775,32 @@
             }
         },
         "/api/v1/user": {
+            "get": {
+                "description": "获取全部用户列表(需要相关权限token)",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "用户"
+                ],
+                "summary": "用户列表",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/service.GeneralJSONHeader"
+                        }
+                    }
+                }
+            },
             "put": {
                 "description": "更新指定id用户(需要相关权限token)",
                 "produces": [

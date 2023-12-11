@@ -597,6 +597,23 @@ paths:
       summary: 删除用户
       tags:
       - 用户
+    get:
+      description: 获取全部用户列表(需要相关权限token)
+      parameters:
+      - description: token
+        in: header
+        name: token
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/service.GeneralJSONHeader'
+      summary: 用户列表
+      tags:
+      - 用户
     post:
       description: 添加新用户(需要相关权限token)
       parameters:
