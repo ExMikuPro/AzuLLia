@@ -23,6 +23,13 @@ func (_ *Utility) HashSHA256(input string) string { // 创建hash256
 	return hex.EncodeToString(hash.Sum(nil))
 }
 
+func (_ *Utility) VerifySHA256(input string, Hash string) (bool, error) { // 验证token
+	if Hash == utilityFunction.HashSHA256(input) {
+		return true, nil
+	}
+	return false, nil
+}
+
 // 中间件
 
 func (_ *Utility) UserPasswdVerify(userName string, passwd string) (gin.H, bool) { // 用户密码认证函数
@@ -56,7 +63,7 @@ func (_ *Utility) ReturnHeader() gin.HandlerFunc { // 通过cookie认证
 func (_ *Utility) CheckLoginMiddleware() gin.HandlerFunc { // 通过cookie认证
 	return func(ctx *gin.Context) {
 		token := ctx.Request.Header.Get("token")
-		if ok, err := utilityFunction.JWTOptVerify(token); ok {
+		if ok, data, err := utilityFunction.JWTOptVerify(token); ok {
 			if err != nil {
 				ctx.JSON(http.StatusOK, GeneralJSONHeader{
 					Code: ServerError,
@@ -65,7 +72,10 @@ func (_ *Utility) CheckLoginMiddleware() gin.HandlerFunc { // 通过cookie认证
 					Data: nil,
 				})
 			}
-			ctx.Next()
+			if ok, _ := utilityFunction.VerifySHA256(data["user_id"].(string), data["verify"].(string)); ok {
+				ctx.Next()
+			}
+			ctx.Abort()
 		} else {
 			ctx.JSON(http.StatusOK, GeneralJSONHeader{
 				Code: ServerError,
@@ -125,7 +135,7 @@ func (_ *Utility) JWTRefreshCreate() (string, error) { // 创建JWT刷新认证�
 	return accessToken, nil
 }
 
-func (_ *Utility) JWTOptVerify(tokenString string) (bool, error) { // 认证JWT操作认证码
+func (_ *Utility) JWTOptVerify(tokenString string) (bool, gin.H, error) { // 认证JWT操作认证码
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok { // 验证JWT有效性
 			return nil, errors.New("signature is invalid")
@@ -135,15 +145,29 @@ func (_ *Utility) JWTOptVerify(tokenString string) (bool, error) { // 认证JWT�
 	})
 	if err != nil {
 		// 验证签名有效性
-		return false, errors.New("JWT Verify Error")
+		return false, nil, errors.New("JWT Verify Error")
 	}
 	if token.Valid { // 验证JWT有效性
 		// 有效
-		fmt.Println(token.Valid)
-		return true, nil
+		// 校验是否为用户token
+		if claims, ok := token.Claims.(jwt.MapClaims); ok {
+			// 获取需要的字段值
+			if userId, exists := claims["user_id"].(string); exists {
+				if verify, ok := claims["verify"].(string); ok {
+					return true, gin.H{"user_id": userId, "verify": verify}, nil
+				} else {
+					return false, nil, nil
+				}
+			} else {
+				return false, nil, nil
+			}
+			// 可以继续获取其他字段...
+		} else {
+			return false, nil, nil
+		}
 	} else {
 		// 无效
-		return false, errors.New("JWT Verify Error1")
+		return false, nil, errors.New("JWT Verify Error1")
 	}
 }
 
