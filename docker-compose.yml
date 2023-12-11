@@ -5,10 +5,10 @@ services:
     container_name: "azullia"
     build: ./
     ports:
-      - "8000:80"
+      - "8080:80"
 
     networks:
-      - k-on-Web
+      - AzuLLia
 
   mongo:
     container_name: "mongoDB"
@@ -16,10 +16,10 @@ services:
     ports:
       - "27017:27017"
     networks:
-      - k-on-Web
+      - AzuLLia
 
 networks:
-  k-on-Web:
+  AzuLLia:
     external: false
 
 
