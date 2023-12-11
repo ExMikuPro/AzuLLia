@@ -13,9 +13,10 @@ func routerMain(router *gin.Engine) {
 	// 添加中间键
 	router.Use(utilityFunction.ReturnHeader()) // 响应头中间件
 
-	v1Group.GET("/article", getFunction.ArticleList)   // 文章列表
-	v1Group.GET("/tag", getFunction.TagList)           // 标签列表
-	v1Group.GET("/category", getFunction.CategoryList) // 分类列表
+	v1Group.GET("/article", getFunction.ArticleList)                                      // 文章列表
+	v1Group.GET("/tag", getFunction.TagList)                                              // 标签列表
+	v1Group.GET("/category", getFunction.CategoryList)                                    // 分类列表
+	v1Group.GET("/user", utilityFunction.CheckLoginMiddleware(), getFunction.GetUserList) // 用户列表
 
 	v1Group.GET("/article/:id", getFunction.GetArticle)   // 文章内容
 	v1Group.GET("/tag/:id", getFunction.GetTag)           // 标签内容

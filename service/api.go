@@ -401,6 +401,23 @@ func (_ *Add) AddGroup(ctx *gin.Context) {
 	})
 }
 
+// GetUserList @Title 用户
+// @Tags 用户
+// @Summary	用户列表
+// @Produce	json
+// @Description 获取全部用户列表(需要相关权限token)
+// @Param token header string  false "token"
+// @Success 200 {object} GeneralJSONHeader "OK"
+// @Router		/api/v1/user [GET]
+func (_ *Get) GetUserList(ctx *gin.Context) { // 获取用户列表
+	ctx.JSON(http.StatusOK, GeneralJSONHeader{
+		Code: SuccessCode,
+		Msg:  "success",
+		Path: ctx.Request.URL.Path,
+		Data: gin.H{},
+	})
+}
+
 // AddUser @Title 用户
 // @Tags 用户
 // @Summary	添加用户
