@@ -410,11 +410,23 @@ func (_ *Add) AddGroup(ctx *gin.Context) {
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/api/v1/user [GET]
 func (_ *Get) GetUserList(ctx *gin.Context) { // 获取用户列表
+	data, err := DataBase.ReadAllDB("user", []gin.H{})
+	if err != nil {
+		ctx.JSON(http.StatusOK, GeneralJSONHeader{
+			Code: ServerError,
+			Msg:  "server error",
+			Path: ctx.Request.URL.Path,
+			Data: nil,
+		})
+	}
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
 		Msg:  "success",
 		Path: ctx.Request.URL.Path,
-		Data: gin.H{},
+		Data: gin.H{
+			"length": len(data), // 列表长度
+			"list":   data,      // 列表数据
+		},
 	})
 }
 
