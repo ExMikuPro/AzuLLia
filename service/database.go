@@ -36,10 +36,6 @@ func (s *DBService) ReadAllDB(Collection string, Data []gin.H) ([]gin.H, error) 
 	if err != nil {
 		return nil, err
 	}
-	err = session.StartTransaction()
-	if err != nil {
-		return nil, err
-	}
 	err = mongo.WithSession(context.Background(), session, func(sessionContext mongo.SessionContext) error {
 		collection := s.Client.Database(GetEvn("DB_DATA_BASE")).Collection(Collection)
 		cur, err := collection.Find(sessionContext, bson.D{}, options.Find())
