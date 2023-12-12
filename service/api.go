@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -1009,7 +1010,8 @@ func (_ *User) Refresh(ctx *gin.Context) {
 	// 接入传输token
 	refreshToken := ctx.PostForm("refresh_token")
 	// 判断刷新token是否过期
-	if ok, err := utilityFunction.JWTRefreshVerify(refreshToken); !ok { // 验证是否被篡改
+	if ok, data, err := utilityFunction.JWTRefreshVerify(refreshToken); !ok { // 验证是否被篡改
+
 		if err != nil {
 			ctx.JSON(http.StatusOK, GeneralJSONHeader{
 				Code: ServerError,
@@ -1020,7 +1022,16 @@ func (_ *User) Refresh(ctx *gin.Context) {
 		}
 	} else {
 		// 尝试生成新的refreshToken
-		refreshToken, err := utilityFunction.JWTRefreshCreate()
+		token, err := utilityFunction.JWTCreate(data["user_id"].(string))
+		if err != nil {
+			ctx.JSON(http.StatusOK, GeneralJSONHeader{
+				Code: ServerError,
+				Msg:  "server error",
+				Path: ctx.Request.URL.Path,
+				Data: nil,
+			})
+		}
+		refreshToken, err = utilityFunction.JWTRefreshCreate(data["user_id"].(string))
 		if err != nil {
 			ctx.JSON(http.StatusOK, GeneralJSONHeader{
 				Code: ServerError,
@@ -1034,13 +1045,11 @@ func (_ *User) Refresh(ctx *gin.Context) {
 			Msg:  "success",
 			Path: ctx.Request.URL.Path,
 			Data: gin.H{
+				"token":         token,
 				"refresh_token": refreshToken,
 			},
 		})
 	}
-	// 判断登录token是否过期
-	// 刷新token过期重新请求登录token
-
 }
 
 // DeleteArticle @Title 测试
@@ -1049,13 +1058,19 @@ func (_ *User) Refresh(ctx *gin.Context) {
 // @Produce	json
 // @Description 这是一个测试函数，用于在开发模式中测试各种功能(发行版模式下会失效)
 // @Param id formData string false "文章id"
-// @Param to header string  false "token"
+// @Param token header string  false "token"
 // @Header 200 {string} Token "访问令牌"
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/test/123 [GET]
 func test(ctx *gin.Context) {
-	token, _ := utilityFunction.JWTCreate("123")
-	ctx.JSON(http.StatusOK, gin.H{
-		"token": token,
-	})
+	fmt.Println(ctx.Get("user_id"))
+	if data, ok := ctx.Get("user_id"); ok { // 获取操作者
+		ctx.JSON(http.StatusOK, gin.H{
+			"user_id": data,
+		})
+	} else {
+		ctx.JSON(http.StatusOK, gin.H{
+			"error": "error",
+		})
+	}
 }

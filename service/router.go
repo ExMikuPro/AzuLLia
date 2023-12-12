@@ -22,23 +22,23 @@ func routerMain(router *gin.Engine) {
 	v1Group.GET("/tag/:id", getFunction.GetTag)           // 标签内容
 	v1Group.GET("/category/:id", getFunction.GetCategory) // 标签内容
 
-	v1Group.POST("/tag", utilityFunction.verifyHeaderLoginCode(), utilityFunction.CheckLoginMiddleware(), addFunction.AddTag)           // 添加标签
-	v1Group.POST("/category", utilityFunction.verifyHeaderLoginCode(), utilityFunction.CheckLoginMiddleware(), addFunction.AddCategory) // 添加分类
-	v1Group.POST("/group", utilityFunction.verifyHeaderLoginCode(), utilityFunction.CheckLoginMiddleware(), addFunction.AddGroup)       // 添加用户组
-	v1Group.POST("/user", utilityFunction.verifyHeaderLoginCode(), utilityFunction.CheckLoginMiddleware(), addFunction.AddUser)         // 添加用户
-	v1Group.POST("/article", utilityFunction.verifyHeaderLoginCode(), utilityFunction.CheckLoginMiddleware(), addFunction.AddArticle)   // 添加文章
+	v1Group.POST("/tag", utilityFunction.CheckLoginMiddleware(), addFunction.AddTag)           // 添加标签
+	v1Group.POST("/category", utilityFunction.CheckLoginMiddleware(), addFunction.AddCategory) // 添加分类
+	v1Group.POST("/group", utilityFunction.CheckLoginMiddleware(), addFunction.AddGroup)       // 添加用户组
+	v1Group.POST("/user", utilityFunction.CheckLoginMiddleware(), addFunction.AddUser)         // 添加用户
+	v1Group.POST("/article", utilityFunction.CheckLoginMiddleware(), addFunction.AddArticle)   // 添加文章
 
-	v1Group.PUT("/tag", utilityFunction.verifyHeaderLoginCode(), utilityFunction.CheckLoginMiddleware(), updateFunction.UpdateTag)           // 更新标签
-	v1Group.PUT("/article", utilityFunction.verifyHeaderLoginCode(), utilityFunction.CheckLoginMiddleware(), updateFunction.UpdateArticle)   // 更新文章
-	v1Group.PUT("/group", utilityFunction.verifyHeaderLoginCode(), utilityFunction.CheckLoginMiddleware(), updateFunction.UpdateGroup)       // 更新用户组
-	v1Group.PUT("/user", utilityFunction.verifyHeaderLoginCode(), utilityFunction.CheckLoginMiddleware(), updateFunction.UpdateUser)         // 更新用户
-	v1Group.PUT("/category", utilityFunction.verifyHeaderLoginCode(), utilityFunction.CheckLoginMiddleware(), updateFunction.UpdateCategory) // 更新分类
+	v1Group.PUT("/tag", utilityFunction.CheckLoginMiddleware(), updateFunction.UpdateTag)           // 更新标签
+	v1Group.PUT("/article", utilityFunction.CheckLoginMiddleware(), updateFunction.UpdateArticle)   // 更新文章
+	v1Group.PUT("/group", utilityFunction.CheckLoginMiddleware(), updateFunction.UpdateGroup)       // 更新用户组
+	v1Group.PUT("/user", utilityFunction.CheckLoginMiddleware(), updateFunction.UpdateUser)         // 更新用户
+	v1Group.PUT("/category", utilityFunction.CheckLoginMiddleware(), updateFunction.UpdateCategory) // 更新分类
 
-	v1Group.DELETE("/tag", utilityFunction.verifyHeaderLoginCode(), utilityFunction.CheckLoginMiddleware(), deleteFunction.DeleteTag)           // 删除标签
-	v1Group.DELETE("/category", utilityFunction.verifyHeaderLoginCode(), utilityFunction.CheckLoginMiddleware(), deleteFunction.DeleteCategory) // 删除类别
-	v1Group.DELETE("/group", utilityFunction.verifyHeaderLoginCode(), utilityFunction.CheckLoginMiddleware(), deleteFunction.DeleteGroup)       // 删除用户组
-	v1Group.DELETE("/user", utilityFunction.verifyHeaderLoginCode(), utilityFunction.CheckLoginMiddleware(), deleteFunction.DeleteUser)         // 删除用户
-	v1Group.DELETE("/article", utilityFunction.verifyHeaderLoginCode(), utilityFunction.CheckLoginMiddleware(), deleteFunction.DeleteArticle)   // 删除文章
+	v1Group.DELETE("/tag", utilityFunction.CheckLoginMiddleware(), deleteFunction.DeleteTag)           // 删除标签
+	v1Group.DELETE("/category", utilityFunction.CheckLoginMiddleware(), deleteFunction.DeleteCategory) // 删除类别
+	v1Group.DELETE("/group", utilityFunction.CheckLoginMiddleware(), deleteFunction.DeleteGroup)       // 删除用户组
+	v1Group.DELETE("/user", utilityFunction.CheckLoginMiddleware(), deleteFunction.DeleteUser)         // 删除用户
+	v1Group.DELETE("/article", utilityFunction.CheckLoginMiddleware(), deleteFunction.DeleteArticle)   // 删除文章
 
 	v1Group.POST("/auth/signin", userFunction.SignIn) // 用户登陆
 
@@ -52,7 +52,7 @@ func routerMain(router *gin.Engine) {
 	router.POST("/upload", UploadFile) // 上传
 
 	if gin.Mode() == gin.DebugMode {
-		router.GET("/test/:id", utilityFunction.verifyHeaderLoginCode(), test) // 测试
+		router.GET("/test/:id", utilityFunction.CheckLoginMiddleware(), test) // 测试
 	}
 }
 
