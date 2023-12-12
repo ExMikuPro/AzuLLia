@@ -162,12 +162,12 @@ func (_ *Utility) JWTOptVerify(tokenString string) (bool, gin.H, error) { // 认
 		}
 	} else {
 		// 无效
-		return false, nil, errors.New("JWT Verify Error1")
+		return false, nil, errors.New("JWT Verify Error")
 	}
 }
 
-func (_ *Utility) JWTRefreshVerify(tokenString string) (bool, error) { //认证JWT刷新码
-	_, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+func (_ *Utility) JWTRefreshVerify(tokenString string) (bool, gin.H, error) { //认证JWT刷新码
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok { // 验证JWT有效性
 			return nil, errors.New("signature is invalid")
 		} else {
@@ -178,13 +178,13 @@ func (_ *Utility) JWTRefreshVerify(tokenString string) (bool, error) { //认证J
 		// 验证签名有效性
 		if validationErr, ok := err.(*jwt.ValidationError); ok { // 判断Token是否过期
 			if validationErr.Errors == jwt.ValidationErrorExpired {
-				// JWT 过期
-				return true, nil
+				// JWT 过期,生成新的用户 JWT
+				return true, gin.H{"user_id": token.Claims.(jwt.MapClaims)["user_id"]}, nil
 			}
-			return false, errors.New("未验证")
+			return false, nil, errors.New("未验证")
 		}
 	}
-	return false, errors.New("未过期")
+	return false, nil, errors.New("未过期")
 }
 
 func GetEvn(key string) string {

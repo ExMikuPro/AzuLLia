@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -1009,7 +1010,8 @@ func (_ *User) Refresh(ctx *gin.Context) {
 	// 接入传输token
 	refreshToken := ctx.PostForm("refresh_token")
 	// 判断刷新token是否过期
-	if ok, err := utilityFunction.JWTRefreshVerify(refreshToken); !ok { // 验证是否被篡改
+	if ok, data, err := utilityFunction.JWTRefreshVerify(refreshToken); !ok { // 验证是否被篡改
+
 		if err != nil {
 			ctx.JSON(http.StatusOK, GeneralJSONHeader{
 				Code: ServerError,
@@ -1020,7 +1022,8 @@ func (_ *User) Refresh(ctx *gin.Context) {
 		}
 	} else {
 		// 尝试生成新的refreshToken
-		refreshToken, err := utilityFunction.JWTRefreshCreate()
+		token, err := utilityFunction.JWTCreate(data["user_id"].(string))
+		refreshToken, err = utilityFunction.JWTRefreshCreate()
 		if err != nil {
 			ctx.JSON(http.StatusOK, GeneralJSONHeader{
 				Code: ServerError,
@@ -1034,6 +1037,7 @@ func (_ *User) Refresh(ctx *gin.Context) {
 			Msg:  "success",
 			Path: ctx.Request.URL.Path,
 			Data: gin.H{
+				"token":         token,
 				"refresh_token": refreshToken,
 			},
 		})
@@ -1051,8 +1055,8 @@ func (_ *User) Refresh(ctx *gin.Context) {
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/test/123 [GET]
 func test(ctx *gin.Context) {
-	token, _ := utilityFunction.JWTCreate("123")
+	fmt.Println(ctx)
 	ctx.JSON(http.StatusOK, gin.H{
-		"token": token,
+		"token": 123,
 	})
 }
