@@ -73,6 +73,7 @@ func (_ *Utility) CheckLoginMiddleware() gin.HandlerFunc { // 通过cookie认证
 				})
 			}
 			if ok, _ := utilityFunction.VerifySHA256(data["user_id"].(string), data["verify"].(string)); ok {
+				ctx.Set("user_id", data["user_id"]) // 将操作用户id添加到传入变量
 				ctx.Next()
 			}
 			ctx.Abort()
@@ -85,12 +86,6 @@ func (_ *Utility) CheckLoginMiddleware() gin.HandlerFunc { // 通过cookie认证
 			})
 			ctx.Abort()
 		}
-	}
-}
-
-func (_ *Utility) verifyHeaderLoginCode() gin.HandlerFunc { // 通过请求头认证
-	return func(ctx *gin.Context) {
-		// fmt.Println(ctx.Request.Header.Get("token")) // 获取请求头认证信息
 	}
 }
 

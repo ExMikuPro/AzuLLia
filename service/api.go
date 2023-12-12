@@ -1038,9 +1038,6 @@ func (_ *User) Refresh(ctx *gin.Context) {
 			},
 		})
 	}
-	// 判断登录token是否过期
-	// 刷新token过期重新请求登录token
-
 }
 
 // DeleteArticle @Title 测试
