@@ -997,7 +997,7 @@ const docTemplate = `{
                     {
                         "type": "string",
                         "description": "token",
-                        "name": "to",
+                        "name": "token",
                         "in": "header"
                     }
                 ],
