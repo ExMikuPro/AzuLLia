@@ -1023,7 +1023,7 @@ func (_ *User) Refresh(ctx *gin.Context) {
 	} else {
 		// 尝试生成新的refreshToken
 		token, err := utilityFunction.JWTCreate(data["user_id"].(string))
-		refreshToken, err = utilityFunction.JWTRefreshCreate()
+		refreshToken, err = utilityFunction.JWTRefreshCreate(data["user_id"].(string))
 		if err != nil {
 			ctx.JSON(http.StatusOK, GeneralJSONHeader{
 				Code: ServerError,

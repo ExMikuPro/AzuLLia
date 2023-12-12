@@ -46,7 +46,7 @@ func (_ *Utility) UserPasswdVerify(userName string, passwd string) (gin.H, bool)
 		if err != nil {
 			return nil, false
 		}
-		refreshToken, err := utilityFunction.JWTRefreshCreate()
+		refreshToken, err := utilityFunction.JWTRefreshCreate(DBData["_id"].(primitive.ObjectID).Hex())
 		if err != nil {
 			return nil, false
 		}
@@ -118,9 +118,10 @@ func (_ *Utility) JWTCreate(uid string) (string, error) { // 创建JWT认证码
 	return accessToken, nil
 }
 
-func (_ *Utility) JWTRefreshCreate() (string, error) { // 创建JWT刷新认证码
+func (_ *Utility) JWTRefreshCreate(uid string) (string, error) { // 创建JWT刷新认证码
 	claims := jwt.MapClaims{
-		"exp": time.Now().Add(time.Hour * 168).Unix(), // 一周生效时间
+		"token": uid,
+		"exp":   time.Now().Add(time.Hour * 168).Unix(), // 一周生效时间
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	accessToken, err := token.SignedString([]byte(GetEvn("JWT_KEY")))
