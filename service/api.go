@@ -1050,13 +1050,19 @@ func (_ *User) Refresh(ctx *gin.Context) {
 // @Produce	json
 // @Description 这是一个测试函数，用于在开发模式中测试各种功能(发行版模式下会失效)
 // @Param id formData string false "文章id"
-// @Param to header string  false "token"
+// @Param token header string  false "token"
 // @Header 200 {string} Token "访问令牌"
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/test/123 [GET]
 func test(ctx *gin.Context) {
-	fmt.Println(ctx)
-	ctx.JSON(http.StatusOK, gin.H{
-		"token": 123,
-	})
+	fmt.Println(ctx.Get("user_id"))
+	if data, ok := ctx.Get("user_id"); ok { // 获取操作者
+		ctx.JSON(http.StatusOK, gin.H{
+			"user_id": data,
+		})
+	} else {
+		ctx.JSON(http.StatusOK, gin.H{
+			"error": "error",
+		})
+	}
 }
