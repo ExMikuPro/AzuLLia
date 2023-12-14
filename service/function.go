@@ -135,9 +135,8 @@ func (_ *Utility) JWTOptVerify(tokenString string) (bool, gin.H, error) { // 认
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok { // 验证JWT有效性
 			return nil, errors.New("signature is invalid")
-		} else {
-			return []byte(GetEvn("JWT_KEY")), nil
 		}
+		return []byte(GetEvn("JWT_KEY")), nil
 	})
 	if err != nil {
 		// 验证签名有效性
@@ -146,25 +145,19 @@ func (_ *Utility) JWTOptVerify(tokenString string) (bool, gin.H, error) { // 认
 	if token.Valid { // 验证JWT有效性
 		// 有效
 		// 校验是否为用户token
-		if claims, ok := token.Claims.(jwt.MapClaims); ok {
-			// 获取需要的字段值
-			if userId, exists := claims["user_id"].(string); exists {
-				if verify, ok := claims["verify"].(string); ok {
-					return true, gin.H{"user_id": userId, "verify": verify}, nil
-				} else {
-					return false, nil, nil
-				}
-			} else {
-				return false, nil, nil
-			}
-			// 可以继续获取其他字段...
-		} else {
-			return false, nil, nil
-		}
-	} else {
-		// 无效
 		return false, nil, errors.New("JWT Verify Error")
 	}
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		// 获取需要的字段值
+		return false, nil, errors.New("invalid JWT claims")
+	}
+	userId, userIdExists := claims["user_id"].(string)
+	verify, verifyExists := claims["verify"].(string)
+	if userIdExists && verifyExists {
+		return true, gin.H{"user_id": userId, "verify": verify}, nil
+	}
+	return false, nil, nil
 }
 
 func (_ *Utility) JWTRefreshVerify(tokenString string) (bool, gin.H, error) { //认证JWT刷新码
