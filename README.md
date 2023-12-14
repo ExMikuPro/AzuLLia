@@ -28,7 +28,7 @@ DB_DATA_BASE=azullia   # 数据库名称
 
 GIN_MODE=debug         # 框架运行模式
 
-JWT_KEY = 12345678     # JWT加密密钥(需要自行修改)
+JWT_KEY = key          # JWT加密密钥(需要自行修改)
 HASH_KEY = secret key  # HASH256加密密钥
 ```
 
@@ -137,3 +137,4 @@ AzuLLia
 8. [ ] 创建动态加载插件
 9. [x] 添加JWT用户登录认证
 10. [ ] 构建热更新功能
+11. [x] 使用Swagger构建项目文档
