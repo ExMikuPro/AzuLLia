@@ -113,7 +113,7 @@ func (_ *Utility) JWTCreate(uid string) (string, error) { // 创建JWT认证码
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	accessToken, err := token.SignedString([]byte(GetEvn("JWT_KEY")))
 	if err != nil {
-		return "", err
+		return EmptyString, err
 	}
 	return accessToken, nil
 }
@@ -126,7 +126,7 @@ func (_ *Utility) JWTRefreshCreate(uid string) (string, error) { // 创建JWT刷
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	accessToken, err := token.SignedString([]byte(GetEvn("JWT_KEY")))
 	if err != nil {
-		return "", err
+		return EmptyString, err
 	}
 	return accessToken, nil
 }

@@ -12,6 +12,7 @@ const UnKnownFileType = 14           // 未知文件类型
 const FileSaveError = 15             // 文件保存错误
 const ServerError = 500              // 服务器错误
 const WorkProgress = 520             // 正在构建的界面
+const EmptyString = ""               // 空字符串
 
 var FileType = []string{".jpg", ".jpeg", ".png"} // 允许上传文件类型
 
