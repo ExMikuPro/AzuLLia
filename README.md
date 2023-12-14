@@ -28,7 +28,7 @@ DB_DATA_BASE=azullia   # 数据库名称
 
 GIN_MODE=debug         # 框架运行模式
 
-JWT_KEY = 12345678     # JWT加密密钥(需要自行修改)
+JWT_KEY = key          # JWT加密密钥(需要自行修改)
 HASH_KEY = secret key  # HASH256加密密钥
 ```
 
