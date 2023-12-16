@@ -1,4 +1,4 @@
-ji## AzuLLia - Core
+## AzuLLia - Core
 
 ![](./docs/Logo.png)
 
