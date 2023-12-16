@@ -1,4 +1,4 @@
-## AzuLLia - Core
+ji## AzuLLia - Core
 
 ![](./docs/Logo.png)
 
@@ -138,3 +138,4 @@ AzuLLia
 9. [x] 添加JWT用户登录认证
 10. [ ] 构建热更新功能
 11. [x] 使用Swagger构建项目文档
+12. [ ] 添加OAuth服务支持
