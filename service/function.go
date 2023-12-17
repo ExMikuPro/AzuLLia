@@ -113,7 +113,7 @@ func (_ *Utility) JWTCreate(uid string) (string, error) { // 创建JWT认证码
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	accessToken, err := token.SignedString([]byte(GetEvn("JWT_KEY")))
 	if err != nil {
-		return EmptyString, err
+		return ErrFunctionMessage, err
 	}
 	return accessToken, nil
 }
@@ -126,7 +126,7 @@ func (_ *Utility) JWTRefreshCreate(uid string) (string, error) { // 创建JWT刷
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	accessToken, err := token.SignedString([]byte(GetEvn("JWT_KEY")))
 	if err != nil {
-		return EmptyString, err
+		return ErrFunctionMessage, err
 	}
 	return accessToken, nil
 }
@@ -134,23 +134,23 @@ func (_ *Utility) JWTRefreshCreate(uid string) (string, error) { // 创建JWT刷
 func (_ *Utility) JWTOptVerify(tokenString string) (bool, gin.H, error) { // 认证JWT操作认证码
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok { // 验证JWT有效性
-			return nil, errors.New("signature is invalid")
+			return nil, errors.New(ErrMessageJWTUnknownSignature)
 		}
 		return []byte(GetEvn("JWT_KEY")), nil
 	})
 	if err != nil {
 		// 验证签名有效性
-		return false, nil, errors.New("JWT Verify Error")
+		return false, nil, errors.New(ErrMessageJWTUnknownSignature)
 	}
 	if token.Valid { // 验证JWT有效性
 		// 有效
 		// 校验是否为用户token
-		return false, nil, errors.New("JWT Verify Error")
+		return false, nil, errors.New(ErrJWTMessageSignatureExpired)
 	}
 	claims, ok := token.Claims.(jwt.MapClaims)
 	if !ok {
 		// 获取需要的字段值
-		return false, nil, errors.New("invalid JWT claims")
+		return false, nil, errors.New(ErrJWTMessageSignatureExpired)
 	}
 	userId, userIdExists := claims["user_id"].(string)
 	verify, verifyExists := claims["verify"].(string)
@@ -175,10 +175,10 @@ func (_ *Utility) JWTRefreshVerify(tokenString string) (bool, gin.H, error) { //
 				// JWT 过期,生成新的用户 JWT
 				return true, gin.H{"user_id": token.Claims.(jwt.MapClaims)["user_id"]}, nil
 			}
-			return false, nil, errors.New("未验证")
+			return false, nil, errors.New(ErrMessageJWTUnknownSignature)
 		}
 	}
-	return false, nil, errors.New("未过期")
+	return false, nil, errors.New(ErrJWTMessageSignatureExpired)
 }
 
 func GetEvn(key string) string {
