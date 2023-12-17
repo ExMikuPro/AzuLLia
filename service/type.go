@@ -19,10 +19,12 @@ const (
 
 const (
 	ErrFunctionMessage            = ""        // 函数错误返回
-	ErrJWTCodeSignatureExpired    = 600       // JWT签名验证过期识别码
 	ErrJWTMessageSignatureExpired = "JWT签名过期" // JWT签名验证过期识别信息
-	ErrCodeJWTUnknownSignature    = 601       // 未知JWT签名过期识别码
 	ErrMessageJWTUnknownSignature = "未知JWT签名" // 未知JWT签名过期识别信息
+	ErrCodeJWTCreateSignature     = 602       // JWT签名生成错误识别码
+	ErrMessageJWTCreateSignature  = "JWT生成错误" // JWT签名生成错误识别码
+	ErrCodeJWTVerifySignature     = 603       // JWT签名验证错误识别码
+	ErrMessageJWTVerifySignature  = "JWT验证错误" // JWT签名验证错误识别码
 )
 
 var FileType = []string{".jpg", ".jpeg", ".png"} // 允许上传文件类型
