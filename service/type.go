@@ -5,7 +5,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-const Version = "1.0.0"              // 系统版本号
+const Version = "1.0.1206"           // 系统版本号
 const UserInformationVerifyError = 4 // 用户信息认证错误
 const UnKnownFileType = 14           // 未知文件类型
 const FileSaveError = 15             // 文件保存错误
