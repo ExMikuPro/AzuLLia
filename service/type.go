@@ -5,14 +5,27 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-const Version = "1.0.0"              // 系统版本号
-const SuccessCode = 0                // 正常
+const Version = "1.0.1206"           // 系统版本号
 const UserInformationVerifyError = 4 // 用户信息认证错误
 const UnKnownFileType = 14           // 未知文件类型
 const FileSaveError = 15             // 文件保存错误
 const ServerError = 500              // 服务器错误
 const WorkProgress = 520             // 正在构建的界面
-const EmptyString = ""               // 空字符串
+
+const (
+	SuccessCode    = 0         // 请求成功码
+	SuccessMessage = "success" // 请求成功信息
+)
+
+const (
+	ErrFunctionMessage            = ""        // 函数错误返回
+	ErrJWTMessageSignatureExpired = "JWT签名过期" // JWT签名验证过期识别信息
+	ErrMessageJWTUnknownSignature = "未知JWT签名" // 未知JWT签名过期识别信息
+	ErrCodeJWTCreateSignature     = 602       // JWT签名生成错误识别码
+	ErrMessageJWTCreateSignature  = "JWT生成错误" // JWT签名生成错误识别码
+	ErrCodeJWTVerifySignature     = 603       // JWT签名验证错误识别码
+	ErrMessageJWTVerifySignature  = "JWT验证错误" // JWT签名验证错误识别码
+)
 
 var FileType = []string{".jpg", ".jpeg", ".png"} // 允许上传文件类型
 

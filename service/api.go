@@ -21,7 +21,7 @@ import (
 func (_ *Get) GetAbout(ctx *gin.Context) { // 框架版本界面
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: gin.H{
 			"version": Version,
@@ -49,7 +49,7 @@ func (_ *Get) ArticleList(ctx *gin.Context) { // 文章列表界面
 	}
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: gin.H{
 			"length": len(data), // 列表长度
@@ -87,7 +87,7 @@ func (_ *Get) GetArticle(ctx *gin.Context) { // 文章内容页面
 
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: data,
 	})
@@ -113,7 +113,7 @@ func (_ *Get) TagList(ctx *gin.Context) { // 标签列表界面
 	}
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: gin.H{
 			"length": len(data), // 列表长度
@@ -142,7 +142,7 @@ func (_ *Get) CategoryList(ctx *gin.Context) { // 分类列表界面
 	}
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: gin.H{
 			"length": len(data), // 列表长度
@@ -185,7 +185,7 @@ func (_ *Get) GetCategory(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: data,
 	})
@@ -216,7 +216,7 @@ func (_ *Get) GetTag(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: data,
 	})
@@ -269,7 +269,7 @@ func (_ *Add) AddTag(ctx *gin.Context) { // 添加新标签
 
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: gin.H{
 			"tagInfo": tageData,
@@ -315,7 +315,7 @@ func (_ *Add) AddArticle(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: gin.H{
 			"postID": articleData.ID,
@@ -358,7 +358,7 @@ func (_ *Add) AddCategory(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: gin.H{
 			"typeInfo": typeData,
@@ -394,7 +394,7 @@ func (_ *Add) AddGroup(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: gin.H{
 			"groupInfo": userGroup,
@@ -422,7 +422,7 @@ func (_ *Get) GetUserList(ctx *gin.Context) { // 获取用户列表
 	}
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: gin.H{
 			"length": len(data), // 列表长度
@@ -479,7 +479,7 @@ func (_ *Add) AddUser(ctx *gin.Context) { // 添加用户
 	}
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: gin.H{
 			"userInfo": userData,
@@ -504,7 +504,7 @@ func (_ *User) SignIn(ctx *gin.Context) {
 	if token, ok := utilityFunction.UserPasswdVerify(userName, passwd); ok { // 判断是否符合数据库内数据
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
 			Code: SuccessCode,
-			Msg:  "success",
+			Msg:  SuccessMessage,
 			Path: ctx.Request.URL.Path,
 			Data: gin.H{
 				"token": token,
@@ -586,7 +586,7 @@ func (_ *Update) UpdateUser(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: gin.H{
 			"id": uid,
@@ -639,7 +639,7 @@ func (_ *Update) UpdateTag(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: gin.H{
 			"id": tid,
@@ -693,7 +693,7 @@ func (_ *Update) UpdateCategory(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: gin.H{
 			"id": tid,
@@ -743,7 +743,7 @@ func (_ *Update) UpdateArticle(ctx *gin.Context) {
 	}
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: gin.H{
 			"id": tid,
@@ -785,7 +785,7 @@ func (_ *Update) UpdateGroup(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: gin.H{
 			"id": tid,
@@ -826,7 +826,7 @@ func (_ *Delete) DeleteTag(ctx *gin.Context) { // 删除标签函数
 	}
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: gin.H{
 			"id": tid,
@@ -867,7 +867,7 @@ func (_ *Delete) DeleteCategory(ctx *gin.Context) { // 删除分类函数
 	}
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: gin.H{
 			"id": cid,
@@ -908,7 +908,7 @@ func (_ *Delete) DeleteGroup(ctx *gin.Context) { // 删除用户组函数
 	}
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: gin.H{
 			"id": gid,
@@ -949,7 +949,7 @@ func (_ *Delete) DeleteUser(ctx *gin.Context) { // 删除用户函数
 	}
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: gin.H{
 			"id": uid,
@@ -990,7 +990,7 @@ func (_ *Delete) DeleteArticle(ctx *gin.Context) { // 删除文章函数
 	}
 	ctx.JSON(http.StatusOK, GeneralJSONHeader{
 		Code: SuccessCode,
-		Msg:  "success",
+		Msg:  SuccessMessage,
 		Path: ctx.Request.URL.Path,
 		Data: gin.H{
 			"id": aid,
@@ -1014,8 +1014,8 @@ func (_ *User) Refresh(ctx *gin.Context) {
 
 		if err != nil {
 			ctx.JSON(http.StatusOK, GeneralJSONHeader{
-				Code: ServerError,
-				Msg:  "server error",
+				Code: ErrCodeJWTVerifySignature,
+				Msg:  ErrMessageJWTVerifySignature,
 				Path: ctx.Request.URL.Path,
 				Data: nil,
 			})
@@ -1025,8 +1025,8 @@ func (_ *User) Refresh(ctx *gin.Context) {
 		token, err := utilityFunction.JWTCreate(data["user_id"].(string))
 		if err != nil {
 			ctx.JSON(http.StatusOK, GeneralJSONHeader{
-				Code: ServerError,
-				Msg:  "server error",
+				Code: ErrCodeJWTCreateSignature,
+				Msg:  ErrMessageJWTCreateSignature,
 				Path: ctx.Request.URL.Path,
 				Data: nil,
 			})
@@ -1034,15 +1034,15 @@ func (_ *User) Refresh(ctx *gin.Context) {
 		refreshToken, err = utilityFunction.JWTRefreshCreate(data["user_id"].(string))
 		if err != nil {
 			ctx.JSON(http.StatusOK, GeneralJSONHeader{
-				Code: ServerError,
-				Msg:  "server error",
+				Code: ErrCodeJWTCreateSignature,
+				Msg:  ErrMessageJWTCreateSignature,
 				Path: ctx.Request.URL.Path,
 				Data: nil,
 			})
 		}
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
 			Code: SuccessCode,
-			Msg:  "success",
+			Msg:  SuccessMessage,
 			Path: ctx.Request.URL.Path,
 			Data: gin.H{
 				"token":         token,
