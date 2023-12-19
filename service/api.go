@@ -1022,7 +1022,7 @@ func (_ *User) Refresh(ctx *gin.Context) {
 		}
 	} else {
 		// 尝试生成新的refreshToken
-		token, err := utilityFunction.JWTCreate(data["user_id"].(string))
+		token, err := utilityFunction.JWTCreate(data["user_id"].(string), data["user_name"].(string))
 		if err != nil {
 			ctx.JSON(http.StatusOK, GeneralJSONHeader{
 				Code: ErrCodeJWTCreateSignature,
