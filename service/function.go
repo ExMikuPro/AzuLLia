@@ -42,7 +42,7 @@ func (_ *Utility) UserPasswdVerify(userName string, passwd string) (gin.H, bool)
 	if err != nil {
 		return nil, false
 	} else {
-		token, err := utilityFunction.JWTCreate(DBData["_id"].(primitive.ObjectID).Hex())
+		token, err := utilityFunction.JWTCreate(DBData["_id"].(primitive.ObjectID).Hex(), DBData["screenName"].(string))
 		if err != nil {
 			return nil, false
 		}
@@ -104,11 +104,12 @@ func (_ *Utility) Log(data ...any) { // Debug输出
 	}
 }
 
-func (_ *Utility) JWTCreate(uid string) (string, error) { // 创建JWT认证码
+func (_ *Utility) JWTCreate(uid string, userName string) (string, error) { // 创建JWT认证码
 	claims := jwt.MapClaims{
-		"user_id": uid,                                  // 用户id
-		"verify":  utilityFunction.HashSHA256(uid),      // 校验用户id
-		"exp":     time.Now().Add(time.Hour * 2).Unix(), // 生效时间
+		"user_id":   uid,                                  // 用户id
+		"user_name": userName,                             // 用户昵称
+		"verify":    utilityFunction.HashSHA256(uid),      // 校验用户id
+		"exp":       time.Now().Add(time.Hour * 2).Unix(), // 生效时间
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	accessToken, err := token.SignedString([]byte(GetEvn("JWT_KEY")))
