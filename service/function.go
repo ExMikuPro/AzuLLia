@@ -67,7 +67,7 @@ func (_ *Utility) CheckLoginMiddleware() gin.HandlerFunc { // 通过cookie认证
 			if err != nil {
 				ctx.JSON(http.StatusOK, GeneralJSONHeader{
 					Code: ServerError,
-					Msg:  "server error",
+					Msg:  ServerErrorMessage,
 					Path: ctx.Request.URL.Path,
 					Data: nil,
 				})
@@ -79,8 +79,8 @@ func (_ *Utility) CheckLoginMiddleware() gin.HandlerFunc { // 通过cookie认证
 			ctx.Abort()
 		} else {
 			ctx.JSON(http.StatusOK, GeneralJSONHeader{
-				Code: ServerError,
-				Msg:  "JWT verify error",
+				Code: ErrCodeJWTVerifySignature,
+				Msg:  ErrMessageJWTVerifySignature,
 				Path: ctx.Request.URL.Path,
 				Data: nil,
 			})
@@ -182,11 +182,20 @@ func (_ *Utility) JWTRefreshVerify(tokenString string) (bool, gin.H, error) { //
 	return false, nil, errors.New(ErrJWTMessageSignatureExpired)
 }
 
+func (_ *Utility) Return(ctx *gin.Context, HTTPCode int, code int, msg string, data gin.H) {
+	ctx.JSON(HTTPCode, GeneralJSONHeader{
+		Code: code,
+		Msg:  msg,
+		Path: ctx.Request.URL.Path,
+		Data: data,
+	})
+}
+
 func GetEvn(key string) string {
 	return os.Getenv(key)
 }
 
-func ServerBegin() { // 服务器启动前配置函数
+func ServerBegin() {
 	// 初始化环境变量
 	err := godotenv.Load("Service.env")
 	if err != nil {
