@@ -139,4 +139,5 @@ AzuLLia
 10. [ ] 构建热更新功能
 11. [x] 使用Swagger构建项目文档
 12. [ ] 添加OAuth服务支持
-13. [ ] 更改Swagger项目文档UI到scalarUI
+13. [ ] 添加分段上传文件功能
+14. [ ] 更改Swagger项目文档UI到scalarUI
