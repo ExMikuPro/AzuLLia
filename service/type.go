@@ -9,8 +9,12 @@ const Version = "1.0.1206"           // 系统版本号
 const UserInformationVerifyError = 4 // 用户信息认证错误
 const UnKnownFileType = 14           // 未知文件类型
 const FileSaveError = 15             // 文件保存错误
-const ServerError = 500              // 服务器错误
 const WorkProgress = 520             // 正在构建的界面
+
+const (
+	ServerError        = 500       // 服务器错误
+	ServerErrorMessage = "服务端处理错误" // 服务端错误信息
+)
 
 const (
 	SuccessCode    = 0         // 请求成功码

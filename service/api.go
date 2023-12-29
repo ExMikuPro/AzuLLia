@@ -19,14 +19,7 @@ import (
 // @Success 200 {object} GeneralJSONHeader "OK"
 // @Router		/about [GET]
 func (_ *Get) GetAbout(ctx *gin.Context) { // 框架版本界面
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: gin.H{
-			"version": Version,
-		},
-	})
+	utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, gin.H{"version": Version})
 }
 
 // ArticleList @Title 文章
@@ -39,23 +32,13 @@ func (_ *Get) GetAbout(ctx *gin.Context) { // 框架版本界面
 func (_ *Get) ArticleList(ctx *gin.Context) { // 文章列表界面
 	data, err := DataBase.ReadAllDB("paperList", []gin.H{})
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
-	}
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: gin.H{
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
+	} else {
+		utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, gin.H{
 			"length": len(data), // 列表长度
-			"list":   data,      // 列表内容
-		},
-	})
+			"list":   data,      // 列表数据
+		})
+	}
 }
 
 // GetArticle @Title 文章
@@ -76,21 +59,10 @@ func (_ *Get) GetArticle(ctx *gin.Context) { // 文章内容页面
 	data, err := DataBase.ReadOneDB("article", filter, gin.H{})
 
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
+	} else {
+		utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, data)
 	}
-
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: data,
-	})
 }
 
 // TagList @Title 标签
@@ -103,23 +75,13 @@ func (_ *Get) GetArticle(ctx *gin.Context) { // 文章内容页面
 func (_ *Get) TagList(ctx *gin.Context) { // 标签列表界面
 	data, err := DataBase.ReadAllDB("tag", []gin.H{})
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
-	}
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: gin.H{
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
+	} else {
+		utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, gin.H{
 			"length": len(data), // 列表长度
 			"list":   data,      // 列表数据
-		},
-	})
+		})
+	}
 }
 
 // CategoryList @Title 分类
@@ -132,23 +94,13 @@ func (_ *Get) TagList(ctx *gin.Context) { // 标签列表界面
 func (_ *Get) CategoryList(ctx *gin.Context) { // 分类列表界面
 	data, err := DataBase.ReadAllDB("category", []gin.H{})
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
-	}
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: gin.H{
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
+	} else {
+		utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, gin.H{
 			"length": len(data), // 列表长度
 			"list":   data,      // 列表数据
-		},
-	})
+		})
+	}
 }
 
 // GetCategory @Title 分类
@@ -162,33 +114,16 @@ func (_ *Get) CategoryList(ctx *gin.Context) { // 分类列表界面
 func (_ *Get) GetCategory(ctx *gin.Context) {
 	cid, err := primitive.ObjectIDFromHex(ctx.Param("id"))
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
 	}
 	filter := bson.D{
 		{Key: "_id", Value: cid},
 	}
 	data, err := DataBase.ReadOneDB("category", filter, gin.H{})
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
 	}
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: data,
-	})
+	utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, data)
 }
 
 // GetTag @Title 标签
@@ -206,20 +141,10 @@ func (_ *Get) GetTag(ctx *gin.Context) {
 	}
 	data, err := DataBase.ReadOneDB("tag", filter, gin.H{})
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
+	} else {
+		utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, data)
 	}
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: data,
-	})
 }
 
 func (_ *Get) MainPage(ctx *gin.Context) { // 主页页面
@@ -258,23 +183,12 @@ func (_ *Add) AddTag(ctx *gin.Context) { // 添加新标签
 
 	err := DataBase.WriteOneDB("tag", tageData)
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
-	}
-
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: gin.H{
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
+	} else {
+		utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, gin.H{
 			"tagInfo": tageData,
-		},
-	})
+		})
+	}
 }
 
 // AddArticle @Title 文章
@@ -293,35 +207,17 @@ func (_ *Add) AddArticle(ctx *gin.Context) {
 	articleData.Created = time.Now().Unix()
 	articleData.Modified = time.Now().Unix()
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
 	}
 
 	err = DataBase.WriteOneDB("article", articleData)
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
 	}
 
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: gin.H{
-			"postID": articleData.ID,
-		},
+	utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, gin.H{
+		"postID": articleData.ID,
 	})
-
 }
 
 // AddCategory @Title 分类
@@ -348,22 +244,12 @@ func (_ *Add) AddCategory(ctx *gin.Context) {
 	}
 	err := DataBase.WriteOneDB("category", typeData)
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
-	}
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: gin.H{
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
+	} else {
+		utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, gin.H{
 			"typeInfo": typeData,
-		},
-	})
+		})
+	}
 }
 
 // AddGroup @Title 用户组
@@ -383,23 +269,12 @@ func (_ *Add) AddGroup(ctx *gin.Context) {
 	}
 	err := DataBase.WriteOneDB("group", userGroup)
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
-	}
-
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: gin.H{
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
+	} else {
+		utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, gin.H{
 			"groupInfo": userGroup,
-		},
-	})
+		})
+	}
 }
 
 // GetUserList @Title 用户
@@ -413,22 +288,13 @@ func (_ *Add) AddGroup(ctx *gin.Context) {
 func (_ *Get) GetUserList(ctx *gin.Context) { // 获取用户列表
 	data, err := DataBase.ReadAllDB("user", []gin.H{})
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-	}
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: gin.H{
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
+	} else {
+		utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, gin.H{
 			"length": len(data), // 列表长度
 			"list":   data,      // 列表数据
-		},
-	})
+		})
+	}
 }
 
 // AddUser @Title 用户
@@ -448,13 +314,7 @@ func (_ *Get) GetUserList(ctx *gin.Context) { // 获取用户列表
 func (_ *Add) AddUser(ctx *gin.Context) { // 添加用户
 	passwd, err := bcrypt.GenerateFromPassword([]byte(ctx.PostForm("passwd")), bcrypt.DefaultCost)
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
 	}
 	userData := userTable{
 		ID:         primitive.NewObjectID(),
@@ -469,23 +329,12 @@ func (_ *Add) AddUser(ctx *gin.Context) { // 添加用户
 	}
 	err = DataBase.WriteOneDB("user", userData)
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
-	}
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: gin.H{
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
+	} else {
+		utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, gin.H{
 			"userInfo": userData,
-		},
-	})
-
+		})
+	}
 }
 
 // SignIn @Title Token
@@ -502,13 +351,8 @@ func (_ *User) SignIn(ctx *gin.Context) {
 	passwd := ctx.PostForm("passwd")
 
 	if token, ok := utilityFunction.UserPasswdVerify(userName, passwd); ok { // 判断是否符合数据库内数据
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: SuccessCode,
-			Msg:  SuccessMessage,
-			Path: ctx.Request.URL.Path,
-			Data: gin.H{
-				"token": token,
-			},
+		utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, gin.H{
+			"token": token,
 		})
 	} else {
 		ctx.JSON(http.StatusOK, GeneralJSONHeader{
@@ -537,24 +381,12 @@ func (_ *User) SignIn(ctx *gin.Context) {
 func (_ *Update) UpdateUser(ctx *gin.Context) {
 	uid, err := primitive.ObjectIDFromHex(ctx.PostForm("id"))
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
 	}
 	name := ctx.PostForm("name")
 	passwd, err := bcrypt.GenerateFromPassword([]byte(ctx.PostForm("passwd")), bcrypt.DefaultCost)
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
 	}
 	mail := ctx.PostForm("mail")
 	url := ctx.PostForm("url")
@@ -575,23 +407,12 @@ func (_ *Update) UpdateUser(ctx *gin.Context) {
 
 	err = DataBase.UpdateOneDB("user", filter, update)
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
-	}
-
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: gin.H{
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
+	} else {
+		utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, gin.H{
 			"id": uid,
-		},
-	})
+		})
+	}
 }
 
 // UpdateTag @Title 标签
@@ -627,24 +448,12 @@ func (_ *Update) UpdateTag(ctx *gin.Context) {
 
 	err := DataBase.UpdateOneDB("tag", filter, update)
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-
-		return
-	}
-
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: gin.H{
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
+	} else {
+		utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, gin.H{
 			"id": tid,
-		},
-	})
+		})
+	}
 }
 
 // UpdateCategory @Title 分类
@@ -681,24 +490,12 @@ func (_ *Update) UpdateCategory(ctx *gin.Context) {
 
 	err := DataBase.UpdateOneDB("tag", filter, update)
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-
-		return
-	}
-
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: gin.H{
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
+	} else {
+		utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, gin.H{
 			"id": tid,
-		},
-	})
+		})
+	}
 }
 
 // UpdateArticle @Title 文章
@@ -733,22 +530,12 @@ func (_ *Update) UpdateArticle(ctx *gin.Context) {
 
 	err := DataBase.UpdateOneDB("category", filter, update)
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
-	}
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: gin.H{
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
+	} else {
+		utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, gin.H{
 			"id": tid,
-		},
-	})
+		})
+	}
 }
 
 // UpdateGroup @Title 用户组
@@ -774,23 +561,12 @@ func (_ *Update) UpdateGroup(ctx *gin.Context) {
 
 	err := DataBase.UpdateOneDB("group", filter, update)
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
-	}
-
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: gin.H{
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
+	} else {
+		utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, gin.H{
 			"id": tid,
-		},
-	})
+		})
+	}
 }
 
 // DeleteTag @Title 标签
@@ -805,33 +581,17 @@ func (_ *Update) UpdateGroup(ctx *gin.Context) {
 func (_ *Delete) DeleteTag(ctx *gin.Context) { // 删除标签函数
 	tid, err := primitive.ObjectIDFromHex(ctx.PostForm("id"))
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
 	}
 	filter := bson.D{{Key: "_id", Value: tid}}
 	err = DataBase.DeleteOneDB("tag", filter)
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
-	}
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: gin.H{
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
+	} else {
+		utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, gin.H{
 			"id": tid,
-		},
-	})
+		})
+	}
 }
 
 // DeleteCategory @Title 分类
@@ -846,33 +606,17 @@ func (_ *Delete) DeleteTag(ctx *gin.Context) { // 删除标签函数
 func (_ *Delete) DeleteCategory(ctx *gin.Context) { // 删除分类函数
 	cid, err := primitive.ObjectIDFromHex(ctx.PostForm("id"))
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
 	}
 	filter := bson.D{{Key: "_id", Value: cid}}
 	err = DataBase.DeleteOneDB("category", filter)
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
-	}
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: gin.H{
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
+	} else {
+		utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, gin.H{
 			"id": cid,
-		},
-	})
+		})
+	}
 }
 
 // DeleteGroup @Title 用户组
@@ -887,33 +631,17 @@ func (_ *Delete) DeleteCategory(ctx *gin.Context) { // 删除分类函数
 func (_ *Delete) DeleteGroup(ctx *gin.Context) { // 删除用户组函数
 	gid, err := primitive.ObjectIDFromHex(ctx.PostForm("id"))
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
 	}
 	filter := bson.D{{Key: "_id", Value: gid}}
 	err = DataBase.DeleteOneDB("group", filter)
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
-	}
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: gin.H{
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
+	} else {
+		utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, gin.H{
 			"id": gid,
-		},
-	})
+		})
+	}
 }
 
 // DeleteUser @Title 用户
@@ -928,33 +656,17 @@ func (_ *Delete) DeleteGroup(ctx *gin.Context) { // 删除用户组函数
 func (_ *Delete) DeleteUser(ctx *gin.Context) { // 删除用户函数
 	uid, err := primitive.ObjectIDFromHex(ctx.PostForm("id"))
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
 	}
 	filter := bson.D{{Key: "_id", Value: uid}}
 	err = DataBase.DeleteOneDB("user", filter)
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
-	}
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: gin.H{
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
+	} else {
+		utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, gin.H{
 			"id": uid,
-		},
-	})
+		})
+	}
 }
 
 // DeleteArticle @Title 文章
@@ -969,33 +681,17 @@ func (_ *Delete) DeleteUser(ctx *gin.Context) { // 删除用户函数
 func (_ *Delete) DeleteArticle(ctx *gin.Context) { // 删除文章函数
 	aid, err := primitive.ObjectIDFromHex(ctx.PostForm("id"))
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
 	}
 	filter := bson.D{{Key: "_id", Value: aid}}
 	err = DataBase.DeleteOneDB("article", filter)
 	if err != nil {
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: ServerError,
-			Msg:  "server error",
-			Path: ctx.Request.URL.Path,
-			Data: nil,
-		})
-		return
-	}
-	ctx.JSON(http.StatusOK, GeneralJSONHeader{
-		Code: SuccessCode,
-		Msg:  SuccessMessage,
-		Path: ctx.Request.URL.Path,
-		Data: gin.H{
+		utilityFunction.Return(ctx, http.StatusOK, ServerError, ServerErrorMessage, nil)
+	} else {
+		utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, gin.H{
 			"id": aid,
-		},
-	})
+		})
+	}
 }
 
 // Refresh @Title Token
@@ -1011,44 +707,24 @@ func (_ *User) Refresh(ctx *gin.Context) {
 	refreshToken := ctx.PostForm("refresh_token")
 	// 判断刷新token是否过期
 	if ok, data, err := utilityFunction.JWTRefreshVerify(refreshToken); !ok { // 验证是否被篡改
-
 		if err != nil {
-			ctx.JSON(http.StatusOK, GeneralJSONHeader{
-				Code: ErrCodeJWTVerifySignature,
-				Msg:  ErrMessageJWTVerifySignature,
-				Path: ctx.Request.URL.Path,
-				Data: nil,
-			})
+			utilityFunction.Return(ctx, http.StatusOK, ErrCodeJWTVerifySignature, ErrMessageJWTVerifySignature, nil)
 		}
 	} else {
 		// 尝试生成新的refreshToken
 		token, err := utilityFunction.JWTCreate(data["user_id"].(string), data["user_name"].(string))
 		if err != nil {
-			ctx.JSON(http.StatusOK, GeneralJSONHeader{
-				Code: ErrCodeJWTCreateSignature,
-				Msg:  ErrMessageJWTCreateSignature,
-				Path: ctx.Request.URL.Path,
-				Data: nil,
-			})
+			utilityFunction.Return(ctx, http.StatusOK, ErrCodeJWTCreateSignature, ErrMessageJWTCreateSignature, nil)
 		}
 		refreshToken, err = utilityFunction.JWTRefreshCreate(data["user_id"].(string))
 		if err != nil {
-			ctx.JSON(http.StatusOK, GeneralJSONHeader{
-				Code: ErrCodeJWTCreateSignature,
-				Msg:  ErrMessageJWTCreateSignature,
-				Path: ctx.Request.URL.Path,
-				Data: nil,
-			})
-		}
-		ctx.JSON(http.StatusOK, GeneralJSONHeader{
-			Code: SuccessCode,
-			Msg:  SuccessMessage,
-			Path: ctx.Request.URL.Path,
-			Data: gin.H{
+			utilityFunction.Return(ctx, http.StatusOK, ErrCodeJWTCreateSignature, ErrMessageJWTCreateSignature, nil)
+		} else {
+			utilityFunction.Return(ctx, http.StatusOK, SuccessCode, SuccessMessage, gin.H{
 				"token":         token,
 				"refresh_token": refreshToken,
-			},
-		})
+			})
+		}
 	}
 }
 
